@@ -7,8 +7,35 @@
     <link rel="stylesheet" href="index.css" data-precedence="next"/>
     <link rel="stylesheet" href="cum1bey.css" data-precedence="next"/>
     <title>Alan Chen</title>
+    <style>
+        .profile-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+        .profile-image:hover {
+            transform: scale(1.05);
+        }
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: all 0.3s ease;
+        }
+        .card-3d:hover {
+            transform: translateY(-10px) rotateX(5deg);
+        }
+    </style>
 </head>
-<body class="absolute snap-y-dir w-screen h-screen">
+<body class="absolute snap-y-dir w-screen h-screen bg-gradient-to-b from-gray-900 to-gray-800">
 <script>
     !function() {
         try {
@@ -29,52 +56,68 @@
         } catch (e) {}
     }()
 </script>
-<nav class="absolute h-40 w-full flex items-center justify-between px-16 pt-8">
+<nav class="absolute h-40 w-full flex items-center justify-between px-16 pt-8 z-50">
     <div class="flex items-center space-x-4 lg:space-x-12">
-        <a class="text-3xl sm:text-5xl md:text-7xl font-orange-variable text-poople hover:text-poople-dark transform hover:scale-105 transition-transform duration-200 whitespace-nowrap" href="/">
+        <a class="text-3xl sm:text-5xl md:text-7xl font-orange-variable text-poople hover:text-poople-dark transform hover:scale-105 transition-transform duration-200 whitespace-nowrap" href="index.html">
             Alan Chen<span class="text-gray-300 text-[2.75rem] pl-[0.2rem]">.</span>
         </a>
     </div>
     <div class="flex items-center space-x-12">
-        <a class="text-lg sm:text-xl md:text-2xl font-orange-variable text-poople hover:text-poople-dark transform hover:scale-105 transition-transform duration-200" href="/projects">Projects</a>
+        <a class="text-lg sm:text-xl md:text-2xl font-orange-variable text-poople hover:text-poople-dark transform hover:scale-105 transition-transform duration-200" href="projects.html">Projects</a>
     </div>
 </nav>
 <div class="h-full min-h-[1000px] flex flex-col md:flex-row pt-40">
-    <div class="flex flex-col items-center justify-center w-full lg:w-1/2">
-        <img src="alan2.png" class="w-4/5 max-w-md mb-12 object-contain" alt="Alan Chen"/>
-        <div class="flex flex-col items-center space-y-4">
+    <div class="flex flex-col items-center justify-center w-full lg:w-1/2 p-8">
+        <div class="relative w-full max-w-md overflow-hidden rounded-2xl">
+            <div class="image-slider relative w-full aspect-[3/4]">
+                <img src="alan.png" class="profile-image absolute top-0 left-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000" alt="Alan Chen"/>
+                <img src="alan2.png" class="profile-image absolute top-0 left-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000" alt="Alan Chen"/>
+                <img src="alan3.jpg" class="profile-image absolute top-0 left-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000" alt="Alan Chen"/>
+                <img src="alan4.jpg" class="profile-image absolute top-0 left-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000" alt="Alan Chen"/>
+                <img src="alan5.jpg" class="profile-image absolute top-0 left-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000" alt="Alan Chen"/>
+                <img src="alan6.jpg" class="profile-image absolute top-0 left-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000" alt="Alan Chen"/>
+                <img src="alan7.jpg" class="profile-image absolute top-0 left-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000" alt="Alan Chen"/>
+            </div>
+            <div class="absolute -inset-1 bg-poople opacity-10 blur-2xl rounded-full"></div>
+        </div>
+        <div class="flex justify-center space-x-2 mt-4">
+            <div class="image-dots flex space-x-2">
+                <!-- Dots will be added by JavaScript -->
+            </div>
+        </div>
+        <div class="flex flex-col items-center space-y-4 mt-8">
             <div class="flex space-x-10">
                 <div class="relative group">
-                    <a href="mailto:alanjiach@gmail.edu">
-                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="text-2xl text-poople hover:text-poople-dark transform hover:scale-105 transition-transform duration-200" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <a href="mailto:alanjiach@gmail.edu" class="transform hover:scale-110 transition-transform duration-200">
+                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="text-2xl text-poople hover:text-poople-dark" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                             <path d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path>
                         </svg>
                     </a>
-                    <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-poople bg-opacity-75 text-white text-xs rounded-xl py-1 px-2 max-w-xs overflow-hidden whitespace-nowrap">alanjiach@gmail.com</span>
+                    <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-poople bg-opacity-75 text-white text-xs rounded-xl py-1 px-2">alanjiach@gmail.com</span>
                 </div>
                 <div class="relative group">
-                    <a href="https://linkedin.com/in/alan-chen-668173218" target="_blank" rel="noopener noreferrer">
-                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" class="text-2xl text-poople hover:text-poople-dark transform hover:scale-105 transition-transform duration-200" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <a href="https://linkedin.com/in/alan-chen-668173218" target="_blank" rel="noopener noreferrer" class="transform hover:scale-110 transition-transform duration-200">
+                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" class="text-2xl text-poople hover:text-poople-dark" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                             <path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"></path>
                         </svg>
                     </a>
-                    <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-poople bg-opacity-75 text-white text-xs rounded-xl py-1 px-2 max-w-xs overflow-hidden whitespace-nowrap">@alanchen</span>
+                    <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-poople bg-opacity-75 text-white text-xs rounded-xl py-1 px-2">@alanchen</span>
                 </div>
                 <div class="relative group">
-                    <a href="https://github.com/Jiaqi07" target="_blank" rel="noopener noreferrer">
-                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 480 512" class="text-2xl text-poople hover:text-poople-dark transform hover:scale-105 transition-transform duration-200" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <a href="https://github.com/Jiaqi07" target="_blank" rel="noopener noreferrer" class="transform hover:scale-110 transition-transform duration-200">
+                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 480 512" class="text-2xl text-poople hover:text-poople-dark" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                             <path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"></path>
                         </svg>
                     </a>
-                    <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-poople bg-opacity-75 text-white text-xs rounded-xl py-1 px-2 max-w-xs overflow-hidden whitespace-nowrap">@Jiaqi07</span>
+                    <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-poople bg-opacity-75 text-white text-xs rounded-xl py-1 px-2">@Jiaqi07</span>
                 </div>
                 <div class="relative group">
-                    <a href="https://scholar.google.com/citations?user=az-anuwAAAAJ&hl=en&oi=sra" target="_blank" rel="noopener noreferrer">
-                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" class="text-2xl text-poople hover:text-poople-dark transform hover:scale-105 transition-transform duration-200" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <a href="https://scholar.google.com/citations?user=az-anuwAAAAJ&hl=en&oi=sra" target="_blank" rel="noopener noreferrer" class="transform hover:scale-110 transition-transform duration-200">
+                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" class="text-2xl text-poople hover:text-poople-dark" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                             <path d="M0 96C0 43 43 0 96 0h96V190.7c0 13.4 15.5 20.9 26 12.5L272 160l54 43.2c10.5 8.4 26 .9 26-12.5V0h32 32c17.7 0 32 14.3 32 32V352c0 17.7-14.3 32-32 32v64c17.7 0 32 14.3 32 32s-14.3 32-32 32H384 96c-53 0-96-43-96-96V96zM64 416c0 17.7 14.3 32 32 32H352V384H96c-17.7 0-32 14.3-32 32z"></path>
                         </svg>
                     </a>
-                    <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-poople bg-opacity-75 text-white text-xs rounded-xl py-1 px-2 max-w-xs overflow-hidden whitespace-nowrap">@alan-chen</span>
+                    <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-poople bg-opacity-75 text-white text-xs rounded-xl py-1 px-2">@alan-chen</span>
                 </div>
             </div>
         </div>
@@ -83,19 +126,19 @@
         <div class="relative h-full flex items-center">
             <div class="absolute top-20 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
                 <div class="space-x-2">
-                    <button class="w-3 h-3 rounded-full bg-poople"></button>
-                    <button class="w-3 h-3 rounded-full bg-gray-300"></button>
-                    <button class="w-3 h-3 rounded-full bg-gray-300"></button>
-                    <button class="w-3 h-3 rounded-full bg-gray-300"></button>
+                    <button class="w-3 h-3 rounded-full bg-poople transition-all duration-300" data-slide="0"></button>
+                    <button class="w-3 h-3 rounded-full bg-gray-300 transition-all duration-300" data-slide="1"></button>
+                    <button class="w-3 h-3 rounded-full bg-gray-300 transition-all duration-300" data-slide="2"></button>
+                    <button class="w-3 h-3 rounded-full bg-gray-300 transition-all duration-300" data-slide="3"></button>
                 </div>
             </div>
-            <div class="h-full snap-y snap-mandatory overflow-y-scroll scrollbar-hide">
-                <div class="snap-start h-full flex items-center justify-center">
-                    <div class="h-3/4 min-h-80 ] w-3/4 md:w-full flex flex-col items-center justify-center">
-                        <div class="h-3/4  min-h-[400px] w-3/4 rounded-xl p-8 bg-poople min-w-80">
+            <div class="h-full snap-y snap-mandatory overflow-y-scroll scrollbar-hide" id="slider">
+                <div class="snap-start h-full flex items-center justify-Systems center">
+                    <div class="h-3/4 min-h-80 w-3/4 md:w-full flex flex-col items-center justify-center">
+                        <div class="card-3d h-3/4 min-h-[400px] w-3/4 rounded-xl p-8 bg-poople min-w-80">
                             <div class="text-2xl font-extrabold">About me</div>
                             <div class="pt-4 text-sm md:text-base xl:text-lg text-white">
-                                <div class="md:mb-4 lg:mb-6">Hello! I&#x27;m a senior @ Westlake High School, and I hope to win Davidson Fellow 2025 and attend a T5 CS Institution.</div>
+                                <div class="md:mb-4 lg:mb-6">Hello! I&#x27;m a senior @ Westlake High School, and I will most likely be studying Computer Science @ UT Austin next year! I hope to become a Davidson Fellow 2025 laureate, win a grand award at ISEF in May, and land an opportunity to learn under programs like ZFellows.</div>
                                 <div class="mb-4 lg:mb-6">I have many interests that I&#x27;m currently exploring such as robotics, reinforcement learning, startups, and research.</div>
                                 <div class="mb-4 lg:mb-6">In my free time, I love playing basketball, teaching others how to find their passions, playing Brawl Stars on my phone, and running up Go games on KGS with friends.</div>
                                 <div>Reach out to any of my socials if you need anything! :)</div>
@@ -104,8 +147,8 @@
                     </div>
                 </div>
                 <div class="snap-start h-full flex items-center justify-center">
-                    <div class="h-3/4 min-h-80 ] w-3/4 md:w-full flex flex-col items-center justify-center">
-                        <div class="h-3/4  min-h-[400px] w-3/4 rounded-xl p-8 bg-poople min-w-80">
+                    <div class="h-3/4 min-h-80 w-3/4 md:w-full flex flex-col items-center justify-center">
+                        <div class="card-3d h-3/4 min-h-[400px] w-3/4 rounded-xl p-8 bg-poople min-w-80">
                             <div class="text-2xl font-extrabold">Honors</div>
                             <div class="pt-4 text-lg text-white space-y-4">
                                 <div class="flex justify-between items-center">
@@ -115,6 +158,15 @@
                                     </div>
                                     <div class="text-right text-sm ml-4">
                                         <div>2025</div>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <div class="font-semibold">Regeneron International Science and Engineering Fair Finalist</div>
+                                        <div class="text-xs md:text-sm">Placed 1st in Software Systems @ TXSEF and Best in State for all Physical Science categories. Received a $1k Summus Industries Special Award.</div>
+                                    </div>
+                                    <div class="text-right text-sm ml-4">
+                                        <div>2025</div>          
                                     </div>
                                 </div>
                                 <div class="flex justify-between items-center">
@@ -148,7 +200,6 @@
                                 <div class="flex justify-between items-center">
                                     <div>
                                         <div class="font-semibold">1517 Fellow</div>
-                                        <div class="text-xs md:text-sm">Invited to join exclusive builder group and granted $1,000.</div>
                                     </div>
                                     <div class="text-right text-sm ml-4">
                                         <div>2024</div>
@@ -159,107 +210,50 @@
                     </div>
                 </div>
                 <div class="snap-start h-full flex items-center justify-center">
-                    <div class="h-3/4 min-h-80 ] w-3/4 md:w-full flex flex-col items-center justify-center">
-                        <div class="h-3/4  min-h-[400px] w-3/4 rounded-xl p-8 bg-poople min-w-80">
+                    <div class="h-3/4 min-h-80 w-3/4 md:w-full flex flex-col items-center justify-center">
+                        <div class="card-3d h-3/4 min-h-[400px] w-3/4 rounded-xl p-8 bg-poople min-w-80">
                             <div class="text-2xl font-extrabold">Previous experience</div>
                             <div class="pt-4 text-sm md:text-md text-white">
-                                <div class="mb-0.5  lg:mb-1">
+                                <div class="mb-0.5 lg:mb-1">
                                     <strong class="font-bold">2021-2022</strong>
-                                    <!-- -->
                                     University of San Antonio, Texas Research Undergraduate Experience
                                 </div>
-                                <div class="mb-0.5  lg:mb-1">
+                                <div class="mb-0.5 lg:mb-1">
                                     <strong class="font-bold">2022-2024</strong>
-                                    <!-- -->
                                     Carnegie Mellon University Robotics Institute Intelligent Control Lab
                                 </div>
-                                <div class="mb-0.5  lg:mb-1">
+                                <div class="mb-0.5 lg:mb-1">
                                     <strong class="font-bold">2024-Now</strong>
-                                    <!-- -->
                                     AssembleIt (Founder; On-pause until University)
                                 </div>
-                                <div class="mb-0.5  lg:mb-1">
+                                <div class="mb-0.5 lg:mb-1">
                                     <strong class="font-bold">2025-Now</strong>
-                                    <!-- -->
-                                    LearnOlympiad (Founder; Building and Seeking Funding)
+                                    LearnOlympiad (Founder; Building!)
                                 </div>
-                                <div class="mb-0.5  lg:mb-1">
+                                <div class="mb-0.5 lg:mb-1">
                                     <strong class="font-bold">2025-Now</strong>
-                                    <!-- -->
-                                    MITRE
+                                    Searching for Internships!!!
                                 </div>
-<!--                                <div class="mb-0.5  lg:mb-1">-->
-<!--                                    <strong class="font-bold">24.900</strong>-->
-<!--                                    &lt;!&ndash; &ndash;&gt;-->
-<!--                                    Intro to Linguistics-->
-<!--                                </div>-->
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="snap-start h-full flex items-center justify-center">
-                    <div class="h-3/4 min-h-80 ] w-3/4 md:w-full flex flex-col items-center justify-center">
-                        <div class="h-3/4  min-h-[400px] w-3/4 rounded-xl p-8 bg-poople min-w-80">
+                    <div class="h-3/4 min-h-80 w-3/4 md:w-full flex flex-col items-center justify-center">
+                        <div class="card-3d h-3/4 min-h-[400px] w-3/4 rounded-xl p-8 bg-poople min-w-80">
                             <div class="flex justify-between items-center">
                                 <div class="text-2xl font-extrabold">Course Work</div>
-                                <div class="text-right text-md ml-4">~/4.0</div>
+                                <div class="text-right text-md ml-4">Most Likely Garbage/4.0</div>
                             </div>
                             <div class="pt-4 text-sm md:text-md text-white">
-                                <div class="mb-0.5  lg:mb-1">
+                                <div class="mb-0.5 lg:mb-1">
                                     <strong class="font-bold">HS</strong>
-                                    <!-- -->
                                     Multivariable Calculus & Linear Algebra
                                 </div>
-                                <div class="mb-0.5  lg:mb-1">
+                                <div class="mb-0.5 lg:mb-1">
                                     <strong class="font-bold">6.121</strong>
-                                    <!-- -->
                                     More Coming in the Future When I am at Uni!
                                 </div>
-<!--                                <div class="mb-0.5  lg:mb-1">-->
-<!--                                    <strong class="font-bold">6.190</strong>-->
-<!--                                    &lt;!&ndash; &ndash;&gt;-->
-<!--                                    Intro to Low-Level Programming in C &amp;Assembly-->
-<!--                                </div>-->
-<!--                                <div class="mb-0.5  lg:mb-1">-->
-<!--                                    <strong class="font-bold">6.390</strong>-->
-<!--                                    &lt;!&ndash; &ndash;&gt;-->
-<!--                                    Intro to Machine Learning-->
-<!--                                </div>-->
-<!--                                <div class="mb-0.5  lg:mb-1">-->
-<!--                                    <strong class="font-bold">18.03</strong>-->
-<!--                                    &lt;!&ndash; &ndash;&gt;-->
-<!--                                    Differential Equations-->
-<!--                                </div>-->
-<!--                                <div class="mb-0.5  lg:mb-1">-->
-<!--                                    <strong class="font-bold">18.06</strong>-->
-<!--                                    &lt;!&ndash; &ndash;&gt;-->
-<!--                                    Linear Algebra-->
-<!--                                </div>-->
-<!--                                <div class="mb-0.5  lg:mb-1">-->
-<!--                                    <strong class="font-bold">18.100B</strong>-->
-<!--                                    &lt;!&ndash; &ndash;&gt;-->
-<!--                                    Real Analysis-->
-<!--                                </div>-->
-<!--                                <div class="mb-0.5  lg:mb-1">-->
-<!--                                    <strong class="font-bold">18.600</strong>-->
-<!--                                    &lt;!&ndash; &ndash;&gt;-->
-<!--                                    Probabiliy &amp;Random Variables-->
-<!--                                </div>-->
-<!--                                <div class="mb-0.5  lg:mb-1">-->
-<!--                                    <strong class="font-bold">18.C20</strong>-->
-<!--                                    &lt;!&ndash; &ndash;&gt;-->
-<!--                                    Intro to Computational Science &amp;Engineering-->
-<!--                                </div>-->
-<!--                                <div class="mb-0.5  lg:mb-1">-->
-<!--                                    <strong class="font-bold">8.01</strong>-->
-<!--                                    &lt;!&ndash; &ndash;&gt;-->
-<!--                                    Physics I-->
-<!--                                </div>-->
-<!--                                <div class="mb-0.5  lg:mb-1">-->
-<!--                                    <strong class="font-bold">8.02</strong>-->
-<!--                                    &lt;!&ndash; &ndash;&gt;-->
-<!--                                    Physics II-->
-<!--                                </div>-->
                             </div>
                         </div>
                     </div>
@@ -268,3 +262,157 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Image slider functionality
+    const profileImages = document.querySelectorAll('.image-slider img');
+    const dotsContainer = document.querySelector('.image-dots');
+    let currentImageIndex = 0;
+    let isTransitioning = false;
+    let autoSlideInterval;
+
+    // Create dots
+    profileImages.forEach((_, index) => {
+        const dot = document.createElement('button');
+        dot.className = `w-2 h-2 rounded-full transition-all duration-300 ${index === 0 ? 'bg-poople scale-125' : 'bg-gray-400'}`;
+        dot.addEventListener('click', () => {
+            if (!isTransitioning && currentImageIndex !== index) {
+                showImage(index);
+            }
+        });
+        dotsContainer.appendChild(dot);
+    });
+
+    const imageDots = document.querySelectorAll('.image-dots button');
+
+    function showImage(index) {
+        if (isTransitioning) return;
+        isTransitioning = true;
+
+        // Update dots
+        imageDots.forEach((dot, i) => {
+            if (i === index) {
+                dot.classList.remove('bg-gray-400');
+                dot.classList.add('bg-poople', 'scale-125');
+            } else {
+                dot.classList.remove('bg-poople', 'scale-125');
+                dot.classList.add('bg-gray-400');
+            }
+        });
+
+        // Fade out current image
+        profileImages[currentImageIndex].style.opacity = '0';
+
+        // Fade in new image
+        setTimeout(() => {
+            profileImages[index].style.opacity = '1';
+            currentImageIndex = index;
+            isTransitioning = false;
+        }, 500);
+    }
+
+    function nextImage() {
+        const nextIndex = (currentImageIndex + 1) % profileImages.length;
+        showImage(nextIndex);
+    }
+
+    // Show first image initially
+    profileImages[0].style.opacity = '1';
+
+    // Auto-advance slides
+    function startAutoSlide() {
+        autoSlideInterval = setInterval(nextImage, 5000);
+    }
+
+    function stopAutoSlide() {
+        clearInterval(autoSlideInterval);
+    }
+
+    // Start auto-slide and handle hover
+    startAutoSlide();
+    const imageSlider = document.querySelector('.image-slider');
+    imageSlider.addEventListener('mouseenter', stopAutoSlide);
+    imageSlider.addEventListener('mouseleave', startAutoSlide);
+
+    // Content slider functionality
+    const contentSlider = document.getElementById('slider');
+    const contentDots = document.querySelectorAll('[data-slide]');
+    let currentSlide = 0;
+    let isAnimating = false;
+
+    function updateDots() {
+        contentDots.forEach((dot, index) => {
+            if (index === currentSlide) {
+                dot.classList.remove('bg-gray-300');
+                dot.classList.add('bg-poople');
+            } else {
+                dot.classList.remove('bg-poople');
+                dot.classList.add('bg-gray-300');
+            }
+        });
+    }
+
+    function scrollToSlide(index) {
+        if (isAnimating) return;
+        isAnimating = true;
+        
+        const slides = contentSlider.children;
+        const slideHeight = slides[0].offsetHeight;
+        
+        contentSlider.scrollTo({
+            top: slideHeight * index,
+            behavior: 'smooth'
+        });
+        
+        currentSlide = index;
+        updateDots();
+        
+        setTimeout(() => {
+            isAnimating = false;
+        }, 500);
+    }
+
+    contentDots.forEach(dot => {
+        dot.addEventListener('click', () => {
+            const slideIndex = parseInt(dot.dataset.slide);
+            scrollToSlide(slideIndex);
+        });
+    });
+
+    // Handle scroll events
+    let scrollTimeout;
+    contentSlider.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            const slideHeight = contentSlider.children[0].offsetHeight;
+            const newSlide = Math.round(contentSlider.scrollTop / slideHeight);
+            if (newSlide !== currentSlide) {
+                currentSlide = newSlide;
+                updateDots();
+            }
+        }, 50);
+    });
+
+    // 3D Animation for cards
+    document.querySelectorAll('.card-3d').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 20;
+            const rotateY = (centerX - x) / 20;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+        });
+    });
+</script>
+</body>
+</html>
