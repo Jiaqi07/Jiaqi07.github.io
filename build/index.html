@@ -6,6 +6,7 @@
     <link rel="preload" as="image" href="alan2.png"/>
     <link rel="stylesheet" href="index.css" data-precedence="next"/>
     <link rel="stylesheet" href="cum1bey.css" data-precedence="next"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <title>Alan Chen</title>
     <style>
         .profile-image {
@@ -33,6 +34,127 @@
         .card-3d:hover {
             transform: translateY(-10px) rotateX(5deg);
         }
+        #three-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .image-slider {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 3/4;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: #111827;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            margin: 0 auto;
+        }
+
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slider-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            object-fit: cover;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .slider-image.active {
+            opacity: 1;
+        }
+
+        .slider-controls {
+            position: absolute;
+            bottom: 1rem;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            z-index: 10;
+        }
+
+        .slider-arrow {
+            background: rgba(59, 130, 246, 0.2);
+            border: none;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .slider-arrow:hover {
+            background: rgba(59, 130, 246, 0.4);
+            transform: scale(1.1);
+        }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 2rem;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+
+        .slider-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slider-dot.active {
+            background: #3B82F6;
+            transform: scale(1.2);
+        }
+
+        /* Update layout styles */
+        .content-slide {
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .content-card {
+            width: 100%;
+            max-width: 800px;
+            min-height: 400px;
+            background: rgba(17, 24, 39, 0.95);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 <body class="absolute snap-y-dir w-screen h-screen bg-gradient-to-b from-gray-900 to-gray-800">
@@ -59,7 +181,7 @@
 <nav class="absolute h-40 w-full flex items-center justify-between px-16 pt-8 z-50">
     <div class="flex items-center space-x-4 lg:space-x-12">
         <a class="text-3xl sm:text-5xl md:text-7xl font-orange-variable text-poople hover:text-poople-dark transform hover:scale-105 transition-transform duration-200 whitespace-nowrap" href="index.html">
-            Alan Chen<span class="text-gray-300 text-[2.75rem] pl-[0.2rem]">.</span>
+            Alan Chen<span class="text-gray-300 text-[2.75rem] pl-[0.2rem]"></span>
         </a>
     </div>
     <div class="flex items-center space-x-12">
@@ -68,15 +190,30 @@
 </nav>
 <div class="h-full min-h-[1000px] flex flex-col md:flex-row pt-40">
     <div class="flex flex-col items-center justify-center w-full lg:w-1/2 p-8">
-        <div class="relative w-full max-w-md overflow-hidden rounded-2xl">
-            <div class="image-slider relative w-full aspect-[3/4]">
-                <img src="alan.png" class="profile-image absolute top-0 left-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000" alt="Alan Chen"/>
-                <img src="alan2.png" class="profile-image absolute top-0 left-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000" alt="Alan Chen"/>
-                <img src="alan3.jpg" class="profile-image absolute top-0 left-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000" alt="Alan Chen"/>
-                <img src="alan4.jpg" class="profile-image absolute top-0 left-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000" alt="Alan Chen"/>
-                <img src="alan5.jpg" class="profile-image absolute top-0 left-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000" alt="Alan Chen"/>
-                <img src="alan6.jpg" class="profile-image absolute top-0 left-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000" alt="Alan Chen"/>
-                <img src="alan7.jpg" class="profile-image absolute top-0 left-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000" alt="Alan Chen"/>
+        <div class="relative w-full max-w-md">
+            <div class="image-slider">
+                <div class="slider-container">
+                    <img src="alan.png" class="slider-image active" alt="Alan Chen"/>
+                    <img src="alan2.png" class="slider-image" alt="Alan Chen"/>
+                    <img src="alan3.jpg" class="slider-image" alt="Alan Chen"/>
+                    <img src="alan4.jpg" class="slider-image" alt="Alan Chen"/>
+                    <img src="alan5.jpg" class="slider-image" alt="Alan Chen"/>
+                    <img src="alan6.jpg" class="slider-image" alt="Alan Chen"/>
+                    <img src="alan7.jpg" class="slider-image" alt="Alan Chen"/>
+                </div>
+                <div class="slider-controls">
+                    <button class="slider-arrow prev">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    <button class="slider-arrow next">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="slider-dots"></div>
             </div>
             <div class="absolute -inset-1 bg-poople opacity-10 blur-2xl rounded-full"></div>
         </div>
@@ -123,139 +260,15 @@
         </div>
     </div>
     <div class="w-full h-full lg:w-1/2">
-        <div class="relative h-full flex items-center">
-            <div class="absolute top-20 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
-                <div class="space-x-2">
-                    <button class="w-3 h-3 rounded-full bg-poople transition-all duration-300" data-slide="0"></button>
-                    <button class="w-3 h-3 rounded-full bg-gray-300 transition-all duration-300" data-slide="1"></button>
-                    <button class="w-3 h-3 rounded-full bg-gray-300 transition-all duration-300" data-slide="2"></button>
-                    <button class="w-3 h-3 rounded-full bg-gray-300 transition-all duration-300" data-slide="3"></button>
-                </div>
-            </div>
-            <div class="h-full snap-y snap-mandatory overflow-y-scroll scrollbar-hide" id="slider">
-                <div class="snap-start h-full flex items-center justify-Systems center">
-                    <div class="h-3/4 min-h-80 w-3/4 md:w-full flex flex-col items-center justify-center">
-                        <div class="card-3d h-3/4 min-h-[400px] w-3/4 rounded-xl p-8 bg-poople min-w-80">
-                            <div class="text-2xl font-extrabold">About me</div>
-                            <div class="pt-4 text-sm md:text-base xl:text-lg text-white">
-                                <div class="md:mb-4 lg:mb-6">Hello! I&#x27;m a senior @ Westlake High School, and I will most likely be studying Computer Science @ UT Austin next year! I hope to become a Davidson Fellow 2025 laureate, win a grand award at ISEF in May, and land an opportunity to learn under programs like ZFellows.</div>
-                                <div class="mb-4 lg:mb-6">I have many interests that I&#x27;m currently exploring such as robotics, reinforcement learning, startups, and research.</div>
-                                <div class="mb-4 lg:mb-6">In my free time, I love playing basketball, teaching others how to find their passions, playing Brawl Stars on my phone, and running up Go games on KGS with friends.</div>
-                                <div>Reach out to any of my socials if you need anything! :)</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="snap-start h-full flex items-center justify-center">
-                    <div class="h-3/4 min-h-80 w-3/4 md:w-full flex flex-col items-center justify-center">
-                        <div class="card-3d h-3/4 min-h-[400px] w-3/4 rounded-xl p-8 bg-poople min-w-80">
-                            <div class="text-2xl font-extrabold">Honors</div>
-                            <div class="pt-4 text-lg text-white space-y-4">
-                                <div class="flex justify-between items-center">
-                                    <div>
-                                        <div class="font-semibold">Regeneron STS Scholar</div>
-                                        <div class="text-xs md:text-sm">Selected as top 300 out of 2,471 applicants for my research, presentation, explanations, and high school achievements.</div>
-                                    </div>
-                                    <div class="text-right text-sm ml-4">
-                                        <div>2025</div>
-                                    </div>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <div>
-                                        <div class="font-semibold">Regeneron International Science and Engineering Fair Finalist</div>
-                                        <div class="text-xs md:text-sm">Placed 1st in Software Systems @ TXSEF and Best in State for all Physical Science categories. Received a $1k Summus Industries Special Award.</div>
-                                    </div>
-                                    <div class="text-right text-sm ml-4">
-                                        <div>2025</div>          
-                                    </div>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <div>
-                                        <div class="font-semibold">USA Computing Olympiad Platinum</div>
-                                        <div class="text-xs md:text-sm">Top 180 in the Class of 2025 out of 11,000+ competitors across the USA.</div>
-                                    </div>
-                                    <div class="text-right text-sm ml-4">
-                                        <div>2024</div>
-                                        <div>2023</div>
-                                    </div>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <div>
-                                        <div class="font-semibold">Emergent Ventures Fellow</div>
-                                        <div class="text-xs md:text-sm">Selected in 36th Cohort and granted $10,000 to turn my research into a startup product.</div>
-                                    </div>
-                                    <div class="text-right text-sm ml-4">
-                                        <div>2024</div>
-                                    </div>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <div>
-                                        <div class="font-semibold">National Junior Science & Humanities Symposium Finalist</div>
-                                        <div class="text-xs md:text-sm">Placed 4th @ Texas Junior Science & Humanities Symposium and was selected as top 245 out of 8,000 participants.</div>
-                                    </div>
-                                    <div class="text-right text-sm ml-4">
-                                        <div>2024</div>
-                                    </div>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <div>
-                                        <div class="font-semibold">1517 Fellow</div>
-                                    </div>
-                                    <div class="text-right text-sm ml-4">
-                                        <div>2024</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="snap-start h-full flex items-center justify-center">
-                    <div class="h-3/4 min-h-80 w-3/4 md:w-full flex flex-col items-center justify-center">
-                        <div class="card-3d h-3/4 min-h-[400px] w-3/4 rounded-xl p-8 bg-poople min-w-80">
-                            <div class="text-2xl font-extrabold">Previous experience</div>
-                            <div class="pt-4 text-sm md:text-md text-white">
-                                <div class="mb-0.5 lg:mb-1">
-                                    <strong class="font-bold">2021-2022</strong>
-                                    University of San Antonio, Texas Research Undergraduate Experience
-                                </div>
-                                <div class="mb-0.5 lg:mb-1">
-                                    <strong class="font-bold">2022-2024</strong>
-                                    Carnegie Mellon University Robotics Institute Intelligent Control Lab
-                                </div>
-                                <div class="mb-0.5 lg:mb-1">
-                                    <strong class="font-bold">2024-Now</strong>
-                                    AssembleIt (Founder; On-pause until University)
-                                </div>
-                                <div class="mb-0.5 lg:mb-1">
-                                    <strong class="font-bold">2025-Now</strong>
-                                    LearnOlympiad (Founder; Building!)
-                                </div>
-                                <div class="mb-0.5 lg:mb-1">
-                                    <strong class="font-bold">2025-Now</strong>
-                                    Searching for Internships!!!
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="snap-start h-full flex items-center justify-center">
-                    <div class="h-3/4 min-h-80 w-3/4 md:w-full flex flex-col items-center justify-center">
-                        <div class="card-3d h-3/4 min-h-[400px] w-3/4 rounded-xl p-8 bg-poople min-w-80">
-                            <div class="flex justify-between items-center">
-                                <div class="text-2xl font-extrabold">Course Work</div>
-                                <div class="text-right text-md ml-4">Most Likely Garbage/4.0</div>
-                            </div>
-                            <div class="pt-4 text-sm md:text-md text-white">
-                                <div class="mb-0.5 lg:mb-1">
-                                    <strong class="font-bold">HS</strong>
-                                    Multivariable Calculus & Linear Algebra
-                                </div>
-                                <div class="mb-0.5 lg:mb-1">
-                                    <strong class="font-bold">6.121</strong>
-                                    More Coming in the Future When I am at Uni!
-                                </div>
-                            </div>
-                        </div>
+        <div class="relative h-full">
+            <div class="content-slide">
+                <div class="content-card">
+                    <div class="text-2xl font-extrabold">About me</div>
+                    <div class="pt-4 text-sm md:text-base xl:text-lg text-white">
+                        <div class="md:mb-4 lg:mb-6">Hello! I&#x27;m an incoming freshmen @ UT Austin next year studying computer science under the Turing Honors program! I hope to become a Davidson Fellow 2025 laureate, win a grand award at ISEF in May, and land an opportunity to learn under programs like ZFellows.</div>
+                        <div class="mb-4 lg:mb-6">I have many interests that I&#x27;m currently exploring such as robotics, reinforcement learning, startups, and research.</div>
+                        <div class="mb-4 lg:mb-6">In my free time, I love playing basketball, teaching others how to find their passions, playing Brawl Stars on my phone, and running up Go games on KGS with friends.</div>
+                        <div>Reach out to any of my socials if you need anything! :)</div>
                     </div>
                 </div>
             </div>
@@ -264,17 +277,86 @@
 </div>
 
 <script>
-    // Image slider functionality
-    const profileImages = document.querySelectorAll('.image-slider img');
-    const dotsContainer = document.querySelector('.image-dots');
+    // Three.js Background Animation
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({
+        canvas: document.getElementById('three-background'),
+        antialias: true,
+        alpha: true
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
+
+    // Create particles
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particlesCount = 1000;
+    const posArray = new Float32Array(particlesCount * 3);
+
+    for(let i = 0; i < particlesCount * 3; i++) {
+        posArray[i] = (Math.random() - 0.5) * 5;
+    }
+
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+    const particlesMaterial = new THREE.PointsMaterial({
+        size: 0.005,
+        color: 0x3B82F6,
+        transparent: true,
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending
+    });
+
+    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particlesMesh);
+
+    camera.position.z = 2;
+
+    // Mouse movement effect
+    let mouseX = 0;
+    let mouseY = 0;
+
+    document.addEventListener('mousemove', (event) => {
+        mouseX = event.clientX / window.innerWidth - 0.5;
+        mouseY = event.clientY / window.innerHeight - 0.5;
+    });
+
+    // Animation
+    function animate() {
+        requestAnimationFrame(animate);
+
+        particlesMesh.rotation.y += 0.001;
+        particlesMesh.rotation.x += 0.001;
+
+        // Smooth camera movement
+        camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.05;
+        camera.position.y += (-mouseY * 0.5 - camera.position.y) * 0.05;
+
+        renderer.render(scene, camera);
+    }
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    animate();
+
+    // Image Slider functionality
+    const sliderImages = document.querySelectorAll('.slider-image');
+    const dotsContainer = document.querySelector('.slider-dots');
+    const prevButton = document.querySelector('.slider-arrow.prev');
+    const nextButton = document.querySelector('.slider-arrow.next');
     let currentImageIndex = 0;
     let isTransitioning = false;
     let autoSlideInterval;
 
     // Create dots
-    profileImages.forEach((_, index) => {
+    sliderImages.forEach((_, index) => {
         const dot = document.createElement('button');
-        dot.className = `w-2 h-2 rounded-full transition-all duration-300 ${index === 0 ? 'bg-poople scale-125' : 'bg-gray-400'}`;
+        dot.className = `slider-dot ${index === 0 ? 'active' : ''}`;
         dot.addEventListener('click', () => {
             if (!isTransitioning && currentImageIndex !== index) {
                 showImage(index);
@@ -283,41 +365,40 @@
         dotsContainer.appendChild(dot);
     });
 
-    const imageDots = document.querySelectorAll('.image-dots button');
+    const sliderDots = document.querySelectorAll('.slider-dot');
 
     function showImage(index) {
         if (isTransitioning) return;
         isTransitioning = true;
 
         // Update dots
-        imageDots.forEach((dot, i) => {
-            if (i === index) {
-                dot.classList.remove('bg-gray-400');
-                dot.classList.add('bg-poople', 'scale-125');
-            } else {
-                dot.classList.remove('bg-poople', 'scale-125');
-                dot.classList.add('bg-gray-400');
-            }
+        sliderDots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
         });
 
-        // Fade out current image
-        profileImages[currentImageIndex].style.opacity = '0';
+        // Update images
+        sliderImages[currentImageIndex].classList.remove('active');
+        sliderImages[index].classList.add('active');
 
-        // Fade in new image
         setTimeout(() => {
-            profileImages[index].style.opacity = '1';
             currentImageIndex = index;
             isTransitioning = false;
         }, 500);
     }
 
     function nextImage() {
-        const nextIndex = (currentImageIndex + 1) % profileImages.length;
+        const nextIndex = (currentImageIndex + 1) % sliderImages.length;
         showImage(nextIndex);
     }
 
-    // Show first image initially
-    profileImages[0].style.opacity = '1';
+    function prevImage() {
+        const prevIndex = (currentImageIndex - 1 + sliderImages.length) % sliderImages.length;
+        showImage(prevIndex);
+    }
+
+    // Add click handlers for arrows
+    prevButton.addEventListener('click', prevImage);
+    nextButton.addEventListener('click', nextImage);
 
     // Auto-advance slides
     function startAutoSlide() {
