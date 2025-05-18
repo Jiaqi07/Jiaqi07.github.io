@@ -98,7 +98,7 @@ const constellationPoints: StarNodeProps[] = [
       size: 1,
       starName: 'Algiedi',
       title: 'Research',
-      content: 'Robotics & AI Research: Physics-aware assembly planning and deep reinforcement learning applications.',
+      content: 'Robotics & AI Research on assembly planning and reinforcement learning applications.',
       connections: [1]
     },
     {
@@ -106,8 +106,8 @@ const constellationPoints: StarNodeProps[] = [
       color: '#4F46E5',
       size: 0.8,
       starName: 'Dabih',
-      title: 'Awards',
-      content: 'Raised $11k from Emergent Ventures and 1517 Medici. Published in IEEE Robotics and Automation Letters.',
+      title: 'Research Interests',
+      content: 'Reasoning, interpretability, cognition, decision-making, eco-friendly AI, safety in robots like autonomous vehicles, and robot learning.',
       connections: [2]
     },
     {
@@ -117,7 +117,7 @@ const constellationPoints: StarNodeProps[] = [
       starName: 'Nashira',
       title: 'Education',
       content: 'Computer Science @ UT Austin, Turing Scholars Program.',
-      connections: [3, 4]
+      connections: [3]
     },
     {
       position: [-0.5, 1.5, 0], // Deneb Algedi - upper left horn
@@ -125,7 +125,7 @@ const constellationPoints: StarNodeProps[] = [
       size: 0.9,
       starName: 'Deneb Algedi',
       title: 'Skills',
-      content: 'React, Three.js, Firebase, robotics simulation, machine learning, and computer vision.',
+      content: 'React, artifical intelligence, Firebase, robotics simulation, machine learning, and computer vision.',
       connections: [4]
     },
     {
@@ -133,8 +133,8 @@ const constellationPoints: StarNodeProps[] = [
       color: '#4F46E5',
       size: 0.8,
       starName: 'Castra',
-      title: 'Projects',
-      content: 'Developed multiple projects in robotics, web development, and AI applications.',
+      title: 'Internship Interests',
+      content: 'Looking to work with companies like Amazon, Meta, NVIDIA, Tesla, Waymo, Uber, and etc. Might dabble with quant.',
       connections: [5]
     },
     {
@@ -143,7 +143,7 @@ const constellationPoints: StarNodeProps[] = [
       size: 0.7,
       starName: 'Marakk',
       title: 'Startups',
-      content: 'Founded LearnOlympiad.com and AssembleIt. Building innovative solutions in education and robotics.',
+      content: 'Founded some startups and am building innovative solutions in education and robotics.',
       connections: [6]
     },
     {
@@ -152,8 +152,8 @@ const constellationPoints: StarNodeProps[] = [
       size: 0.9,
       starName: 'Baten Algiedi',
       title: 'Future Goals',
-      content: 'Aspiring to become a Davidson Fellow 2025 laureate and win a grand award at ISEF.',
-      connections: []
+      content: 'Aspiring to become a Davidson Fellow 2025 laureate and land startup fellowships.',
+      connections: [0]
     }
   ];
   

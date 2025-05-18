@@ -3,55 +3,63 @@ import { motion } from 'framer-motion';
 
 const researchProjects = [
   {
-    title: 'Physics-Aware Assembly Planning',
-    description: 'Advanced robotics research focusing on physics-aware combinatorial assembly sequence planning using innovative data-free action masking techniques. Published in IEEE Robotics and Automation Letters (2025).',
-    year: '2025',
-    link: 'https://arxiv.org/pdf/2408.10162',
-    tags: ['Robotics', 'AI', 'Assembly'],
-  },
-  {
     title: 'AssemblyComplete',
-    description: 'Pioneering work in 3D combinatorial construction using deep reinforcement learning. Developing novel approaches for automated assembly planning and execution.',
+    description: 'Pioneering work in 3D combinatorial construction using deep reinforcement learning. Developing novel approaches for automated assembly planning and execution. Under-review @ MECC',
     year: '2024',
     link: 'https://arxiv.org/abs/2410.15469',
     tags: ['Deep Learning', 'Reinforcement Learning', '3D Construction'],
   },
   {
+    title: 'Physics-Aware Assembly Planning',
+    description: 'Advanced robotics research focusing on physics-aware combinatorial assembly sequence planning using innovative data-free action masking techniques. Published in IEEE Robotics and Automation Letters (2025).',
+    year: '2024, 2025',
+    link: 'https://ieeexplore.ieee.org/abstract/document/10938966',
+    tags: ['Robotics', 'AI', 'Assembly', 'PPO', 'DRL'],
+  },
+  {
     title: 'Eco-Driving Strategy',
     description: 'Research on developing eco-driving strategies in hybrid traffic networks using reinforcement learning. Published in Science Progress (2024).',
-    year: '2024',
+    year: '2023, 2024',
     link: 'https://doi.org/10.1177/00368504241263406',
     tags: ['Autonomous Vehicles', 'Reinforcement Learning', 'Sustainability'],
   },
   {
-    title: 'Robotic LEGO Construction',
-    description: 'Innovative approach combining simulation-aided learning with demonstration for robotic LEGO construction. Exploring new methods in robotic assembly.',
+    title: 'SaLfD',
+    description: 'Innovative approach merging ConvNets with simulation-aided learning with demonstration for robotic LEGO construction. Exploring new methods in robotic assembly.',
     year: '2023',
     link: 'https://arxiv.org/abs/2309.11010',
     tags: ['Robotics', 'Simulation', 'Learning'],
   },
   {
-    title: 'Interactive Data Collection',
-    description: 'Research on interactive data collection methodologies using CARLA and OpenCDA for reinforcement learning applications in autonomous systems.',
+    title: 'Interactive Modeling of Autonomous Vehicles',
+    description: 'Research on interactive data collection methodologies using CARLA and OpenCDA for reinforcement learning applications in autonomous systems. Presented @ ICIBM and Tran-Set 2022',
     year: '2022',
-    link: 'https://arxiv.org/abs/2309.11010',
+    link: 'https://icibm2022.iaibm.org/Schedule_files/ICIBM2022_Program.pdf',
     tags: ['Data Collection', 'Autonomous Systems', 'Simulation'],
   },
 ];
 
 const startupProjects = [
   {
-    title: 'LearnOlympiad.com',
+    title: 'Stealth (Seeking funding + building)',
+    role: 'Founder',
+    period: 'May 2025-Present',
+    description: 'Helping teachers teach better while appealing to and protecting students.',
+    tags: ['SaaS', 'EdTech', 'Students', 'Teachers'],
+  },
+  {
+    // title: 'Stealth',
+    title: 'LearnOlympiad.com (building w/ friends)',
     role: 'Developer & Founder',
     period: 'January 2025-Present',
-    description: 'Used React, Firebase, and APIs to develop a SaaS with a RAG chatbot, raised $2k in investment, and began beta-testing.',
+    description: 'Democritizing education through personalized AI mentorship and training. Using RAG and custom tools for chatbot, raised $2k, and beta-testing.',
     tags: ['React', 'Firebase', 'SaaS', 'RAG', 'Chatbot'],
   },
   {
     title: 'AssembleIt',
     role: 'Researcher & Founder',
-    period: 'May 2024-Present',
-    description: 'Founded startup with my research. Raised $11k from Emergent Ventures and 1517 Medici to build ideas. Patent pending.',
+    period: 'May 2024-April 2025',
+    description: 'Founded startup with my research. Raised $11k from Emergent Ventures and 1517 Medici to build ideas. Currently on-pause and planning to pivot.',
     tags: ['Startup', 'Research', 'Patent Pending'],
   },
 ];
@@ -60,18 +68,26 @@ const internships = [
   {
     title: 'Intelligent Control Lab',
     organization: 'Carnegie Mellon University Robotics Institute',
-    role: 'Research Assistant',
+    role: 'Research Intern',
     period: 'October 2022-August 2024',
-    description: 'Worked in-person at Carnegie Mellon in partnership with the ARM Institute and the US Government.',
-    tags: ['Robotics', 'Research', 'ARM Institute'],
+    description: 'Worked in-person at Carnegie Mellon in partnership with the ARM Institute and the US Government. Deployed research onto live FANUC robot arm.',
+    tags: ['Robotics', 'Research', 'Assembly', 'Manufacturing', 'Digital Twin'],
   },
   {
     title: 'UTSA Research Undergraduate Experience',
     organization: 'University of Texas at San Antonio',
-    role: 'Research Assistant',
+    role: 'Research Intern',
     period: 'May-August 2022',
     description: 'Attended lab meetings, worked under a PhD mentor on autonomous vehicle research, and learned to use Linux Ubuntu.',
     tags: ['Autonomous Vehicles', 'Research', 'Linux'],
+  },
+  {
+    title: 'Austin Great Wall Chinese School',
+    organization: 'AGWCS',
+    role: 'Teacher, prev. TA (2020) & Ambassador (2023)',
+    period: 'May 2020-August 2024',
+    description: 'Taught +130 students and designed custom curriculum. Served as Texas ambassador and partnered with Chinese schools all across the US.',
+    tags: ['Teaching', 'Speaking', 'Leadership', 'Mentorship'],
   },
 ];
 

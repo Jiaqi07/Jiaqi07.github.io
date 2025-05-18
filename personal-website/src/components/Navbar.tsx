@@ -46,7 +46,7 @@ const Navbar: React.FC = () => {
                 {item.label}
               </Link>
             ))}
-            <button
+            {/* <button
               onClick={toggleTheme}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
             >
@@ -55,7 +55,7 @@ const Navbar: React.FC = () => {
               ) : (
                 <MoonIcon className="h-5 w-5 text-gray-600" />
               )}
-            </button>
+            </button> */}
           </div>
 
           {/* Mobile Navigation Button */}

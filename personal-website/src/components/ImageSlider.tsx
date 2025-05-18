@@ -4,11 +4,11 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
 const images = [
   {
-    src: '/images/alan.png',
+    src: '/images/alan.jpg',
     alt: 'Profile picture',
   },
   {
-    src: '/images/alan2.png',
+    src: '/images/alan2.jpg',
     alt: 'Profile picture 2',
   },
   {
@@ -30,6 +30,10 @@ const images = [
   {
     src: '/images/alan7.jpg',
     alt: 'Profile picture 7',
+  },
+  {
+    src: '/images/alan8.jpg',
+    alt: 'Profile picture 8',
   },
 ];
 
@@ -70,11 +74,49 @@ const ImageSlider: React.FC = () => {
   };
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    let timer: NodeJS.Timeout;
+    
+    const startTimer = () => {
+      timer = setInterval(() => {
+        paginate(1);
+      }, 5000);
+    };
+
+    startTimer();
+
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, []);
+
+  const handleNavigation = (newDirection: number) => {
+    // Clear existing timer
+    const timers = window.setTimeout(() => {}, 0);
+    for (let i = 0; i < timers; i++) {
+      window.clearTimeout(i);
+    }
+    // Start new timer
+    const newTimer = setInterval(() => {
       paginate(1);
     }, 5000);
-    return () => clearInterval(timer);
-  }, []);
+    // Navigate
+    paginate(newDirection);
+  };
+
+  const handleDotClick = (index: number) => {
+    // Clear existing timer
+    const timers = window.setTimeout(() => {}, 0);
+    for (let i = 0; i < timers; i++) {
+      window.clearTimeout(i);
+    }
+    // Start new timer
+    const newTimer = setInterval(() => {
+      paginate(1);
+    }, 5000);
+    // Update index
+    setDirection(index > currentIndex ? 1 : -1);
+    setCurrentIndex(index);
+  };
 
   return (
     <div className="relative w-full aspect-[3/4] overflow-hidden rounded-lg shadow-xl">
@@ -98,9 +140,9 @@ const ImageSlider: React.FC = () => {
           onDragEnd={(e, { offset, velocity }) => {
             const swipe = swipePower(offset.x, velocity.x);
             if (swipe < -swipeConfidenceThreshold) {
-              paginate(1);
+              handleNavigation(1);
             } else if (swipe > swipeConfidenceThreshold) {
-              paginate(-1);
+              handleNavigation(-1);
             }
           }}
           className="absolute w-full h-full object-cover"
@@ -110,13 +152,13 @@ const ImageSlider: React.FC = () => {
       {/* Navigation Buttons */}
       <button
         className="absolute left-2 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-black/50 hover:bg-black/70 transition-colors"
-        onClick={() => paginate(-1)}
+        onClick={() => handleNavigation(-1)}
       >
         <ChevronLeftIcon className="w-6 h-6 text-white" />
       </button>
       <button
         className="absolute right-2 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-black/50 hover:bg-black/70 transition-colors"
-        onClick={() => paginate(1)}
+        onClick={() => handleNavigation(1)}
       >
         <ChevronRightIcon className="w-6 h-6 text-white" />
       </button>
@@ -126,10 +168,7 @@ const ImageSlider: React.FC = () => {
         {images.map((_, index) => (
           <button
             key={index}
-            onClick={() => {
-              setDirection(index > currentIndex ? 1 : -1);
-              setCurrentIndex(index);
-            }}
+            onClick={() => handleDotClick(index)}
             className={`w-2 h-2 rounded-full transition-all duration-300 ${
               index === currentIndex ? 'bg-white scale-125' : 'bg-white/50'
             }`}
