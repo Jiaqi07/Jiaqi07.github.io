@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { ThankYouAnimation } from '../components/ThankYouAnimation';
 
 const skills = [
   {
@@ -66,15 +67,15 @@ const About: React.FC = () => {
                 <li className="flex items-start">
                   <span className="text-purple-400 mr-2">✦</span>
                   <div>
-                    <p className="font-medium">4th Place Grand Award @ ISEF</p>
-                    <p className="text-sm text-gray-400">Systems Software, Society of Science · May 2025</p>
+                    <p className="font-medium">Regeneron STS Scholar</p>
+                    <p className="text-sm text-gray-400">Top 300, Society of Science · Jan 2025</p>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <span className="text-purple-400 mr-2">✦</span>
                   <div>
-                    <p className="font-medium">Regeneron STS Scholar</p>
-                    <p className="text-sm text-gray-400">Top 300, Society of Science · Jan 2025</p>
+                    <p className="font-medium">4th Place Grand Award @ ISEF</p>
+                    <p className="text-sm text-gray-400">Systems Software, Society of Science · May 2025</p>
                   </div>
                 </li>
                 <li className="flex items-start">
@@ -238,7 +239,10 @@ const About: React.FC = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="mb-16"
         >
-          <h2 className="text-2xl font-semibold mb-6">Skills</h2>
+          <h2 className="text-2xl font-semibold mb-2 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent text-center">
+            Skills
+          </h2>
+          <div className="w-24 h-1 mx-auto mb-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full" />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {skills.map((skillGroup, index) => (
               <motion.div
@@ -246,14 +250,14 @@ const About: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
-                className="bg-gray-800/50 rounded-lg p-6"
+                className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700/60 shadow-xl backdrop-blur"
               >
-                <h3 className="text-xl font-semibold mb-4">{skillGroup.category}</h3>
+                <h3 className="text-xl font-semibold mb-4 text-blue-300">{skillGroup.category}</h3>
                 <div className="flex flex-wrap gap-2">
                   {skillGroup.items.map((skill) => (
                     <span
                       key={skill}
-                      className="px-3 py-1 text-sm bg-gray-700/50 rounded-full text-gray-300"
+                      className="px-3 py-1 text-sm rounded-full bg-gradient-to-r from-blue-700/60 to-purple-700/60 border border-blue-500/30 text-blue-100 shadow"
                     >
                       {skill}
                     </span>
@@ -270,7 +274,10 @@ const About: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
         >
-          <h2 className="text-2xl font-semibold mb-6">Education</h2>
+          <h2 className="text-2xl font-semibold mb-2 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent text-center">
+            Education
+          </h2>
+          <div className="w-24 h-1 mx-auto mb-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full" />
           <div className="space-y-6">
             {education.map((edu, index) => (
               <motion.div
@@ -278,16 +285,31 @@ const About: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 1 + index * 0.1 }}
-                className="bg-gray-800/50 rounded-lg p-6"
+                className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700/60 shadow-xl backdrop-blur flex items-center gap-4"
               >
-                <h3 className="text-xl font-semibold mb-2">{edu.degree}</h3>
-                <p className="text-gray-300 mb-1">{edu.school}</p>
-                <p className="text-gray-400 mb-2">{edu.year}</p>
-                <p className="text-gray-300">{edu.details}</p>
+                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-2xl font-bold shadow-md">
+                  {edu.degree.includes('Bachelor') ? '🎓' : '🏫'}
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-1 text-blue-200">{edu.degree}</h3>
+                  <p className="text-gray-300 mb-1">{edu.school}</p>
+                  <p className="text-gray-400 mb-2">{edu.year}</p>
+                  <p className="text-gray-300">{edu.details}</p>
+                </div>
               </motion.div>
             ))}
           </div>
         </motion.section>
+
+        <div className="my-16" />
+        {/* Thank You Animation Section */}
+        <section className="max-w-3xl mx-auto bg-gray-800/60 rounded-2xl border border-gray-700/60 shadow-xl backdrop-blur p-6 mb-20">
+          <h2 className="text-2xl font-semibold mb-2 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent text-center">
+            Supporters & Believers
+          </h2>
+          <div className="w-24 h-1 mx-auto mb-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full" />
+          <ThankYouAnimation message="Thank you to all my supporters!" />
+        </section>
       </div>
     </div>
   );

@@ -20,7 +20,7 @@ const App: React.FC = () => {
               <Route path="/about" element={<About />} />
             </Routes>
           </AnimatePresence>
-        </div>
+    </div>
       </Router>
     </ThemeProvider>
   );
