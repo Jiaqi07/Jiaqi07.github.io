@@ -93,7 +93,7 @@ const StarNode: React.FC<StarNodeProps> = ({ position, color, size, starName, ti
 // Capricornus constellation star positions
 const constellationPoints: StarNodeProps[] = [
     {
-      position: [2.5, 1.5, 0], // Algiedi - upper right horn
+      position: [3, 0, 0], // Algiedi - upper right horn
       color: '#4F46E5',
       size: 1,
       starName: 'Algiedi',
@@ -102,7 +102,7 @@ const constellationPoints: StarNodeProps[] = [
       connections: [1]
     },
     {
-      position: [1.5, 1.2, 0], // Dabih - base of horns
+      position: [4, 2, 0], // Dabih - base of horns
       color: '#4F46E5',
       size: 0.8,
       starName: 'Dabih',
@@ -111,7 +111,7 @@ const constellationPoints: StarNodeProps[] = [
       connections: [2]
     },
     {
-      position: [0.5, 1, 0], // Nashira - upper body
+      position: [1, 1.2, 0], // Nashira - upper body
       color: '#4F46E5',
       size: 1,
       starName: 'Nashira',
@@ -120,7 +120,7 @@ const constellationPoints: StarNodeProps[] = [
       connections: [3]
     },
     {
-      position: [-0.5, 1.5, 0], // Deneb Algedi - upper left horn
+      position: [-1, 1.5, 0], // Deneb Algedi - upper left horn
       color: '#4F46E5',
       size: 0.9,
       starName: 'Deneb Algedi',
@@ -129,7 +129,7 @@ const constellationPoints: StarNodeProps[] = [
       connections: [4]
     },
     {
-      position: [-0.5, 0.2, 0], // Castra - lower body
+      position: [-0.6, 0, 0], // Castra - lower body
       color: '#4F46E5',
       size: 0.8,
       starName: 'Castra',
@@ -138,21 +138,21 @@ const constellationPoints: StarNodeProps[] = [
       connections: [5]
     },
     {
-      position: [0.2, -0.6, 0], // Marakk - start of tail
+      position: [1, -1.8, 0], // Marakk - start of tail
       color: '#4F46E5',
       size: 0.7,
       starName: 'Marakk',
       title: 'Startups',
-      content: 'Founded some startups and am building innovative solutions in education and robotics.',
+      content: 'Founded some startups and am building innovative solutions in edtech, human-computer interaction, and robotics.',
       connections: [6]
     },
     {
-      position: [1, -1.8, 0], // Baten Algiedi - tip of tail
+      position: [1.5, -1.4, 0], // Baten Algiedi - tip of tail
       color: '#4F46E5',
       size: 0.9,
       starName: 'Baten Algiedi',
       title: 'Future Goals',
-      content: 'Aspiring to become a Davidson Fellow 2025 laureate and land startup fellowships.',
+      content: 'Aspiring to become a ZFellow and YCombinator founder.',
       connections: [0]
     }
   ];

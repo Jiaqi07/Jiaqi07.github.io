@@ -11,7 +11,7 @@ const App: React.FC = () => {
   return (
     <ThemeProvider>
       <Router>
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white dark:from-gray-900 dark:via-gray-800 dark:to-black dark:text-white">
+        <div className="min-h-screen bg-gradient-to-br from-primary-blue via-background-dark to-gray-dark text-text-dark dark:from-primary-blue dark:via-background-dark dark:to-gray-dark dark:text-text-dark">
           <Navbar />
           <AnimatePresence mode="wait">
             <Routes>

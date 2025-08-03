@@ -50,12 +50,12 @@ const Home: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative z-10 text-center px-4 ml-[60px]"
+          className="relative text-center px-24 ml-[140px]"
         >
-          <h1 className="text-6xl md:text-8xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500 mb-4">
+          <h1 className="text-6xl md:text-8xl font-heading bg-clip-text text-transparent bg-gradient-to-r from-primary-blue to-accent-green mb-4">
             Alan Chen
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-8">
+          <p className="text-xl md:text-2xl text-text-dark mb-8">
             Computer Science Student @ UT Austin
           </p>
           <SocialLinks />
@@ -70,7 +70,7 @@ const Home: React.FC = () => {
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-3xl md:text-4xl font-bold mb-6"
+              className="text-3xl md:text-4xl font-heading mb-6"
             >
               About Me
             </motion.h2>
@@ -78,21 +78,21 @@ const Home: React.FC = () => {
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="space-y-4 text-gray-300"
+              className="space-y-4 text-text-dark"
             >
               <p>
                 Hello! I'm an incoming freshman @ UT Austin studying computer science under the Turing Honors program! 
               </p>
               <p>
-                My top 3 achievements are: Being named a Regeneron Science Talent Search Scholar and ISEF Grand Award Winner, publishing research in journals with 13 total Google Scholar citations, and passing to the USA Computing Olympiad Platinum rank.
+                My top 3 achievements are: Being named a Regeneron Science Talent Search Scholar and ISEF Grand Award Winner, publishing research in journals with 14 total Google Scholar citations, and passing to the USA Computing Olympiad Platinum rank.
               </p>
               <p>
                 In my past life, I represented USA internationally in Go at competitions in Shanghai, China, and Osaka, Japan 
                 as a Top 5 Youth player after placing 3rd at competitions like American Go Association (AGA) YoungLions and US Go Congress in 2019-20. I also led a cult on Scratch as @ac91305 that I barely remember.
               </p>
               <p>
-                In 2025, I hope to become a Davidson Fellow laureate, land an opportunity to learn under accelerator/venture programs, 
-                and publish sick research in reasoning and interpretability.
+                In 2025-2026, I hope to become an AI/ML intern at a sick company, launch my startup and get accepted into ZFellows and YCombinator, 
+                and publish sick research in reasoning, LLMs, and interpretability.
               </p>
               <p>
                 I have many interests that I am currently exploring, such as LLMs, reinforcement learning, startups, and research.
@@ -110,13 +110,13 @@ const Home: React.FC = () => {
       </section>
 
       {/* Skills Section */}
-      <section className="py-20 px-4 md:px-8 bg-gray-900/50">
+      <section className="py-20 px-4 md:px-8 bg-background-dark/50">
         <div className="max-w-6xl mx-auto">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-3xl md:text-4xl font-bold mb-12 text-center"
+            className="text-3xl md:text-4xl font-heading mb-12 text-center"
           >
             Greatest Strengths
           </motion.h2>
@@ -127,9 +127,9 @@ const Home: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-gray-800/50 p-6 rounded-lg text-center hover:bg-gray-800/80 transition-colors duration-200"
+                className="bg-gray-dark/50 p-6 rounded-lg text-center hover:bg-gray-dark/80 transition-colors duration-200"
               >
-                <h3 className="text-xl font-semibold mb-2">{skill}</h3>
+                <h3 className="text-xl font-sans mb-2">{skill}</h3>
               </motion.div>
             ))}
           </div>
