@@ -7,21 +7,19 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
-        },
+        'background-dark': '#1A1A2E',
+        'background-light': '#E0E0E0',
+        'text-dark': '#E0E0E0',
+        'text-light': '#1A1A2E',
+        'primary-blue': '#0F3460',
+        'accent-green': '#00FFCC',
+        'accent-orange': '#FF7043',
+        'gray-light': '#A0A0A0',
+        'gray-dark': '#3C4048',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Saira', 'sans-serif'],
+        heading: ['Orbitron', 'sans-serif'],
       },
       animation: {
         'gradient-x': 'gradient-x 15s ease infinite',

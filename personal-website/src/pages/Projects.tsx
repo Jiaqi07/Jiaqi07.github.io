@@ -4,14 +4,14 @@ import { motion } from 'framer-motion';
 const researchProjects = [
   {
     title: 'AssemblyComplete',
-    description: 'Pioneering work in 3D combinatorial construction using deep reinforcement learning. Developing novel approaches for automated assembly planning and execution. Under-review @ MECC',
-    year: '2024',
+    description: 'Pioneering work in 3D combinatorial construction using deep reinforcement learning. Developing novel approaches for automated assembly planning and execution. Published in Modeling, Estimation, Control Conference 2025.',
+    year: '2024, 2025',
     link: 'https://arxiv.org/abs/2410.15469',
     tags: ['Deep Learning', 'Reinforcement Learning', '3D Construction'],
   },
   {
     title: 'Physics-Aware Assembly Planning',
-    description: 'Advanced robotics research focusing on physics-aware combinatorial assembly sequence planning using innovative data-free action masking techniques. Published in IEEE Robotics and Automation Letters (2025).',
+    description: 'Advanced robotics research focusing on physics-aware combinatorial assembly sequence planning using data-free action masking. Published in IEEE Robotics and Automation Letters (2025). Presenting @ IROS 2025.',
     year: '2024, 2025',
     link: 'https://ieeexplore.ieee.org/abstract/document/10938966',
     tags: ['Robotics', 'AI', 'Assembly', 'PPO', 'DRL'],
@@ -69,7 +69,7 @@ const internships = [
     title: 'Intelligent Control Lab',
     organization: 'Carnegie Mellon University Robotics Institute',
     role: 'Research Intern',
-    period: 'October 2022-August 2024',
+    period: 'October 2022-October 2024',
     description: 'Worked in-person at Carnegie Mellon in partnership with the ARM Institute and the US Government. Deployed research onto live FANUC robot arm.',
     tags: ['Robotics', 'Research', 'Assembly', 'Manufacturing', 'Digital Twin'],
   },
@@ -80,6 +80,14 @@ const internships = [
     period: 'May-August 2022',
     description: 'Attended lab meetings, worked under a PhD mentor on autonomous vehicle research, and learned to use Linux Ubuntu.',
     tags: ['Autonomous Vehicles', 'Research', 'Linux'],
+  },
+  {
+    title: 'Robotics Grinding Startup',
+    organization: 'Stealth Startup',
+    role: 'Research and Development Intern & Software Engineer',
+    period: 'December 2023-January 2024',
+    description: 'Contributed to early simulation development, focusing on autonomous manipulation for robot grinding in a 3-week sprint. Reviewed state-of-the-art reinforcement learning and control papers to create robotic arms that are 2x faster than humans.',
+    tags: ['Robotics', 'Startup', 'Government', 'Manufacturing', 'Simulation'],
   },
   {
     title: 'Austin Great Wall Chinese School',
@@ -93,20 +101,20 @@ const internships = [
 
 const Projects: React.FC = () => {
   return (
-    <div className="min-h-screen py-20 px-4 md:px-8 bg-white dark:bg-gray-900">
+    <div className="min-h-screen text-text-dark font-sans py-20 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent"
+          className="text-4xl md:text-5xl font-heading mb-12 text-center bg-gradient-to-r from-primary-blue to-accent-green bg-clip-text text-transparent"
         >
           Experience
         </motion.h1>
 
         {/* Research Projects Section */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white">Research Projects</h2>
+          <h2 className="text-3xl font-heading mb-8 text-text-light dark:text-text-dark">Research Projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {researchProjects.map((project, index) => (
               <motion.div
@@ -114,19 +122,19 @@ const Projects: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group relative bg-white dark:bg-gray-800/50 rounded-lg overflow-hidden hover:bg-gray-50 dark:hover:bg-gray-800/80 transition-colors duration-200 border border-gray-200 dark:border-gray-700"
+                className="group relative bg-background-light dark:bg-background-dark/50 rounded-lg overflow-hidden hover:bg-gray-light dark:hover:bg-gray-dark/80 transition-colors duration-200 border border-gray-light dark:border-gray-dark"
               >
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-2xl font-semibold mb-2 text-gray-900 dark:text-white">{project.title}</h3>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">{project.year}</span>
+                    <h3 className="text-2xl font-semibold mb-2 text-text-light dark:text-text-dark">{project.title}</h3>
+                    <span className="text-sm text-text-light dark:text-text-dark font-sans">{project.year}</span>
                   </div>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">{project.description}</p>
+                  <p className="text-text-light dark:text-text-dark mb-4 font-sans">{project.description}</p>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-3 py-1 text-sm bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full"
+                        className="px-3 py-1 text-sm bg-primary-blue/10 dark:bg-primary-blue/30 text-primary-blue dark:text-accent-green rounded-full font-sans"
                       >
                         {tag}
                       </span>
@@ -136,7 +144,7 @@ const Projects: React.FC = () => {
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                    className="inline-flex items-center text-primary-blue hover:text-primary-blue dark:text-accent-green dark:hover:text-accent-green transition-colors font-sans"
                   >
                     View Publication
                     <svg
@@ -161,7 +169,7 @@ const Projects: React.FC = () => {
 
         {/* Startup Section */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white">Startup Experience</h2>
+          <h2 className="text-3xl font-heading mb-8 text-text-light dark:text-text-dark">Startup Experience</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {startupProjects.map((project, index) => (
               <motion.div
@@ -169,22 +177,22 @@ const Projects: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group relative bg-white dark:bg-gray-800/50 rounded-lg overflow-hidden hover:bg-gray-50 dark:hover:bg-gray-800/80 transition-colors duration-200 border border-gray-200 dark:border-gray-700"
+                className="group relative bg-background-light dark:bg-background-dark/50 rounded-lg overflow-hidden hover:bg-gray-light dark:hover:bg-gray-dark/80 transition-colors duration-200 border border-gray-light dark:border-gray-dark"
               >
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h3 className="text-2xl font-semibold mb-1 text-gray-900 dark:text-white">{project.title}</h3>
-                      <p className="text-lg text-blue-600 dark:text-blue-400">{project.role}</p>
+                      <h3 className="text-2xl font-semibold mb-1 text-text-light dark:text-text-dark">{project.title}</h3>
+                      <p className="text-lg text-primary-blue dark:text-accent-green font-sans">{project.role}</p>
                     </div>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">{project.period}</span>
+                    <span className="text-sm text-text-light dark:text-text-dark font-sans">{project.period}</span>
                   </div>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">{project.description}</p>
+                  <p className="text-text-light dark:text-text-dark mb-4 font-sans">{project.description}</p>
                   <div className="flex flex-wrap gap-2">
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-3 py-1 text-sm bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full"
+                        className="px-3 py-1 text-sm bg-primary-blue/10 dark:bg-primary-blue/30 text-primary-blue dark:text-accent-green rounded-full font-sans"
                       >
                         {tag}
                       </span>
@@ -198,7 +206,7 @@ const Projects: React.FC = () => {
 
         {/* Internships Section */}
         <section>
-          <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white">Internships</h2>
+          <h2 className="text-3xl font-heading mb-8 text-text-light dark:text-text-dark">Internships</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {internships.map((internship, index) => (
               <motion.div
@@ -206,23 +214,23 @@ const Projects: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group relative bg-white dark:bg-gray-800/50 rounded-lg overflow-hidden hover:bg-gray-50 dark:hover:bg-gray-800/80 transition-colors duration-200 border border-gray-200 dark:border-gray-700"
+                className="group relative bg-background-light dark:bg-background-dark/50 rounded-lg overflow-hidden hover:bg-gray-light dark:hover:bg-gray-dark/80 transition-colors duration-200 border border-gray-light dark:border-gray-dark"
               >
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h3 className="text-2xl font-semibold mb-1 text-gray-900 dark:text-white">{internship.title}</h3>
-                      <p className="text-lg text-blue-600 dark:text-blue-400">{internship.role}</p>
-                      <p className="text-gray-600 dark:text-gray-400">{internship.organization}</p>
+                      <h3 className="text-2xl font-semibold mb-1 text-text-light dark:text-text-dark">{internship.title}</h3>
+                      <p className="text-lg text-primary-blue dark:text-accent-green font-sans">{internship.role}</p>
+                      <p className="text-text-light dark:text-text-dark font-sans">{internship.organization}</p>
                     </div>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">{internship.period}</span>
+                    <span className="text-sm text-text-light dark:text-text-dark font-sans">{internship.period}</span>
                   </div>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">{internship.description}</p>
+                  <p className="text-text-light dark:text-text-dark mb-4 font-sans">{internship.description}</p>
                   <div className="flex flex-wrap gap-2">
                     {internship.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-3 py-1 text-sm bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full"
+                        className="px-3 py-1 text-sm bg-primary-blue/10 dark:bg-primary-blue/30 text-primary-blue dark:text-accent-green rounded-full font-sans"
                       >
                         {tag}
                       </span>
