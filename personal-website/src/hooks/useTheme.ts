@@ -1,15 +1,10 @@
 import { useEffect, useState } from 'react';
 
-type Theme = 'light' | 'dark';
+type Theme = 'dark'; // Only dark mode
 
 export const useTheme = () => {
   const [theme, setTheme] = useState<Theme>(() => {
-    // Check if theme is stored in localStorage
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    // Check if user prefers dark mode
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    // Return saved theme or preferred theme
-    return savedTheme || (prefersDark ? 'dark' : 'light');
+    return 'dark'; // Always return dark
   });
 
   useEffect(() => {
@@ -20,9 +15,7 @@ export const useTheme = () => {
     document.documentElement.classList.add(theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
-  };
+  // Removed toggleTheme function
 
-  return { theme, toggleTheme };
+  return { theme }; // Removed toggleTheme from return
 }; 

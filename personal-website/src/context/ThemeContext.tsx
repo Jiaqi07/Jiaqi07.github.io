@@ -1,22 +1,17 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-type Theme = 'light' | 'dark';
+type Theme = 'dark';
 
 interface ThemeContextType {
   theme: Theme;
-  toggleTheme: () => void;
+  // Removed toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      return (savedTheme as Theme) || (prefersDark ? 'dark' : 'light');
-    }
-    return 'dark';
+    return 'dark'; // Always set to dark
   });
 
   useEffect(() => {
@@ -35,21 +30,14 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         root.style.setProperty('--bg-secondary', '#1F2937');
         root.style.setProperty('--text-primary', '#F3F4F6');
         root.style.setProperty('--text-secondary', '#D1D5DB');
-      } else {
-        root.style.setProperty('--bg-primary', '#FFFFFF');
-        root.style.setProperty('--bg-secondary', '#F3F4F6');
-        root.style.setProperty('--text-primary', '#111827');
-        root.style.setProperty('--text-secondary', '#4B5563');
-      }
+      } /* Removed else block for light theme */
     }
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
+  // Removed toggleTheme function
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme }}>
       {children}
     </ThemeContext.Provider>
   );

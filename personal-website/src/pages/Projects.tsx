@@ -114,7 +114,7 @@ const Projects: React.FC = () => {
 
         {/* Research Projects Section */}
         <section className="mb-16">
-          <h2 className="text-3xl font-heading mb-8 text-text-light dark:text-text-dark">Research Projects</h2>
+          <h2 className="text-3xl font-heading mb-8 text-text-dark">Research Projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {researchProjects.map((project, index) => (
               <motion.div
@@ -122,19 +122,19 @@ const Projects: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group relative bg-background-light dark:bg-background-dark/50 rounded-lg overflow-hidden hover:bg-gray-light dark:hover:bg-gray-dark/80 transition-colors duration-200 border border-gray-light dark:border-gray-dark"
+                className="group relative bg-background-dark/50 rounded-lg overflow-hidden hover:bg-gray-dark/80 transition-colors duration-200 border border-gray-dark"
               >
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-2xl font-semibold mb-2 text-text-light dark:text-text-dark">{project.title}</h3>
-                    <span className="text-sm text-text-light dark:text-text-dark font-sans">{project.year}</span>
+                    <h3 className="text-2xl font-semibold mb-2 text-text-dark">{project.title}</h3>
+                    <span className="text-sm text-text-dark font-sans">{project.year}</span>
                   </div>
-                  <p className="text-text-light dark:text-text-dark mb-4 font-sans">{project.description}</p>
+                  <p className="text-text-dark mb-4 font-sans">{project.description}</p>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-3 py-1 text-sm bg-primary-blue/10 dark:bg-primary-blue/30 text-primary-blue dark:text-accent-green rounded-full font-sans"
+                        className="px-3 py-1 text-sm bg-primary-blue/30 text-accent-green rounded-full font-sans"
                       >
                         {tag}
                       </span>
@@ -144,7 +144,7 @@ const Projects: React.FC = () => {
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-primary-blue hover:text-primary-blue dark:text-accent-green dark:hover:text-accent-green transition-colors font-sans"
+                    className="inline-flex items-center text-accent-green hover:text-accent-green transition-colors font-sans"
                   >
                     View Publication
                     <svg
@@ -169,7 +169,7 @@ const Projects: React.FC = () => {
 
         {/* Startup Section */}
         <section className="mb-16">
-          <h2 className="text-3xl font-heading mb-8 text-text-light dark:text-text-dark">Startup Experience</h2>
+          <h2 className="text-3xl font-heading mb-8 text-text-dark">Startup Experience</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {startupProjects.map((project, index) => (
               <motion.div
@@ -177,22 +177,22 @@ const Projects: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group relative bg-background-light dark:bg-background-dark/50 rounded-lg overflow-hidden hover:bg-gray-light dark:hover:bg-gray-dark/80 transition-colors duration-200 border border-gray-light dark:border-gray-dark"
+                className="group relative bg-background-dark/50 rounded-lg overflow-hidden hover:bg-gray-dark/80 transition-colors duration-200 border border-gray-dark"
               >
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h3 className="text-2xl font-semibold mb-1 text-text-light dark:text-text-dark">{project.title}</h3>
-                      <p className="text-lg text-primary-blue dark:text-accent-green font-sans">{project.role}</p>
+                      <h3 className="text-2xl font-semibold mb-1 text-text-dark">{project.title}</h3>
+                      <p className="text-lg text-accent-green font-sans">{project.role}</p>
                     </div>
-                    <span className="text-sm text-text-light dark:text-text-dark font-sans">{project.period}</span>
+                    <span className="text-sm text-text-dark font-sans">{project.period}</span>
                   </div>
-                  <p className="text-text-light dark:text-text-dark mb-4 font-sans">{project.description}</p>
+                  <p className="text-text-dark mb-4 font-sans">{project.description}</p>
                   <div className="flex flex-wrap gap-2">
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-3 py-1 text-sm bg-primary-blue/10 dark:bg-primary-blue/30 text-primary-blue dark:text-accent-green rounded-full font-sans"
+                        className="px-3 py-1 text-sm bg-primary-blue/30 text-accent-green rounded-full font-sans"
                       >
                         {tag}
                       </span>
@@ -206,7 +206,7 @@ const Projects: React.FC = () => {
 
         {/* Internships Section */}
         <section>
-          <h2 className="text-3xl font-heading mb-8 text-text-light dark:text-text-dark">Internships</h2>
+          <h2 className="text-3xl font-heading mb-8 text-text-dark">Internships</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {internships.map((internship, index) => (
               <motion.div
@@ -214,23 +214,23 @@ const Projects: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group relative bg-background-light dark:bg-background-dark/50 rounded-lg overflow-hidden hover:bg-gray-light dark:hover:bg-gray-dark/80 transition-colors duration-200 border border-gray-light dark:border-gray-dark"
+                className="group relative bg-background-dark/50 rounded-lg overflow-hidden hover:bg-gray-dark/80 transition-colors duration-200 border border-gray-dark"
               >
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h3 className="text-2xl font-semibold mb-1 text-text-light dark:text-text-dark">{internship.title}</h3>
-                      <p className="text-lg text-primary-blue dark:text-accent-green font-sans">{internship.role}</p>
-                      <p className="text-text-light dark:text-text-dark font-sans">{internship.organization}</p>
+                      <h3 className="text-2xl font-semibold mb-1 text-text-dark">{internship.title}</h3>
+                      <p className="text-lg text-accent-green font-sans">{internship.role}</p>
+                      <p className="text-text-dark font-sans">{internship.organization}</p>
                     </div>
-                    <span className="text-sm text-text-light dark:text-text-dark font-sans">{internship.period}</span>
+                    <span className="text-sm text-text-dark font-sans">{internship.period}</span>
                   </div>
-                  <p className="text-text-light dark:text-text-dark mb-4 font-sans">{internship.description}</p>
+                  <p className="text-text-dark mb-4 font-sans">{internship.description}</p>
                   <div className="flex flex-wrap gap-2">
                     {internship.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-3 py-1 text-sm bg-primary-blue/10 dark:bg-primary-blue/30 text-primary-blue dark:text-accent-green rounded-full font-sans"
+                        className="px-3 py-1 text-sm bg-primary-blue/30 text-accent-green rounded-full font-sans"
                       >
                         {tag}
                       </span>

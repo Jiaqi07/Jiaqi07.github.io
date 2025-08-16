@@ -62,69 +62,69 @@ const About: React.FC = () => {
               whileHover={{ scale: 1.02 }}
               className="bg-background-dark/50 p-6 rounded-xl backdrop-blur-sm border border-gray-dark/50"
             >
-              <h3 className="text-xl font-semibold mb-4 text-primary-blue dark:text-accent-green">Research Excellence</h3>
+              <h3 className="text-xl font-semibold mb-4 text-accent-green">Research Excellence</h3>
               <ul className="space-y-3 font-sans">
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">Regeneron STS Scholar</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">Top 300, Society of Science · Jan 2025</p>
+                    <p className="font-medium text-text-dark">Regeneron STS Scholar</p>
+                    <p className="text-sm text-text-dark">Top 300, Society of Science · Jan 2025</p>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">4th Place Grand Award @ ISEF</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">Systems Software, Society of Science · May 2025</p>
+                    <p className="font-medium text-text-dark">4th Place Grand Award @ ISEF</p>
+                    <p className="text-sm text-text-dark">Systems Software, Society of Science · May 2025</p>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">Best of State in Texas</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">Physical Sciences, TXSEF · Mar 2025</p>
+                    <p className="font-medium text-text-dark">Best of State in Texas</p>
+                    <p className="text-sm text-text-dark">Physical Sciences, TXSEF · Mar 2025</p>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">Finalist @ NJSHS, 4th Place Overall in Texas</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">Junior Science & Humanities Symposium · Jan 2024</p>
+                    <p className="font-medium text-text-dark">Finalist @ NJSHS, 4th Place Overall in Texas</p>
+                    <p className="text-sm text-text-dark">Junior Science & Humanities Symposium · Jan 2024</p>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">GARSEF 1st Place</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">Systems Software · 2025</p>
+                    <p className="font-medium text-text-dark">GARSEF 1st Place</p>
+                    <p className="text-sm text-text-dark">Systems Software · 2025</p>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">TXSEF 1st Place</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">Systems Software · 2025</p>
+                    <p className="font-medium text-text-dark">TXSEF 1st Place</p>
+                    <p className="text-sm text-text-dark">Systems Software · 2025</p>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">Summus Industries Special Award</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">$1,000 · 2025</p>
+                    <p className="font-medium text-text-dark">Summus Industries Special Award</p>
+                    <p className="text-sm text-text-dark">$1,000 · 2025</p>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">GARSEF 2nd Place</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">Engineering Technology: Statics and Dynamics · 2024</p>
+                    <p className="font-medium text-text-dark">GARSEF 2nd Place</p>
+                    <p className="text-sm text-text-dark">Engineering Technology: Statics and Dynamics · 2024</p>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">Naval Science Award</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">Office of Naval Research · Jan 2024</p>
+                    <p className="font-medium text-text-dark">Naval Science Award</p>
+                    <p className="text-sm text-text-dark">Office of Naval Research · Jan 2024</p>
                   </div>
                 </li>
               </ul>
@@ -135,34 +135,34 @@ const About: React.FC = () => {
               whileHover={{ scale: 1.02 }}
               className="bg-background-dark/50 p-6 rounded-xl backdrop-blur-sm border border-gray-dark/50"
             >
-              <h3 className="text-xl font-semibold mb-4 text-primary-blue dark:text-accent-green">Computing & Technology</h3>
+              <h3 className="text-xl font-semibold mb-4 text-accent-green">Computing & Technology</h3>
               <ul className="space-y-3 font-sans">
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">USA Computing Olympiad</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">Platinum Rank, USACO · Feb 2024</p>
+                    <p className="font-medium text-text-dark">USA Computing Olympiad</p>
+                    <p className="text-sm text-text-dark">Platinum Rank, USACO · Feb 2024</p>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">FIRST Robotics</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">Worlds Finalist · May 2023</p>
+                    <p className="font-medium text-text-dark">FIRST Robotics</p>
+                    <p className="text-sm text-text-dark">Worlds Finalist · May 2023</p>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">FIRST Technological Challenge</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">Innovation Challenge Semifinalist · May 2021</p>
+                    <p className="font-medium text-text-dark">FIRST Technological Challenge</p>
+                    <p className="text-sm text-text-dark">Innovation Challenge Semifinalist · May 2021</p>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">HackNEHs</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">3rd in Novice · June 2021</p>
+                    <p className="font-medium text-text-dark">HackNEHs</p>
+                    <p className="text-sm text-text-dark">3rd in Novice · June 2021</p>
                   </div>
                 </li>
               </ul>
@@ -173,27 +173,27 @@ const About: React.FC = () => {
               whileHover={{ scale: 1.02 }}
               className="bg-background-dark/50 p-6 rounded-xl backdrop-blur-sm border border-gray-dark/50"
             >
-              <h3 className="text-xl font-semibold mb-4 text-primary-blue dark:text-accent-green">Entrepreneurship & Service</h3>
+              <h3 className="text-xl font-semibold mb-4 text-accent-green">Entrepreneurship & Service</h3>
               <ul className="space-y-3 font-sans">
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">Emergent Ventures Fellow</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">Selected for innovative ideas · June 2024</p>
+                    <p className="font-medium text-text-dark">Emergent Ventures Fellow</p>
+                    <p className="text-sm text-text-dark">Selected for innovative ideas · June 2024</p>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">1517 Medici Group</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">Fellow · July 2024</p>
+                    <p className="font-medium text-text-dark">1517 Medici Group</p>
+                    <p className="text-sm text-text-dark">Fellow · July 2024</p>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">President's Volunteer Service Award</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">Gold Level (4x) · 2021-2024</p>
+                    <p className="font-medium text-text-dark">President's Volunteer Service Award</p>
+                    <p className="text-sm text-text-dark">Gold Level (4x) · 2021-2024</p>
                   </div>
                 </li>
               </ul>
@@ -204,27 +204,27 @@ const About: React.FC = () => {
               whileHover={{ scale: 1.02 }}
               className="bg-background-dark/50 p-6 rounded-xl backdrop-blur-sm border border-gray-dark/50"
             >
-              <h3 className="text-xl font-semibold mb-4 text-primary-blue dark:text-accent-green">Additional Recognition</h3>
+              <h3 className="text-xl font-semibold mb-4 text-accent-green">Additional Recognition</h3>
               <ul className="space-y-3 font-sans">
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">DCU for Kids Scholarship</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">$2,500 · Apr 2025</p>
+                    <p className="font-medium text-text-dark">DCU for Kids Scholarship</p>
+                    <p className="text-sm text-text-dark">$2,500 · Apr 2025</p>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">NSF Travel Award</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">National Science Foundation · Aug 2022</p>
+                    <p className="font-medium text-text-dark">NSF Travel Award</p>
+                    <p className="text-sm text-text-dark">National Science Foundation · Aug 2022</p>
                   </div>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
                   <div>
-                    <p className="font-medium text-text-light dark:text-text-dark">Brawl Stars Masters Rank</p>
-                    <p className="text-sm text-text-light dark:text-text-dark">Top 200 in US, SuperCell · Aug 2022</p>
+                    <p className="font-medium text-text-dark">Brawl Stars Masters Rank</p>
+                    <p className="text-sm text-text-dark">Top 200 in US, SuperCell · Aug 2022</p>
                   </div>
                 </li>
               </ul>
@@ -252,7 +252,7 @@ const About: React.FC = () => {
                 transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
                 className="bg-background-dark/60 rounded-2xl p-6 border border-gray-dark/60 shadow-xl backdrop-blur"
               >
-                <h3 className="text-xl font-semibold mb-4 text-primary-blue dark:text-accent-green">{skillGroup.category}</h3>
+                <h3 className="text-xl font-semibold mb-4 text-accent-green">{skillGroup.category}</h3>
                 <div className="flex flex-wrap gap-2">
                   {skillGroup.items.map((skill) => (
                     <span
@@ -291,10 +291,10 @@ const About: React.FC = () => {
                   {edu.degree.includes('Bachelor') ? '🎓' : '🏫'}
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1 text-primary-blue dark:text-accent-green">{edu.degree}</h3>
-                  <p className="text-text-light dark:text-text-dark mb-1 font-sans">{edu.school}</p>
-                  <p className="text-text-light dark:text-text-dark mb-2 font-sans">{edu.year}</p>
-                  <p className="text-text-light dark:text-text-dark font-sans">{edu.details}</p>
+                  <h3 className="text-xl font-semibold mb-1 text-accent-green">{edu.degree}</h3>
+                  <p className="text-text-dark mb-1 font-sans">{edu.school}</p>
+                  <p className="text-text-dark mb-2 font-sans">{edu.year}</p>
+                  <p className="text-text-dark font-sans">{edu.details}</p>
                 </div>
               </motion.div>
             ))}
