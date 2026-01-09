@@ -31,10 +31,6 @@ const images = [
     src: '/images/alan7.jpg',
     alt: 'Profile picture 7',
   },
-  {
-    src: '/images/alan8.jpg',
-    alt: 'Profile picture 8',
-  },
 ];
 
 const ImageSlider: React.FC = () => {

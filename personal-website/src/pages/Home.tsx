@@ -27,7 +27,7 @@ const Home: React.FC = () => {
     <div className="relative min-h-screen">
       {/* Hero Section with 3D Background */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <Canvas className="absolute inset-y-0 right-0 w-1/2" camera={{ position: [0, 0, 10], fov: 60 }}>
+        <Canvas className="absolute inset-y-0 right-0 w-1/2 z-0" camera={{ position: [0, 0, 10], fov: 60 }}>
           <OrbitControls 
             enableZoom={true}
             enablePan={true}
@@ -50,13 +50,13 @@ const Home: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative text-center px-24 ml-[140px]"
+          className="relative text-center px-24 ml-[140px] z-10"
         >
           <h1 className="text-6xl md:text-8xl font-heading bg-clip-text text-transparent bg-gradient-to-r from-primary-blue to-accent-green mb-4">
             Alan Chen
           </h1>
           <p className="text-xl md:text-2xl text-text-dark mb-8">
-            Computer Science Student @ UT Austin
+            Computer Science Student @ UT Austin and AI Researcher
           </p>
           <SocialLinks />
         </motion.div>
@@ -81,25 +81,30 @@ const Home: React.FC = () => {
               className="space-y-4 text-text-dark"
             >
               <p>
-                Hello! I'm an incoming freshman @ UT Austin studying computer science under the Turing Honors program! 
+                Hello! I'm a freshman @ UT Austin studying computer science under the Turing Scholar Honors program! 
               </p>
               <p>
-                My top 3 achievements are: Being named a Regeneron Science Talent Search Scholar and ISEF Grand Award Winner, publishing research in journals with 14 total Google Scholar citations, and passing to the USA Computing Olympiad Platinum rank.
+                My top 3 achievements are: Being named a Regeneron Science Talent Search Scholar, ISEF Grand Award Winner, and publishing research in top venues with 19 total Google Scholar citations.
               </p>
               <p>
                 In my past life, I represented USA internationally in Go at competitions in Shanghai, China, and Osaka, Japan 
                 as a Top 5 Youth player after placing 3rd at competitions like American Go Association (AGA) YoungLions and US Go Congress in 2019-20. I also led a cult on Scratch as @ac91305 that I barely remember.
               </p>
               <p>
-                In 2025-2026, I hope to become an AI/ML intern at a sick company, launch my startup and get accepted into ZFellows and YCombinator, 
-                and publish sick research in reasoning, LLMs, and interpretability.
+                In the Summer of 2026, I'll be interning at ARM as an AI/ML intern on the productivity team in Austin, Texas in collaboration with OpenAI. 
+                In the first semester, I sacrificed my GPA to work on a startup idea with my friends, which got top 10% @ a16z speedrun, got a post-finalist acceptance into ZFellows, and got a deferred decision from 
+                YCombinator where Jared Friedman said he'd be interested in future mentorship via office hours when we reapplied.
+                {/* In 2025-2026, I hope to become an AI/ML intern at a sick company, launch my startup and get accepted into ZFellows and YCombinator, 
+                and publish sick research in reasoning, LLMs, and interpretability. */}
               </p>
               <p>
-                I have many interests that I am currently exploring, such as LLMs, reinforcement learning, startups, and research.
+                I'm currently fascinated with diffusion, reinforcement learning, and the intersection of AI and robotics. 
+                Right now, I'm researching mobile manipulation using vision language agents (VLA) and post-training methods like GRPO and PPO.
+                {/* I have many interests that I am currently exploring, such as LLMs, reinforcement learning, startups, and research. */}
               </p>
               <p>
-                In my free time, I play basketball, teach others how to find their passions, play Brawl Stars, 
-                and run up Go games on KGS.
+                In my free time, I play intramural basketball, lift weights, teach others how to find their passions,
+                and run up Go games on KGS (thinking about starting a Go club at UT Austin, hit me up if you're interested!).
               </p>
             </motion.div>
           </div>
