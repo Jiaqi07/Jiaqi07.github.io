@@ -18,7 +18,7 @@ const skills = [
 
 const education = [
   {
-    degree: 'Bachelor of Science in Computer Science',
+    degree: 'Bachelor of Science in Computer Science & Mathematics',
     school: 'University of Texas at Austin',
     year: '2025 - Present',
     details: 'Turing Honors Program',
@@ -31,27 +31,303 @@ const education = [
   },
 ];
 
+const startupProjects = [
+  {
+    title: 'CapyCot (on-pause)',
+    role: 'Founder',
+    period: 'May 2025-(On Pause to Learn More)',
+    description: 'Generative models for creative content design and generation (conditional deferred acceptance to YCombinator and Zfellows).',
+    tags: ['SaaS', 'Generative Models', 'LLMs', 'Diffusion Models', 'DreamBooth', 'LoRA'],
+  },
+  {
+    title: 'Olympiad',
+    role: 'Developer',
+    period: 'January 2025-April 2025',
+    description: 'Creating educational through personalized AI mentorship and training. Using RAG and custom tools for chatbot, raised $2k, and beta-testing.',
+    tags: ['React', 'Firebase', 'SaaS', 'RAG', 'Chatbot'],
+  },
+  {
+    title: 'AssembleIt',
+    role: 'Researcher & Founder',
+    period: 'May 2024-April 2025',
+    description: 'Founded startup with my research. Raised $11k from Emergent Ventures and 1517 Medici to build ideas. Currently on-pause and planning to pivot.',
+    tags: ['Startup', 'Research', 'Patent Pending'],
+  },
+];
+
+const researchExperiences = [
+  {
+    title: 'Research Engineer Intern',
+    organization: 'Stealth Startup',
+    role: 'Research Engineer Intern',
+    period: 'December 2025 - Present',
+    description: 'Applying state-of-the-art language model research to fine-tune generative video/image models for customers. Working closely with research scientists to develop data curation strategies for refining diffusion models. Experimenting with text and image encoders for conditioning, and using techniques like DreamBooth and LoRA.',
+    tags: ['AI/ML', 'Diffusion Models', 'LLMs', 'DreamBooth', 'LoRA', 'Generative Models'],
+  },
+  {
+    title: 'Researcher',
+    organization: 'Learning Agents Research Group (LARG) || UT Austin',
+    role: 'Researcher',
+    period: 'September 2025 - Present',
+    description: 'Researching reinforcement learning for vision language agents (VLAs) for mobile robot manipulation tasks. Finetuning robot foundation models (Octo, OpenVLA) using PPO, GRPO, and Diffusion PPO in Maniskill. Leading 4 peers to research on runtime verification of language agents using BERT encodings and temporal logic.',
+    tags: ['Reinforcement Learning', 'VLAs', 'Robotics', 'PPO', 'GRPO', 'Diffusion PPO', 'BERT'],
+  },
+  {
+    title: 'Researcher',
+    organization: 'Intelligent Control Lab || Carnegie Mellon Robotics Institute',
+    role: 'Researcher',
+    period: 'October 2022 - October 2024',
+    description: '2nd-authored two papers on Sim2Real digital twin and deployed trained algorithms onto a FANUC robot arm. 1st-authored paper using StableBaselines3 reinforcement learning (PPO) to tackle in-process assembly planning. Tested Vision Language Models, Siamese Networks, ConvNets, and Graph Neural Networks for classification. Recognized by former First Lady Biden in collaboration with ARM Institute and the US Gov for manufacturing.',
+    tags: ['Robotics', 'Research', 'Assembly', 'Manufacturing', 'Digital Twin', 'PPO', 'Sim2Real'],
+  },
+  {
+    title: 'Research Engineer Intern',
+    organization: 'Instinct Robotics',
+    role: 'Research Engineer Intern',
+    period: 'December 2023 - January 2024',
+    description: 'Contributed to early simulation development with real-world physics for precise robot control using Gazebo. Reviewed state-of-the-art reinforcement learning and control papers to create robot arms faster than humans. Collaborated closely with the Ph.D. CEO and founding engineer to deliver AI solutions to contractors.',
+    tags: ['Robotics', 'Startup', 'Simulation', 'Gazebo', 'Reinforcement Learning', 'Control'],
+  },
+  {
+    title: 'Researcher',
+    organization: 'Research Undergraduate Experience || University of Texas at San Antonio',
+    role: 'Researcher',
+    period: 'May - August 2022',
+    description: 'Participated in autonomous vehicle research with a focus on simulations, sensor fusion, and trajectory planning. Curated training data using car simulators CARLA and SUMO, YAML/JSON processing, and Numpy/Pandas.',
+    tags: ['Autonomous Vehicles', 'Research', 'CARLA', 'SUMO', 'Sensor Fusion', 'Trajectory Planning'],
+  },
+];
+
+const otherExperiences = [
+  {
+    title: 'Austin Great Wall Chinese School',
+    organization: 'AGWCS',
+    role: 'Teacher, prev. TA (2020) & Ambassador (2023)',
+    period: 'May 2020 - August 2024',
+    description: 'Taught +130 students and designed custom curriculum. Served as Texas ambassador and partnered with Chinese schools all across the US.',
+    tags: ['Teaching', 'Speaking', 'Leadership', 'Mentorship'],
+  },
+];
+
 const About: React.FC = () => {
   return (
-    <div className="min-h-screen text-text-dark font-sans py-20 px-4 md:px-8">
+    <div className="text-text-dark font-sans pt-24 pb-6 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-4xl md:text-5xl font-heading mb-12 text-center bg-gradient-to-r from-primary-blue to-accent-green bg-clip-text text-transparent"
+          className="text-4xl md:text-5xl font-heading mb-8 text-center bg-gradient-to-r from-primary-blue to-teal-400/90 bg-clip-text text-transparent"
         >
           About Me
         </motion.h1>
 
-        {/* Accomplishments Section */}
+        {/* Education — moved up */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.05 }}
+          className="mb-10"
+        >
+          <h2 className="text-2xl font-heading mb-2 bg-gradient-to-r from-primary-blue to-teal-400/90 bg-clip-text text-transparent text-center">
+            Education
+          </h2>
+          <div className="w-24 h-1 mx-auto mb-6 bg-gradient-to-r from-primary-blue/80 to-teal-400/70 rounded-full" />
+          <div className="space-y-6">
+            {education.map((edu, index) => (
+              <motion.div
+                key={edu.degree}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
+                className="bg-background-dark/60 rounded-2xl p-6 border border-gray-dark/60 shadow-xl backdrop-blur flex items-start gap-4 border-l-4 border-l-primary-blue/70"
+              >
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-xl font-semibold mb-1 text-teal-400/90">{edu.degree}</h3>
+                  <p className="text-text-dark mb-1 font-sans">{edu.school}</p>
+                  <p className="text-text-dark mb-2 font-sans">{edu.year}</p>
+                  <p className="text-text-dark font-sans">{edu.details}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* Startup Experience */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.1 }}
+          className="mb-10"
+        >
+          <h2 className="text-2xl font-heading mb-2 text-teal-400/90 text-center">Startup Experience</h2>
+          <div className="w-24 h-0.5 mx-auto mb-6 bg-gray-dark/50 rounded-full" />
+          <div className="grid grid-cols-1 gap-10">
+            {startupProjects.map((project, index) => (
+              <motion.div
+                key={project.title}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.08 }}
+                className="rounded-2xl border border-gray-dark/40 bg-background-dark/30 backdrop-blur-sm overflow-hidden hover:border-gray-dark/60 transition-colors"
+              >
+                <div className="p-8 md:p-10">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-5">
+                    <div>
+                      <h3 className="text-xl font-semibold text-teal-400/90 mb-1">{project.title}</h3>
+                      <p className="text-sm text-text-dark/70 font-sans">{project.role}</p>
+                    </div>
+                    <span className="text-sm text-text-dark/60 font-sans shrink-0">{project.period}</span>
+                  </div>
+                  <p className="text-text-dark/90 font-sans text-[15px] leading-relaxed mb-6">{project.description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-3 py-1.5 text-xs font-sans rounded-full bg-gray-dark/40 text-text-dark/90 border border-gray-dark/30"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* Research Experience */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="mb-16"
+          className="mb-10"
         >
-          <h2 className="text-3xl font-heading mb-8 bg-clip-text text-transparent bg-gradient-to-r from-accent-green to-primary-blue">
+          <h2 className="text-2xl font-heading mb-2 text-teal-400/90 text-center">Research Experience</h2>
+          <div className="w-24 h-0.5 mx-auto mb-6 bg-gray-dark/50 rounded-full" />
+          <div className="grid grid-cols-1 gap-10">
+            {researchExperiences.map((experience, index) => (
+              <motion.div
+                key={experience.title + experience.organization}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.08 }}
+                className="rounded-2xl border border-gray-dark/40 bg-background-dark/30 backdrop-blur-sm overflow-hidden hover:border-gray-dark/60 transition-colors"
+              >
+                <div className="p-8 md:p-10">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-5">
+                    <div>
+                      <h3 className="text-xl font-semibold text-teal-400/90 mb-1">{experience.title}</h3>
+                      <p className="text-sm text-text-dark/70 font-sans">{experience.role}</p>
+                      <p className="text-sm text-text-dark/60 font-sans">{experience.organization}</p>
+                    </div>
+                    <span className="text-sm text-text-dark/60 font-sans shrink-0">{experience.period}</span>
+                  </div>
+                  <p className="text-text-dark/90 font-sans text-[15px] leading-relaxed mb-6">{experience.description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {experience.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-3 py-1.5 text-xs font-sans rounded-full bg-gray-dark/40 text-text-dark/90 border border-gray-dark/30"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* Other Experience */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.25 }}
+          className="mb-10"
+        >
+          <h2 className="text-2xl font-heading mb-2 text-teal-400/90 text-center">Other Experience</h2>
+          <div className="w-24 h-0.5 mx-auto mb-6 bg-gray-dark/50 rounded-full" />
+          <div className="grid grid-cols-1 gap-10">
+            {otherExperiences.map((experience, index) => (
+              <motion.div
+                key={experience.title}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.08 }}
+                className="rounded-2xl border border-gray-dark/40 bg-background-dark/30 backdrop-blur-sm overflow-hidden hover:border-gray-dark/60 transition-colors"
+              >
+                <div className="p-8 md:p-10">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-5">
+                    <div>
+                      <h3 className="text-xl font-semibold text-teal-400/90 mb-1">{experience.title}</h3>
+                      <p className="text-sm text-text-dark/70 font-sans">{experience.role}</p>
+                      <p className="text-sm text-text-dark/60 font-sans">{experience.organization}</p>
+                    </div>
+                    <span className="text-sm text-text-dark/60 font-sans shrink-0">{experience.period}</span>
+                  </div>
+                  <p className="text-text-dark/90 font-sans text-[15px] leading-relaxed mb-6">{experience.description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {experience.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-3 py-1.5 text-xs font-sans rounded-full bg-gray-dark/40 text-text-dark/90 border border-gray-dark/30"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* Skills Section */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="mb-10"
+        >
+          <h2 className="text-2xl font-heading mb-2 bg-gradient-to-r from-primary-blue to-teal-400/90 bg-clip-text text-transparent text-center">
+            Skills
+          </h2>
+          <div className="w-24 h-1 mx-auto mb-6 bg-gradient-to-r from-primary-blue/80 to-teal-400/70 rounded-full" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {skills.map((skillGroup, index) => (
+              <motion.div
+                key={skillGroup.category}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                className="bg-background-dark/60 rounded-2xl p-6 border border-gray-dark/60 shadow-xl backdrop-blur"
+              >
+                <h3 className="text-xl font-semibold mb-4 text-teal-400/90">{skillGroup.category}</h3>
+                <div className="flex flex-wrap gap-2">
+                  {skillGroup.items.map((skill) => (
+                    <span
+                      key={skill}
+                      className="px-3 py-1 text-sm rounded-full bg-gradient-to-r from-primary-blue/60 to-teal-400/50 border border-primary-blue/30 text-text-dark shadow font-sans"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* Achievements & Recognition */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="mb-10"
+        >
+          <h2 className="text-3xl font-heading mb-6 bg-clip-text text-transparent bg-gradient-to-r from-teal-400/90 to-primary-blue">
             Achievements & Recognition
           </h2>
           
@@ -61,7 +337,7 @@ const About: React.FC = () => {
               whileHover={{ scale: 1.02 }}
               className="bg-background-dark/50 p-6 rounded-xl backdrop-blur-sm border border-gray-dark/50"
             >
-              <h3 className="text-xl font-semibold mb-4 text-accent-green">Research Excellence</h3>
+              <h3 className="text-xl font-semibold mb-4 text-teal-400/90">Research Excellence</h3>
               <ul className="space-y-3 font-sans">
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
@@ -134,7 +410,7 @@ const About: React.FC = () => {
               whileHover={{ scale: 1.02 }}
               className="bg-background-dark/50 p-6 rounded-xl backdrop-blur-sm border border-gray-dark/50"
             >
-              <h3 className="text-xl font-semibold mb-4 text-accent-green">Computing & Technology</h3>
+              <h3 className="text-xl font-semibold mb-4 text-teal-400/90">Computing & Technology</h3>
               <ul className="space-y-3 font-sans">
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
@@ -181,7 +457,7 @@ const About: React.FC = () => {
               whileHover={{ scale: 1.02 }}
               className="bg-background-dark/50 p-6 rounded-xl backdrop-blur-sm border border-gray-dark/50"
             >
-              <h3 className="text-xl font-semibold mb-4 text-accent-green">Entrepreneurship & Service</h3>
+              <h3 className="text-xl font-semibold mb-4 text-teal-400/90">Entrepreneurship & Service</h3>
               <ul className="space-y-3 font-sans">
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
@@ -212,7 +488,7 @@ const About: React.FC = () => {
               whileHover={{ scale: 1.02 }}
               className="bg-background-dark/50 p-6 rounded-xl backdrop-blur-sm border border-gray-dark/50"
             >
-              <h3 className="text-xl font-semibold mb-4 text-accent-green">Additional Recognition</h3>
+              <h3 className="text-xl font-semibold mb-4 text-teal-400/90">Additional Recognition</h3>
               <ul className="space-y-3 font-sans">
                 <li className="flex items-start">
                   <span className="text-accent-orange mr-2">✦</span>
@@ -247,84 +523,21 @@ const About: React.FC = () => {
           </div>
         </motion.section>
 
-        {/* Skills Section */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mb-16"
-        >
-          <h2 className="text-2xl font-heading mb-2 bg-gradient-to-r from-primary-blue to-accent-green bg-clip-text text-transparent text-center">
-            Skills
-          </h2>
-          <div className="w-24 h-1 mx-auto mb-8 bg-gradient-to-r from-primary-blue to-accent-green rounded-full" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {skills.map((skillGroup, index) => (
-              <motion.div
-                key={skillGroup.category}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
-                className="bg-background-dark/60 rounded-2xl p-6 border border-gray-dark/60 shadow-xl backdrop-blur"
-              >
-                <h3 className="text-xl font-semibold mb-4 text-accent-green">{skillGroup.category}</h3>
-                <div className="flex flex-wrap gap-2">
-                  {skillGroup.items.map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-3 py-1 text-sm rounded-full bg-gradient-to-r from-primary-blue/60 to-accent-green/60 border border-primary-blue/30 text-text-dark shadow font-sans"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
-
-        {/* Education Section */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        >
-          <h2 className="text-2xl font-heading mb-2 bg-gradient-to-r from-primary-blue to-accent-green bg-clip-text text-transparent text-center">
-            Education
-          </h2>
-          <div className="w-24 h-1 mx-auto mb-8 bg-gradient-to-r from-primary-blue to-accent-green rounded-full" />
-          <div className="space-y-6">
-            {education.map((edu, index) => (
-              <motion.div
-                key={edu.degree}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 1 + index * 0.1 }}
-                className="bg-background-dark/60 rounded-2xl p-6 border border-gray-dark/60 shadow-xl backdrop-blur flex items-center gap-4"
-              >
-                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-primary-blue to-accent-green flex items-center justify-center text-text-dark text-2xl font-heading shadow-md">
-                  {edu.degree.includes('Bachelor') ? '🎓' : '🏫'}
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold mb-1 text-accent-green">{edu.degree}</h3>
-                  <p className="text-text-dark mb-1 font-sans">{edu.school}</p>
-                  <p className="text-text-dark mb-2 font-sans">{edu.year}</p>
-                  <p className="text-text-dark font-sans">{edu.details}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
-
-        <div className="my-16" />
-        {/* Thank You Animation Section */}
-        {/* <section className="max-w-3xl mx-auto bg-background-dark/60 rounded-2xl border border-gray-dark/60 shadow-xl backdrop-blur p-6 mb-20">
-          <h2 className="text-2xl font-heading mb-2 bg-gradient-to-r from-primary-blue to-accent-green bg-clip-text text-transparent text-center">
-            Supporters & Believers
-          </h2>
-          <div className="w-24 h-1 mx-auto mb-8 bg-gradient-to-r from-primary-blue to-accent-green rounded-full" />
-          <ThankYouAnimation message="Thank you to all my supporters!" />
-        </section> */}
+        <footer className="py-4 text-center border-t border-gray-dark/20 mt-6">
+          <p className="text-text-dark/50 font-sans text-sm">
+            © Alan Chen / Alan Jiaqi Chen / Jiaqi07 / 2026
+          </p>
+          <p className="mt-1 text-text-dark/50 font-sans text-sm">
+            <a
+              href="https://alanchen.onrender.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-text-dark/60 hover:text-text-dark/90 hover:underline transition-colors"
+            >
+              Previous site
+            </a>
+          </p>
+        </footer>
       </div>
     </div>
   );
