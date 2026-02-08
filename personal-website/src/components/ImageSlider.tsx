@@ -92,7 +92,7 @@ const ImageSlider: React.FC = () => {
       window.clearTimeout(i);
     }
     // Start new timer
-    const newTimer = setInterval(() => {
+    setInterval(() => {
       paginate(1);
     }, 5000);
     // Navigate
@@ -106,7 +106,7 @@ const ImageSlider: React.FC = () => {
       window.clearTimeout(i);
     }
     // Start new timer
-    const newTimer = setInterval(() => {
+    setInterval(() => {
       paginate(1);
     }, 5000);
     // Update index

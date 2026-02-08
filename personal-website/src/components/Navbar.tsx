@@ -6,7 +6,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { theme } = useTheme();
+  useTheme(); // ensure theme context is active
   const location = useLocation();
 
   const navItems = [
