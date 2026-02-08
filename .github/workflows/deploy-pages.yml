@@ -31,7 +31,7 @@ jobs:
       - name: Install and build
         run: |
           cd personal-website
-          npm ci
+          npm install
           npm run build
 
       # GitHub Pages serves 404.html for unknown paths - copy index so SPA routes work
