@@ -62,7 +62,7 @@ const newsItems = [
     url: 'https://marginalrevolution.com/marginalrevolution/2024/08/emergent-ventures-36th-cohort.html',
   },
   {
-    date: 'Nov 2023',
+    date: 'Jan 2024',
     title: 'TJSHS Honorable Mention: Alan Chen — Simulation-aided Learning from Demonstration for Robotic LEGO Construction',
     url: 'https://artscioutreach.tamu.edu/tjshs-event-results',
   },
