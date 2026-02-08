@@ -166,6 +166,15 @@ const About: React.FC = () => {
                   </div>
                 </li>
               </ul>
+              <ul className="space-y-3 font-sans">
+                <li className="flex items-start">
+                  <span className="text-accent-orange mr-2">✦</span>
+                  <div>
+                    <p className="font-medium text-text-dark">Turing Endowed Scholarship $5k</p>
+                    <p className="text-sm text-text-dark">Awarded by UT Austin Turing Program · August 2025</p>
+                  </div>
+                </li>
+              </ul>
             </motion.div>
 
             {/* Academic & Service */}
@@ -225,6 +234,13 @@ const About: React.FC = () => {
                   <div>
                     <p className="font-medium text-text-dark">Brawl Stars Masters Rank</p>
                     <p className="text-sm text-text-dark">Top 200 in US, SuperCell · Aug 2022</p>
+                  </div>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-accent-orange mr-2">✦</span>
+                  <div>
+                    <p className="font-medium text-text-dark">International Federation of Automatic Control Student Grant</p>
+                    <p className="text-sm text-text-dark">Awarded by IFAC · May 2025</p>
                   </div>
                 </li>
               </ul>

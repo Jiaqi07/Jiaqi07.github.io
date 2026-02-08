@@ -125,7 +125,7 @@ const constellationPoints: StarNodeProps[] = [
       size: 0.9,
       starName: 'Deneb Algedi',
       title: 'Skills',
-      content: 'React, artifical intelligence, Firebase, robotics simulation, machine learning, and computer vision.',
+      content: 'Diffusion, reinforcement intelligence, LLMs, robotics simulation, machine learning, and computer vision.',
       connections: [4]
     },
     {
@@ -134,7 +134,7 @@ const constellationPoints: StarNodeProps[] = [
       size: 0.8,
       starName: 'Castra',
       title: 'Internship Interests',
-      content: 'Looking to work with companies like Amazon, Meta, NVIDIA, Tesla, Waymo, Uber, and etc. Might dabble with quant.',
+      content: 'Looking to work with companies like AI2, Google Deepmind, Anthropic, Pika Labs, Amazon, Meta, NVIDIA, Tesla, and etc.',
       connections: [5]
     },
     {
@@ -152,7 +152,7 @@ const constellationPoints: StarNodeProps[] = [
       size: 0.9,
       starName: 'Baten Algiedi',
       title: 'Future Goals',
-      content: 'Aspiring to become a ZFellow and YCombinator founder.',
+      content: 'Aspiring to become a research scientist/fellow and build my solutions via startups in the future through YCombinator.',
       connections: [0]
     }
   ];
