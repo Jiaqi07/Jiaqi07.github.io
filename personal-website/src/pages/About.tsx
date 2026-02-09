@@ -152,7 +152,7 @@ const About: React.FC = () => {
             ))}
           </div>
         </motion.section>
-
+{/* 
         {/* Startup Experience */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
@@ -318,7 +318,7 @@ const About: React.FC = () => {
               </motion.div>
             ))}
           </div>
-        </motion.section>
+        </motion.section> */}
 
         {/* Achievements & Recognition */}
         <motion.section
