@@ -1,20 +1,20 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const skills = [
-  {
-    category: 'Programming Languages',
-    items: ['Python', 'C++', 'Java', 'JavaScript', 'R', 'LaTeX'],
-  },
-  {
-    category: 'Frameworks & Libraries',
-    items: ['PyTorch', 'ROS', 'React', 'CARLA', 'SUMO', 'SB3', 'OpenAI Gym', 'Matplotlib'],
-  },
-  {
-    category: 'Tools & Technologies',
-    items: ['Git', 'GitHub', 'Linux', 'Overleaf', 'APIs'],
-  },
-];
+// const skills = [
+//   {
+//     category: 'Programming Languages',
+//     items: ['Python', 'C++', 'Java', 'JavaScript', 'R', 'LaTeX'],
+//   },
+//   {
+//     category: 'Frameworks & Libraries',
+//     items: ['PyTorch', 'ROS', 'React', 'CARLA', 'SUMO', 'SB3', 'OpenAI Gym', 'Matplotlib'],
+//   },
+//   {
+//     category: 'Tools & Technologies',
+//     items: ['Git', 'GitHub', 'Linux', 'Overleaf', 'APIs'],
+//   },
+// ];
 
 const education = [
   {
@@ -31,83 +31,83 @@ const education = [
   },
 ];
 
-const startupProjects = [
-  {
-    title: 'CapyCot (on-pause)',
-    role: 'Founder',
-    period: 'May 2025-(On Pause to Learn More)',
-    description: 'Generative models for creative content design and generation (conditional deferred acceptance to YCombinator and Zfellows).',
-    tags: ['SaaS', 'Generative Models', 'LLMs', 'Diffusion Models', 'DreamBooth', 'LoRA'],
-  },
-  {
-    title: 'Olympiad',
-    role: 'Developer',
-    period: 'January 2025-April 2025',
-    description: 'Creating educational through personalized AI mentorship and training. Using RAG and custom tools for chatbot, raised $2k, and beta-testing.',
-    tags: ['React', 'Firebase', 'SaaS', 'RAG', 'Chatbot'],
-  },
-  {
-    title: 'AssembleIt',
-    role: 'Researcher & Founder',
-    period: 'May 2024-April 2025',
-    description: 'Founded startup with my research. Raised $11k from Emergent Ventures and 1517 Medici to build ideas. Currently on-pause and planning to pivot.',
-    tags: ['Startup', 'Research', 'Patent Pending'],
-  },
-];
+// const startupProjects = [
+//   {
+//     title: 'CapyCot (on-pause)',
+//     role: 'Founder',
+//     period: 'May 2025-(On Pause to Learn More)',
+//     description: 'Generative models for creative content design and generation (conditional deferred acceptance to YCombinator and Zfellows).',
+//     tags: ['SaaS', 'Generative Models', 'LLMs', 'Diffusion Models', 'DreamBooth', 'LoRA'],
+//   },
+//   {
+//     title: 'Olympiad',
+//     role: 'Developer',
+//     period: 'January 2025-April 2025',
+//     description: 'Creating educational through personalized AI mentorship and training. Using RAG and custom tools for chatbot, raised $2k, and beta-testing.',
+//     tags: ['React', 'Firebase', 'SaaS', 'RAG', 'Chatbot'],
+//   },
+//   {
+//     title: 'AssembleIt',
+//     role: 'Researcher & Founder',
+//     period: 'May 2024-April 2025',
+//     description: 'Founded startup with my research. Raised $11k from Emergent Ventures and 1517 Medici to build ideas. Currently on-pause and planning to pivot.',
+//     tags: ['Startup', 'Research', 'Patent Pending'],
+//   },
+// ];
 
-const researchExperiences = [
-  {
-    title: 'Research Engineer Intern',
-    organization: 'Stealth Startup',
-    role: 'Research Engineer Intern',
-    period: 'December 2025 - Present',
-    description: 'Applying state-of-the-art language model research to fine-tune generative video/image models for customers. Working closely with research scientists to develop data curation strategies for refining diffusion models. Experimenting with text and image encoders for conditioning, and using techniques like DreamBooth and LoRA.',
-    tags: ['AI/ML', 'Diffusion Models', 'LLMs', 'DreamBooth', 'LoRA', 'Generative Models'],
-  },
-  {
-    title: 'Researcher',
-    organization: 'Learning Agents Research Group (LARG) || UT Austin',
-    role: 'Researcher',
-    period: 'September 2025 - Present',
-    description: 'Researching reinforcement learning for vision language agents (VLAs) for mobile robot manipulation tasks. Finetuning robot foundation models (Octo, OpenVLA) using PPO, GRPO, and Diffusion PPO in Maniskill. Leading 4 peers to research on runtime verification of language agents using BERT encodings and temporal logic.',
-    tags: ['Reinforcement Learning', 'VLAs', 'Robotics', 'PPO', 'GRPO', 'Diffusion PPO', 'BERT'],
-  },
-  {
-    title: 'Researcher',
-    organization: 'Intelligent Control Lab || Carnegie Mellon Robotics Institute',
-    role: 'Researcher',
-    period: 'October 2022 - October 2024',
-    description: '2nd-authored two papers on Sim2Real digital twin and deployed trained algorithms onto a FANUC robot arm. 1st-authored paper using StableBaselines3 reinforcement learning (PPO) to tackle in-process assembly planning. Tested Vision Language Models, Siamese Networks, ConvNets, and Graph Neural Networks for classification. Recognized by former First Lady Biden in collaboration with ARM Institute and the US Gov for manufacturing.',
-    tags: ['Robotics', 'Research', 'Assembly', 'Manufacturing', 'Digital Twin', 'PPO', 'Sim2Real'],
-  },
-  {
-    title: 'Research Engineer Intern',
-    organization: 'Instinct Robotics',
-    role: 'Research Engineer Intern',
-    period: 'December 2023 - January 2024',
-    description: 'Contributed to early simulation development with real-world physics for precise robot control using Gazebo. Reviewed state-of-the-art reinforcement learning and control papers to create robot arms faster than humans. Collaborated closely with the Ph.D. CEO and founding engineer to deliver AI solutions to contractors.',
-    tags: ['Robotics', 'Startup', 'Simulation', 'Gazebo', 'Reinforcement Learning', 'Control'],
-  },
-  {
-    title: 'Researcher',
-    organization: 'Research Undergraduate Experience || University of Texas at San Antonio',
-    role: 'Researcher',
-    period: 'May - August 2022',
-    description: 'Participated in autonomous vehicle research with a focus on simulations, sensor fusion, and trajectory planning. Curated training data using car simulators CARLA and SUMO, YAML/JSON processing, and Numpy/Pandas.',
-    tags: ['Autonomous Vehicles', 'Research', 'CARLA', 'SUMO', 'Sensor Fusion', 'Trajectory Planning'],
-  },
-];
+// const researchExperiences = [
+//   {
+//     title: 'Research Engineer Intern',
+//     organization: 'Stealth Startup',
+//     role: 'Research Engineer Intern',
+//     period: 'December 2025 - Present',
+//     description: 'Applying state-of-the-art language model research to fine-tune generative video/image models for customers. Working closely with research scientists to develop data curation strategies for refining diffusion models. Experimenting with text and image encoders for conditioning, and using techniques like DreamBooth and LoRA.',
+//     tags: ['AI/ML', 'Diffusion Models', 'LLMs', 'DreamBooth', 'LoRA', 'Generative Models'],
+//   },
+//   {
+//     title: 'Researcher',
+//     organization: 'Learning Agents Research Group (LARG) || UT Austin',
+//     role: 'Researcher',
+//     period: 'September 2025 - Present',
+//     description: 'Researching reinforcement learning for vision language agents (VLAs) for mobile robot manipulation tasks. Finetuning robot foundation models (Octo, OpenVLA) using PPO, GRPO, and Diffusion PPO in Maniskill. Leading 4 peers to research on runtime verification of language agents using BERT encodings and temporal logic.',
+//     tags: ['Reinforcement Learning', 'VLAs', 'Robotics', 'PPO', 'GRPO', 'Diffusion PPO', 'BERT'],
+//   },
+//   {
+//     title: 'Researcher',
+//     organization: 'Intelligent Control Lab || Carnegie Mellon Robotics Institute',
+//     role: 'Researcher',
+//     period: 'October 2022 - October 2024',
+//     description: '2nd-authored two papers on Sim2Real digital twin and deployed trained algorithms onto a FANUC robot arm. 1st-authored paper using StableBaselines3 reinforcement learning (PPO) to tackle in-process assembly planning. Tested Vision Language Models, Siamese Networks, ConvNets, and Graph Neural Networks for classification. Recognized by former First Lady Biden in collaboration with ARM Institute and the US Gov for manufacturing.',
+//     tags: ['Robotics', 'Research', 'Assembly', 'Manufacturing', 'Digital Twin', 'PPO', 'Sim2Real'],
+//   },
+//   {
+//     title: 'Research Engineer Intern',
+//     organization: 'Instinct Robotics',
+//     role: 'Research Engineer Intern',
+//     period: 'December 2023 - January 2024',
+//     description: 'Contributed to early simulation development with real-world physics for precise robot control using Gazebo. Reviewed state-of-the-art reinforcement learning and control papers to create robot arms faster than humans. Collaborated closely with the Ph.D. CEO and founding engineer to deliver AI solutions to contractors.',
+//     tags: ['Robotics', 'Startup', 'Simulation', 'Gazebo', 'Reinforcement Learning', 'Control'],
+//   },
+//   {
+//     title: 'Researcher',
+//     organization: 'Research Undergraduate Experience || University of Texas at San Antonio',
+//     role: 'Researcher',
+//     period: 'May - August 2022',
+//     description: 'Participated in autonomous vehicle research with a focus on simulations, sensor fusion, and trajectory planning. Curated training data using car simulators CARLA and SUMO, YAML/JSON processing, and Numpy/Pandas.',
+//     tags: ['Autonomous Vehicles', 'Research', 'CARLA', 'SUMO', 'Sensor Fusion', 'Trajectory Planning'],
+//   },
+// ];
 
-const otherExperiences = [
-  {
-    title: 'Austin Great Wall Chinese School',
-    organization: 'AGWCS',
-    role: 'Teacher, prev. TA (2020) & Ambassador (2023)',
-    period: 'May 2020 - August 2024',
-    description: 'Taught +130 students and designed custom curriculum. Served as Texas ambassador and partnered with Chinese schools all across the US.',
-    tags: ['Teaching', 'Speaking', 'Leadership', 'Mentorship'],
-  },
-];
+// const otherExperiences = [
+//   {
+//     title: 'Austin Great Wall Chinese School',
+//     organization: 'AGWCS',
+//     role: 'Teacher, prev. TA (2020) & Ambassador (2023)',
+//     period: 'May 2020 - August 2024',
+//     description: 'Taught +130 students and designed custom curriculum. Served as Texas ambassador and partnered with Chinese schools all across the US.',
+//     tags: ['Teaching', 'Speaking', 'Leadership', 'Mentorship'],
+//   },
+// ];
 
 const About: React.FC = () => {
   return (
