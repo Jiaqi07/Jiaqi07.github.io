@@ -138,11 +138,11 @@ const Home: React.FC = () => {
             </p>
             <p>
               In the Summer of 2026, I'll be interning at ARM as an AI/ML intern in collaboration with OpenAI.
-              In my first semester, I sacrificed my GPA to do a startup with my friends where I got top 10% @ a16z speedrun, finalist @ ZFellows, and a YC interview / deferral from
-              YCombinator (super grateful for Jared Friedman's advice on staying in school and his offer of future mentorship / office hours - and a YC fastrack...).
+              In my first semester, I sacrificed my GPA to do a startup with my friends, where I got top 10% @ a16z speedrun, finalist @ ZFellows, and a YC interview / deferral from
+              YCombinator (super grateful for Jared Friedman's advice on staying in school and his offer of future mentorship / office hours + a YC fastrack...).
             </p>
             <p>
-              In my free time, I play intramural basketball, lift weights, and run up Go games on KGS.
+              In my free time, I play intramural basketball, lift weights, and run up Go games on KGS. I'm also learning fencing from my goated TA.
             </p>
           </motion.div>
         </div>
