@@ -123,7 +123,7 @@ const Home: React.FC = () => {
             className="space-y-4 text-text-dark font-sans text-[15px] leading-relaxed"
           >
             <p>
-              Hello! I'm a freshman @ UT Austin studying computer science and mathematics under the <strong>Turing Scholar Honors program</strong>!
+              Hello! I'm a sophmore @ UT Austin studying computer science and mathematics under the <strong>Turing Scholar Honors program</strong>!
             </p>
             <p>
               In my past life, I represented USA internationally in <strong>Go</strong> at competitions in Shanghai, China, and Osaka, Japan
@@ -134,15 +134,15 @@ const Home: React.FC = () => {
               Right now, I'm researching mobile manipulation using <strong>vision language agents (VLA)</strong> and post-training methods like GRPO and PPO.
             </p>
             <p>
-              On campus, I'm apart of the Learning Agents Research Group (LARG), Robot Learning Reading Group, Reinforcement Learning Reading Group (RLRG), and Texas Venture Group (TVG).
+              On campus, I'm a part of the Learning Agents Research Group (LARG), Robot Learning Reading Group, Reinforcement Learning Reading Group (RLRG), and Texas Venture Group (TVG).
             </p>
             <p>
-              In the Summer of 2026, I'll be interning at ARM as an AI/ML intern in collaboration with OpenAI.
-              In my first semester, I sacrificed my GPA to do a startup with my friends, where I got top 10% @ a16z speedrun, finalist @ ZFellows, and a YC interview / deferral from
+              In my freshman summer (2026), I worked at ARM as a Research Engineer applying research to improve LLM performance for ARM IP.
+              In my first semester, I sacrificed my GPA to do a startup with my roomate, where I got top 10% @ a16z speedrun, finalist @ ZFellows, and a YC interview / deferral from
               YCombinator (super grateful for Jared Friedman's advice on staying in school and his offer of future mentorship / office hours + a YC fastrack...).
             </p>
             <p>
-              In my free time, I play intramural basketball, lift weights, and run up Go games on KGS. I'm also learning fencing from my goated TA.
+              In my free time, I play intramural basketball, lift weights, and run up Go games on KGS. I also fence occasionally with my former comp-arch TA.
             </p>
           </motion.div>
         </div>
