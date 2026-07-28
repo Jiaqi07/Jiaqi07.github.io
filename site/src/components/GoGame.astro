@@ -1,0 +1,302 @@
+---
+/**
+ * Replays a real game from an SGF served out of /public — captures and all.
+ * Used on the about page for one of Alan's own KGS games.
+ */
+interface Props {
+  src: string;
+  caption: string;
+  link?: { label: string; url: string }[];
+}
+
+const { src, caption, link = [] } = Astro.props;
+---
+
+<figure class="go-game" data-src={src}>
+  <div class="gg-board">
+    <canvas class="gg-canvas"></canvas>
+    <span class="gg-counter" aria-hidden="true">move 0</span>
+  </div>
+  <figcaption>
+    <span>{caption}</span>
+    {link.length > 0 && (
+      <span class="gg-links">
+        {link.map((l) => (
+          <a href={l.url} target={l.url.startsWith('http') ? '_blank' : undefined} rel="noopener">{l.label} ↗</a>
+        ))}
+      </span>
+    )}
+  </figcaption>
+</figure>
+
+<style>
+  .go-game {
+    margin: 1.8em 0;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--bg-2);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+
+  .gg-board {
+    position: relative;
+    aspect-ratio: 1;
+    max-width: 460px;
+    margin: 1.2rem auto 0.6rem;
+    padding: 0 1rem;
+  }
+
+  .gg-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .gg-counter {
+    position: absolute;
+    right: 1.1rem;
+    bottom: -0.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--faint);
+  }
+
+  figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.4rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+    color: var(--faint);
+    border-top: 1px solid var(--hairline);
+    padding: 0.6rem 1rem 0.7rem;
+    margin-top: 0.8rem;
+  }
+
+  .gg-links {
+    display: flex;
+    gap: 0.9rem;
+  }
+
+  .gg-links a {
+    color: var(--muted);
+  }
+
+  .gg-links a:hover {
+    color: var(--accent);
+  }
+</style>
+
+<script>
+  const N = 19;
+  const HOSHI = [3, 9, 15];
+
+  type Move = { color: 'B' | 'W'; p: [number, number] | null };
+
+  function parseSgf(text: string): Move[] {
+    const out: Move[] = [];
+    const re = /;([BW])\[([a-s]{2})?\]/g;
+    let m;
+    while ((m = re.exec(text)) !== null) {
+      out.push({
+        color: m[1] as 'B' | 'W',
+        p: m[2] ? [m[2].charCodeAt(0) - 97, m[2].charCodeAt(1) - 97] : null,
+      });
+    }
+    return out;
+  }
+
+  /** Precompute the stone layout after every move, applying captures. */
+  function boardStates(moves: Move[]): Map<number, 'B' | 'W'>[] {
+    const board = new Map<number, 'B' | 'W'>();
+    const key = (x: number, y: number) => y * N + x;
+    const states: Map<number, 'B' | 'W'>[] = [];
+
+    const groupOf = (start: number, color: 'B' | 'W') => {
+      const seen = new Set<number>([start]);
+      const stack = [start];
+      let hasLiberty = false;
+      while (stack.length) {
+        const k = stack.pop()!;
+        const x = k % N;
+        const y = (k - x) / N;
+        for (const [nx, ny] of [[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]] as const) {
+          if (nx < 0 || nx >= N || ny < 0 || ny >= N) continue;
+          const nk = key(nx, ny);
+          const c = board.get(nk);
+          if (c === undefined) hasLiberty = true;
+          else if (c === color && !seen.has(nk)) {
+            seen.add(nk);
+            stack.push(nk);
+          }
+        }
+      }
+      return { seen, hasLiberty };
+    };
+
+    for (const mv of moves) {
+      if (mv.p) {
+        const [x, y] = mv.p;
+        const k = key(x, y);
+        board.set(k, mv.color);
+        const opp = mv.color === 'B' ? 'W' : 'B';
+        for (const [nx, ny] of [[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]] as const) {
+          if (nx < 0 || nx >= N || ny < 0 || ny >= N) continue;
+          const nk = key(nx, ny);
+          if (board.get(nk) === opp) {
+            const { seen, hasLiberty } = groupOf(nk, opp);
+            if (!hasLiberty) for (const s of seen) board.delete(s);
+          }
+        }
+      }
+      states.push(new Map(board));
+    }
+    return states;
+  }
+
+  function initGame(fig: HTMLElement) {
+    const canvas = fig.querySelector<HTMLCanvasElement>('.gg-canvas');
+    const counter = fig.querySelector<HTMLElement>('.gg-counter');
+    const wrap = fig.querySelector<HTMLElement>('.gg-board');
+    const src = fig.dataset.src;
+    if (!canvas || !wrap || !counter || !src) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let states: Map<number, 'B' | 'W'>[] = [];
+    let idx = 0;
+    let size = 0;
+    let visible = true;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let colors: Record<string, string> = {};
+
+    const goban = () => {
+      const cs = getComputedStyle(document.documentElement);
+      colors = {
+        grid: 'rgba(32,36,43,0.2)',
+        hoshi: 'rgba(180,90,31,0.55)',
+        black: '#23272e',
+        blackRim: 'rgba(32,36,43,0.15)',
+        white: '#fffdf6',
+        whiteRim: 'rgba(32,36,43,0.35)',
+        accent: cs.getPropertyValue('--accent').trim(),
+      };
+    };
+
+    const pos = (i: number) => {
+      const pad = size * 0.045;
+      return pad + (i * (size - 2 * pad)) / (N - 1);
+    };
+
+    const setup = () => {
+      const rect = wrap.getBoundingClientRect();
+      size = Math.min(rect.width, rect.height);
+      if (size < 40) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(size * dpr);
+      canvas.height = Math.round(size * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      goban();
+      draw();
+    };
+
+    function draw() {
+      if (!ctx || size < 40 || states.length === 0) return;
+      ctx.clearRect(0, 0, size, size);
+
+      ctx.strokeStyle = colors.grid;
+      ctx.lineWidth = 1;
+      for (let i = 0; i < N; i++) {
+        const p = Math.round(pos(i)) + 0.5;
+        ctx.beginPath();
+        ctx.moveTo(pos(0), p);
+        ctx.lineTo(pos(N - 1), p);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(p, pos(0));
+        ctx.lineTo(p, pos(N - 1));
+        ctx.stroke();
+      }
+
+      ctx.fillStyle = colors.hoshi;
+      for (const a of HOSHI)
+        for (const b of HOSHI) {
+          ctx.beginPath();
+          ctx.arc(pos(a), pos(b), size * 0.006, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+      const r = ((size - size * 0.09) / (N - 1)) * 0.47;
+      const state = states[Math.max(0, idx - 1)];
+      state.forEach((color, k) => {
+        const x = k % N;
+        const y = (k - x) / N;
+        const px = pos(x);
+        const py = pos(y);
+        ctx.beginPath();
+        ctx.arc(px, py, r, 0, Math.PI * 2);
+        ctx.fillStyle = color === 'B' ? colors.black : colors.white;
+        ctx.fill();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = color === 'B' ? colors.blackRim : colors.whiteRim;
+        ctx.stroke();
+      });
+
+      counter!.textContent = `move ${idx} / ${states.length}`;
+    }
+
+    function step() {
+      if (!visible) return;
+      if (idx < states.length) {
+        idx++;
+        draw();
+        timer = setTimeout(step, idx < 40 ? 90 : 130);
+      } else {
+        timer = setTimeout(() => {
+          idx = 0;
+          step();
+        }, 4500);
+      }
+    }
+
+    fetch(src)
+      .then((r) => (r.ok ? r.text() : Promise.reject(r.status)))
+      .then((text) => {
+        states = boardStates(parseSgf(text));
+        if (states.length === 0) return;
+        setup();
+        if (reduced) {
+          idx = states.length;
+          draw();
+        } else {
+          const io = new IntersectionObserver(
+            ([entry]) => {
+              visible = entry.isIntersecting;
+              clearTimeout(timer);
+              if (visible) timer = setTimeout(step, 400);
+            },
+            { threshold: 0.1 }
+          );
+          io.observe(wrap);
+          document.addEventListener('astro:before-swap', () => { clearTimeout(timer); io.disconnect(); }, { once: true });
+        }
+
+        const ro = new ResizeObserver(() => setup());
+        ro.observe(wrap);
+        document.addEventListener('astro:before-swap', () => ro.disconnect(), { once: true });
+      })
+      .catch(() => {
+        fig.style.display = 'none';
+      });
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLElement>('.go-game').forEach(initGame);
+  });
+</script>

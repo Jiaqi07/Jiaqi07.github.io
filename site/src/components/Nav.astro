@@ -1,0 +1,152 @@
+---
+const path = Astro.url.pathname;
+const links = [
+  { href: '/research', label: 'research' },
+  { href: '/blog', label: 'writing' },
+  { href: '/about', label: 'about' },
+];
+const isActive = (href: string) => path === href || path.startsWith(href + '/');
+---
+
+<header class="site-nav" id="site-nav">
+  <div class="container nav-inner">
+    <a href="/" class="brand" aria-label="Alan Chen, home">
+      <span class="mark">
+        <span class="mark-ac" aria-hidden="true">AC</span>
+        <img class="mark-scratch" src="/images/scratch-avatar.png" alt="" width="26" height="26" loading="eager" />
+      </span>
+      <span class="brand-name">Alan Chen</span>
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      {links.map((l) => (
+        <a href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>{l.label}</a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    transition: background-color 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
+    border-bottom: 1px solid transparent;
+  }
+
+  .site-nav.scrolled {
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border-bottom-color: var(--hairline);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 4rem;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--text);
+  }
+
+  .brand:hover { color: var(--text); }
+
+  .mark {
+    position: relative;
+    width: 26px;
+    height: 26px;
+    display: inline-grid;
+    place-items: center;
+  }
+
+  .mark-ac {
+    position: absolute;
+    inset: 0;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-family: var(--font-display);
+    font-weight: 640;
+    font-size: 0.68rem;
+    letter-spacing: 0.02em;
+    color: var(--accent);
+    opacity: 0;
+    transform: rotateY(90deg);
+    transition: opacity 0.25s ease, transform 0.35s ease;
+  }
+
+  .mark-scratch {
+    border-radius: 6px;
+    transition: opacity 0.25s ease, transform 0.35s ease;
+  }
+
+  .brand:hover .mark-scratch {
+    opacity: 0;
+    transform: rotateY(-90deg);
+  }
+
+  .brand:hover .mark-ac {
+    opacity: 1;
+    transform: rotateY(0deg);
+  }
+
+  .brand-name {
+    font-family: var(--font-display);
+    font-weight: 560;
+    font-size: 1.02rem;
+    letter-spacing: -0.01em;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.9rem, 2.5vw, 1.7rem);
+  }
+
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .nav-links a:hover {
+    color: var(--text);
+  }
+
+  .nav-links a[aria-current='page'] {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  @media (max-width: 560px) {
+    .brand-name { display: none; }
+  }
+</style>
+
+<script>
+  function initNav() {
+    const nav = document.getElementById('site-nav');
+    if (!nav) return;
+
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  document.addEventListener('astro:page-load', initNav);
+</script>

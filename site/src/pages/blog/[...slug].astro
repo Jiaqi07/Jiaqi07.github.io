@@ -1,0 +1,253 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPosts, formatDate, type Post } from '../../lib/posts';
+import 'katex/dist/katex.min.css';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post, i) => ({
+    params: { slug: post.slug },
+    props: {
+      post,
+      newer: posts[i - 1] ? { slug: posts[i - 1].slug, title: posts[i - 1].title } : null,
+      older: posts[i + 1] ? { slug: posts[i + 1].slug, title: posts[i + 1].title } : null,
+    },
+  }));
+}
+
+interface Props {
+  post: Post;
+  newer: { slug: string; title: string } | null;
+  older: { slug: string; title: string } | null;
+}
+
+const { post, newer, older } = Astro.props;
+const { Content } = post;
+const toc = post.headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+<Base title={post.title} description={post.description} ogType="article">
+  <article class="post">
+    <header class="post-head">
+      <div class="narrow">
+        <p class="back reveal in-view"><a href="/blog">← all writing</a></p>
+        <p class="post-meta reveal in-view">
+          <time datetime={post.date.toISOString()}>{formatDate(post.date)}</time>
+          <span>·</span>
+          <span>{post.minutes} min read</span>
+          {post.updated && <span>· updated {formatDate(post.updated)}</span>}
+        </p>
+        <h1 class="post-title reveal in-view">{post.title}</h1>
+        {post.tags.length > 0 && (
+          <div class="chip-row reveal in-view">
+            {post.tags.map((t) => (
+              <span class="tag">{t}</span>
+            ))}
+          </div>
+        )}
+      </div>
+    </header>
+
+    <div class="post-layout container">
+      {toc.length > 1 && (
+        <aside class="toc" aria-label="Table of contents">
+          <p class="toc-label">contents</p>
+          <nav>
+            {toc.map((h) => (
+              <a href={`#${h.slug}`} class:list={['toc-link', `depth-${h.depth}`]} data-target={h.slug}>
+                {h.text}
+              </a>
+            ))}
+          </nav>
+        </aside>
+      )}
+
+      <div class="narrow post-body">
+        <div class="prose">
+          <Content />
+        </div>
+
+        <footer class="post-footer">
+          {(older || newer) && (
+            <nav class="post-nav" aria-label="More posts">
+              {older ? (
+                <a class="post-nav-link" href={`/blog/${older.slug}`}>
+                  <span class="post-nav-dir">← older</span>
+                  <span class="post-nav-title">{older.title}</span>
+                </a>
+              ) : (
+                <span />
+              )}
+              {newer && (
+                <a class="post-nav-link next" href={`/blog/${newer.slug}`}>
+                  <span class="post-nav-dir">newer →</span>
+                  <span class="post-nav-title">{newer.title}</span>
+                </a>
+              )}
+            </nav>
+          )}
+        </footer>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .post-head {
+    padding-top: clamp(7rem, 15vh, 9.5rem);
+    padding-bottom: clamp(1.5rem, 4vh, 2.5rem);
+  }
+
+  .back {
+    margin-bottom: 1.4rem;
+  }
+
+  .back a {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--faint);
+  }
+
+  .back a:hover {
+    color: var(--accent);
+  }
+
+  .post-meta {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--faint);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .post-title {
+    font-size: clamp(1.9rem, 4.5vw, 2.9rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .post-layout {
+    position: relative;
+  }
+
+  .post-body {
+    padding-bottom: 2rem;
+  }
+
+  /* table of contents — floats in the right margin on wide screens */
+  .toc {
+    display: none;
+  }
+
+  @media (min-width: 1180px) {
+    .toc {
+      display: block;
+      position: sticky;
+      top: 6.5rem;
+      float: right;
+      width: 15rem;
+      margin-right: calc((100% - 46rem) / 2 - 16.5rem);
+      font-size: 0.82rem;
+    }
+  }
+
+  .toc-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    color: var(--faint);
+    margin-bottom: 0.7rem;
+  }
+
+  .toc-link {
+    display: block;
+    color: var(--muted);
+    padding: 0.22rem 0 0.22rem 0.8rem;
+    border-left: 1px solid var(--hairline);
+    line-height: 1.4;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .toc-link.depth-3 {
+    padding-left: 1.7rem;
+    font-size: 0.78rem;
+  }
+
+  .toc-link:hover {
+    color: var(--text);
+  }
+
+  .toc-link.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+  }
+
+  .post-footer {
+    margin-top: 4rem;
+  }
+
+  .post-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    border-top: 1px solid var(--hairline);
+    padding-top: 1.6rem;
+  }
+
+  .post-nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    max-width: 46%;
+  }
+
+  .post-nav-link.next {
+    text-align: right;
+    margin-left: auto;
+  }
+
+  .post-nav-dir {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--faint);
+  }
+
+  .post-nav-title {
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+  }
+
+  .post-nav-link:hover .post-nav-title {
+    color: var(--accent);
+  }
+</style>
+
+<script>
+  function initToc() {
+    const links = document.querySelectorAll<HTMLAnchorElement>('.toc-link');
+    if (!links.length) return;
+    const map = new Map<Element, HTMLAnchorElement>();
+    links.forEach((l) => {
+      const el = document.getElementById(l.dataset.target ?? '');
+      if (el) map.set(el, l);
+    });
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            links.forEach((l) => l.classList.remove('active'));
+            map.get(e.target)?.classList.add('active');
+          }
+        }
+      },
+      { rootMargin: '-15% 0px -75% 0px' }
+    );
+    map.forEach((_, el) => io.observe(el));
+  }
+
+  document.addEventListener('astro:page-load', initToc);
+</script>

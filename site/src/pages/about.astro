@@ -1,0 +1,737 @@
+---
+import Base from '../layouts/Base.astro';
+import GoGame from '../components/GoGame.astro';
+import { experience, honorSpotlight, honorList } from '../data/experience';
+import { profile } from '../data/profile';
+
+const album = [
+  { src: '/images/go-congress-2017.jpg', caption: 'US Go Congress · San Diego, 2017', alt: 'Young Alan mid-game at the 2017 US Go Congress', rot: -2.2 },
+  { src: '/images/go-pro-2017.jpg', caption: 'learning from a 9p · Go Congress 2017', alt: 'A 9-dan professional reviewing stones at Alan’s board during the 2017 US Go Congress', rot: 1.6 },
+  { src: '/images/go-tournament-2018.jpg', caption: 'tournament in Osaka· 2018', alt: 'A crowded youth Go tournament hall in summer 2018', rot: -1.8 },
+  { src: '/images/alan-fanuc.jpg', caption: 'with the FANUC · CMU Intelligent Control Lab', alt: 'Alan adjusting the end effector of a FANUC LR Mate robot arm', rot: 2.0 },
+  { src: '/images/mill19-yaskawa.jpg', caption: 'Mill 19 · ARM Institute', alt: 'Alan in a hard hat next to a large blue Yaskawa industrial robot at Mill 19', rot: -1.5 },
+  { src: '/images/yc-dinner-2025.jpg', caption: 'with Jared Friedman · YC dinner, 2025', alt: 'Alan standing with Jared Friedman at a Y Combinator dinner in 2025', rot: 1.9 },
+  { src: '/images/jshs-podium.jpg', caption: 'presenting · National JSHS 2024', alt: 'Alan presenting at the podium of the 2024 National Junior Science and Humanities Symposium', rot: 1.7 },
+  { src: '/images/txsef-stage.jpg', caption: 'Best of State · TXSEF 2025', alt: 'Alan receiving the Senior Best of State award in Physical Sciences at TXSEF', rot: -2.1 },
+];
+
+const featured = [
+  {
+    source: 'CBS Austin',
+    title: 'Central Texas students excel at world’s largest science fair',
+    note: 'ISEF 2025 coverage, Grand Award included',
+    url: 'https://cbsaustin.com/news/local/central-texas-students-excel-at-worlds-largest-science-fair-earn-top-awards-scholarships',
+  },
+  {
+    source: 'ARM Institute',
+    title: 'First Lady Jill Biden visits Mill 19',
+    note: 'the robotic Lego assembly testbed grew out of my lab’s work at CMU',
+    url: 'https://arminstitute.org/news/2023-flotus/',
+  },
+  {
+    source: 'Marginal Revolution',
+    title: 'Emergent Ventures, 36th cohort',
+    note: 'Tyler Cowen’s grant announcement',
+    url: 'https://marginalrevolution.com/marginalrevolution/2024/08/emergent-ventures-36th-cohort.html',
+  },
+  {
+    source: 'Society for Science',
+    title: 'Regeneron STS 2025 Scholars',
+    note: 'Top-300 scholar for AssemblyComplete',
+    url: 'https://www.societyforscience.org/regeneron-sts/2025-scholars/',
+  },
+];
+---
+
+<Base
+  title="About"
+  description="Alan Chen: from Mudkip games on Scratch and competitive Go to robotics research at CMU and robot learning at UT Austin."
+>
+  <section class="page-head">
+    <div class="container">
+      <p class="eyebrow reveal in-view">about</p>
+      <h1 class="page-title reveal in-view">From Scratch blocks to robot arms</h1>
+    </div>
+  </section>
+
+  <section class="story">
+    <div class="container story-grid">
+      <div class="story-prose reveal in-view">
+        <p>
+          I'm Alan, a current sophmore studying CS under UT Austin's <strong>Turing Scholars</strong> honors program and a
+          researcher at the <a class="squiggle" href="https://larg.cs.utexas.edu/" target="_blank" rel="noopener">Learning
+          Agents Research Group</a>, where I work on reinforcement learning for
+          vision-language-action models: teaching mobile robots to act on what they see and read.
+        </p>
+        <p>
+          I started programming at nine, making Mudkip-themed games on
+          <a href={profile.links.scratch} target="_blank" rel="noopener">Scratch</a> as
+          <em>@ac91305</em> (the avatar in the footer is the original).
+        </p>
+        <p>
+          Before research, there was <strong>Go</strong>. I competed as one of the top five youth
+          players in the US, placed 3rd at AGA YoungLions and the US Go Congress in 2019–20, and
+          represented the USA at tournaments in Shanghai and Osaka, training in the 5–6 dan classes
+          while I was in China. What kept me at the board was never just the strategy. You can read
+          a person through how they play, aggressive or patient or instinctual, before you share a
+          single word of the same language. I was a kid memorizing joseki when AlphaGo and Lee
+          Sedol traded Move 37 and Move 78; the animation on the homepage replays Lee's. I still
+          run up games on KGS, and I'm thinking about starting a Go club at UT.
+          Also, I managed to find a old game of mine displayed below (I swear I play better at in-person tournaments).
+        </p>
+
+        <GoGame
+          src="/go/agcAlanCh-KXie2015.sgf"
+          caption="me (white) throwing against a 3d in 2020 · B+1.5"
+        />
+
+        <p>
+          Research pulled me in the summer after ninth grade, at a UT San Antonio REU working on
+          autonomous-vehicle simulation. That became my first paper. The next fall I joined the
+          <a class="squiggle" href="http://icontrol.ri.cmu.edu/" target="_blank" rel="noopener">Intelligent
+          Control Lab</a> at CMU's Robotics Institute, and for two years I
+          spent evenings on robotic assembly: three papers, one of them first-authored, and a lot of
+          hours getting algorithms that worked in simulation to also work on a real FANUC arm. That
+          work carried me to an <strong>ISEF Grand Award</strong> and <strong>Regeneron STS
+          Scholar</strong> recognition, and the lab's Lego assembly testbed was part of what First
+          Lady Jill Biden came to see at Mill 19.
+        </p>
+        <p>
+          Now I'm in Austin: fine-tuning robot foundation models at LARG, and fresh off a
+          summer at <strong>Arm</strong> as an LLM research engineering intern on the Central
+          Engineering AI team, where I independently developed a
+          <a class="squiggle" href="https://arxiv.org/abs/2512.24601" target="_blank" rel="noopener">recursive
+          language model</a> approach and analyzed complex workloads to optimize uArch. The thing I
+          cared about at nine is still the thing I care about: building stuff that has to work
+          outside a vacuum, where reality evaluates your idea rollouts quickly.
+        </p>
+        <p>
+          When async off the clock: intramural basketball, lifting, teaching Sunday Chinese school (130+
+          students over four years), and a top-200-in-the-US Brawl Stars rank I'm still proud of.
+        </p>
+      </div>
+
+      <aside class="album" aria-label="Photo album">
+        {album.map((p, i) => (
+          <figure class="polaroid reveal" style={`--rot:${p.rot}deg; --reveal-delay:${i * 0.07}s`}>
+            <img src={p.src} alt={p.alt} loading={i < 2 ? 'eager' : 'lazy'} />
+            <figcaption>{p.caption}</figcaption>
+          </figure>
+        ))}
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow reveal">featured</p>
+      <h2 class="section-title reveal">In the wild</h2>
+      <div class="featured-list">
+        {featured.map((f, i) => (
+          <a class="featured-row reveal" href={f.url} target="_blank" rel="noopener" style={`--reveal-delay:${i * 0.05}s`}>
+            <span class="featured-source">{f.source}</span>
+            <span class="featured-body">
+              <span class="featured-title">{f.title} <span class="ext" aria-hidden="true">↗</span></span>
+              <span class="featured-note">{f.note}</span>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow reveal">the path so far</p>
+      <h2 class="section-title reveal">Experience</h2>
+      <div class="timeline">
+        {experience.map((e, i) => (
+          <div class="tl-row reveal" style={`--reveal-delay:${i * 0.05}s`}>
+            <div class="tl-period">
+              <span>{e.period}</span>
+              {e.status === 'now' && <span class="tl-badge now">now</span>}
+              {e.status === 'upcoming' && <span class="tl-badge up">next</span>}
+            </div>
+            <div class="tl-body">
+              <h3 class="tl-role">{e.role}</h3>
+              <p class="tl-org">
+                {e.logo && <img class="tl-logo" src={e.logo} alt="" loading="lazy" />}
+                {e.link ? (
+                  <a href={e.link} target="_blank" rel="noopener">{e.org} ↗</a>
+                ) : (
+                  e.org
+                )}
+              </p>
+              {e.detailHtml ? <p class="tl-detail" set:html={e.detailHtml} /> : <p class="tl-detail">{e.detail}</p>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow reveal">selected honors</p>
+      <h2 class="section-title reveal">A few favorites</h2>
+      <div class="spot-grid">
+        {honorSpotlight.map((h, i) => (
+          <div class="spot reveal" style={`--reveal-delay:${i * 0.07}s`}>
+            <span class="spot-year" aria-hidden="true">{h.year}</span>
+            <span class="spot-title">{h.title}</span>
+            <span class="spot-detail">{h.detail}</span>
+          </div>
+        ))}
+      </div>
+      <div class="honor-more reveal" id="honor-more">
+        <button class="honor-toggle" id="honor-toggle" type="button" aria-expanded="false" aria-controls="honor-trickle">
+          <span class="ht-label">the longer list</span>
+          <span class="ht-plus" aria-hidden="true">+</span>
+        </button>
+        <div class="honor-clip">
+          <ol class="honor-trickle" id="honor-trickle">
+            {honorList.map((h, i) => (
+              <li class="trickle-item" style={`--i:${i}`}>
+                <span class="trickle-title">{h.title}</span>
+                <span class="trickle-meta">{h.meta}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta reveal">
+        <div class="cta-copy">
+          <h2 class="cta-title">Let's talk</h2>
+          <p class="cta-sub">Robots, RL, Go, or whatever you're building.</p>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-solid" href={`mailto:${profile.email}`}>{profile.email}</a>
+          <a class="btn" href={profile.links.x} target="_blank" rel="noopener">@AlanJiaqiChen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-head {
+    padding-top: clamp(7rem, 16vh, 10rem);
+    padding-bottom: clamp(1.5rem, 4vh, 2.5rem);
+  }
+
+  .page-title {
+    font-size: clamp(2.2rem, 5.5vw, 3.4rem);
+    letter-spacing: -0.025em;
+  }
+
+  .story-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  .story-prose {
+    font-family: var(--font-serif);
+    font-size: 1.12rem;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+
+  .story-prose p + p {
+    margin-top: 1.2em;
+  }
+
+  .story-prose strong {
+    color: var(--text);
+    font-weight: 580;
+  }
+
+  .story-prose a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-style: wavy;
+    text-decoration-color: color-mix(in srgb, var(--accent) 65%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  .story-prose a:hover {
+    color: var(--accent-strong);
+    text-decoration-color: var(--accent-strong);
+  }
+
+  /* ---- photo album ---- */
+  .album {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+    padding-top: 0.5rem;
+  }
+
+  .polaroid {
+    margin: 0;
+    width: min(100%, 252px);
+    background: #fffdf6;
+    border: 1px solid rgba(32, 36, 43, 0.14);
+    border-radius: 6px;
+    padding: 0.55rem 0.55rem 0;
+    box-shadow: 0 2px 6px rgba(32, 36, 43, 0.12), 0 14px 30px -18px rgba(32, 36, 43, 0.35);
+    transform: rotate(var(--rot, 0deg));
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+    position: relative;
+  }
+
+  .polaroid:hover {
+    transform: rotate(0deg) translateY(-6px) scale(1.03);
+    box-shadow: 0 4px 10px rgba(32, 36, 43, 0.15), 0 26px 50px -20px rgba(32, 36, 43, 0.45);
+    z-index: 5;
+  }
+
+  .polaroid img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: 3px;
+    background: #eee9df;
+  }
+
+  .polaroid figcaption {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    color: #6b7280;
+    text-align: center;
+    padding: 0.5rem 0.2rem 0.6rem;
+  }
+
+  @media (max-width: 900px) {
+    .story-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .album {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .polaroid {
+      width: min(46%, 240px);
+    }
+
+    .polaroid + .polaroid {
+      margin-top: 0;
+    }
+  }
+
+  /* ---- featured ---- */
+  .featured-list {
+    margin-top: 1.8rem;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .featured-row {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 1.2rem;
+    align-items: baseline;
+    padding: 1.1rem 0.4rem;
+    border-bottom: 1px solid var(--hairline);
+    transition: background 0.2s ease;
+  }
+
+  .featured-row:hover {
+    background: var(--surface-hover);
+  }
+
+  .featured-source {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .featured-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .featured-title {
+    font-family: var(--font-display);
+    font-weight: 560;
+    color: var(--text);
+    font-size: 1.02rem;
+  }
+
+  .featured-row:hover .featured-title {
+    color: var(--accent);
+  }
+
+  .ext {
+    color: var(--accent);
+    font-size: 0.85em;
+  }
+
+  .featured-note {
+    font-size: 0.86rem;
+    color: var(--muted);
+    font-family: var(--font-sans);
+  }
+
+  @media (max-width: 640px) {
+    .featured-row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.3rem;
+    }
+  }
+
+  /* ---- timeline ---- */
+  .timeline {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tl-row {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 1.5rem;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .tl-row:first-child {
+    border-top: 1px solid var(--hairline);
+  }
+
+  .tl-period {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--faint);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .tl-badge {
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 0.12rem 0.55rem;
+  }
+
+  .tl-badge.now {
+    color: var(--accent);
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    background: var(--accent-dim);
+  }
+
+  .tl-badge.up {
+    color: var(--accent-2);
+    border: 1px solid color-mix(in srgb, var(--accent-2) 45%, transparent);
+    background: color-mix(in srgb, var(--accent-2) 10%, transparent);
+  }
+
+  .tl-role {
+    font-size: 1.05rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .tl-org {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tl-org a {
+    color: var(--accent);
+  }
+
+  .tl-org a:hover {
+    color: var(--accent-strong);
+  }
+
+  .tl-logo {
+    height: 15px;
+    width: auto;
+  }
+
+  .tl-detail {
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.65;
+    max-width: 46rem;
+  }
+
+  @media (max-width: 700px) {
+    .tl-row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.5rem;
+    }
+
+    .tl-period {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  /* ---- honors: spotlight + flowing list ---- */
+  .spot-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1rem, 3vw, 2rem);
+    margin-top: 2.2rem;
+  }
+
+  .spot {
+    position: relative;
+    padding-top: 1rem;
+    border-top: 2px solid var(--text);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    transition: border-color 0.25s ease;
+  }
+
+  .spot:hover {
+    border-top-color: var(--accent);
+  }
+
+  .spot-year {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(2.2rem, 4vw, 3rem);
+    line-height: 1;
+    color: color-mix(in srgb, var(--text) 14%, transparent);
+    user-select: none;
+  }
+
+  .spot-title {
+    font-family: var(--font-display);
+    font-weight: 560;
+    font-size: 1.05rem;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .spot-detail {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+    color: var(--faint);
+  }
+
+  /* the longer list: expandable, trickles in along a flowing line */
+  .honor-more {
+    margin-top: 2.6rem;
+  }
+
+  .honor-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: none;
+    border: none;
+    padding: 0.2rem 0;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    transition: color 0.2s ease;
+  }
+
+  .honor-toggle:hover {
+    color: var(--accent);
+  }
+
+  .ht-label {
+    text-decoration: underline;
+    text-decoration-style: wavy;
+    text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  .ht-plus {
+    display: inline-grid;
+    place-items: center;
+    width: 1.35rem;
+    height: 1.35rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--accent);
+    font-size: 0.95rem;
+    line-height: 1;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s ease;
+  }
+
+  .honor-more.open .ht-plus {
+    transform: rotate(45deg);
+    border-color: var(--accent);
+  }
+
+  .honor-clip {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .honor-more.open .honor-clip {
+    grid-template-rows: 1fr;
+  }
+
+  .honor-trickle {
+    overflow: hidden;
+    list-style: none;
+    margin: 0;
+    padding: 0.4rem 0 0.4rem 1.6rem;
+    position: relative;
+  }
+
+  .honor-trickle::before {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 1rem;
+    bottom: 0.9rem;
+    width: 2px;
+    border-radius: 999px;
+    background: linear-gradient(var(--accent), color-mix(in srgb, var(--accent) 15%, transparent));
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+  }
+
+  .honor-more.open .honor-trickle::before {
+    transform: scaleY(1);
+  }
+
+  .trickle-item {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.9rem;
+    padding: 0.42rem 0;
+    opacity: 0;
+    transform: translateX(-12px);
+    transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: 0s;
+  }
+
+  .honor-more.open .trickle-item {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(0.2s + var(--i) * 0.09s);
+  }
+
+  .trickle-item::before {
+    content: '';
+    position: absolute;
+    left: -1.53rem;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--accent);
+    transform: translateY(-50%) scale(0);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition-delay: 0s;
+  }
+
+  .honor-more.open .trickle-item::before {
+    transform: translateY(-50%) scale(1);
+    transition-delay: calc(0.28s + var(--i) * 0.09s);
+  }
+
+  .trickle-title {
+    font-family: var(--font-display);
+    font-weight: 560;
+    font-size: 0.96rem;
+    color: var(--text);
+  }
+
+  .trickle-meta {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--faint);
+  }
+
+  @media (max-width: 980px) {
+    .spot-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 520px) {
+    .spot-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* ---- cta ---- */
+  .cta-section {
+    padding-block: clamp(2rem, 5vw, 3rem) clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 1.6rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    padding: 1.15rem 1.4rem;
+  }
+
+  .cta-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .cta-sub {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+</style>
+
+<script>
+  function initHonors() {
+    const wrap = document.getElementById('honor-more');
+    const btn = document.getElementById('honor-toggle');
+    if (!wrap || !btn) return;
+    btn.addEventListener('click', () => {
+      const open = wrap.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+  }
+
+  document.addEventListener('astro:page-load', initHonors);
+</script>

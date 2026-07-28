@@ -1,0 +1,152 @@
+---
+import type { Publication } from '../data/publications';
+
+interface Props {
+  pub: Publication;
+}
+
+const { pub } = Astro.props;
+const frames = pub.sequence;
+const cycle = frames ? frames.length * 3.4 : 0;
+---
+
+{
+  pub.video ? (
+    <figure class="fig-frame" style={`--bg:${pub.figureBg ?? '#000000'}`}>
+      <video
+        class="fig-video"
+        src={pub.video}
+        poster={pub.figure}
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        aria-label={pub.figureAlt ?? pub.title}
+      />
+      {pub.figureCaption && <figcaption>{pub.figureCaption}</figcaption>}
+    </figure>
+  ) : frames ? (
+    <figure class="fig-frame seq" style={`--cycle:${cycle}s; --bg:${pub.figureBg ?? '#ffffff'}`}>
+      {frames.map((f, i) => (
+        <div class="seq-frame" style={`--d:${i * 3.4}s`}>
+          <img src={f.src} alt={`${pub.title}: ${f.label}`} loading="lazy" decoding="async" />
+          <span class="seq-label">{f.label}</span>
+        </div>
+      ))}
+      {pub.figureCaption && <figcaption class="visually-hidden">{pub.figureCaption}</figcaption>}
+    </figure>
+  ) : pub.figure ? (
+    <figure class="fig-frame" style={`--bg:${pub.figureBg ?? '#ffffff'}`}>
+      <img src={pub.figure} alt={pub.figureAlt ?? pub.title} loading="lazy" decoding="async" />
+      {pub.figureCaption && <figcaption>{pub.figureCaption}</figcaption>}
+    </figure>
+  ) : null
+}
+
+<style>
+  .fig-frame {
+    margin: 0;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--bg, #fff);
+    box-shadow: var(--shadow-card);
+    transition: border-color 0.25s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .fig-frame:hover {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+    box-shadow: var(--shadow-card), var(--shadow-pop);
+    transform: translateY(-2px);
+  }
+
+  .fig-frame > img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: contain;
+    padding: 0.75rem;
+  }
+
+  .fig-video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+  }
+
+  figcaption {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.03em;
+    color: var(--faint);
+    background: var(--bg-2);
+    border-top: 1px solid var(--hairline);
+    padding: 0.55rem 0.9rem;
+  }
+
+  /* --- crossfading sequence ("animated figure") --- */
+  .seq {
+    position: relative;
+    aspect-ratio: 16 / 10;
+  }
+
+  .seq-frame {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    animation: seq-fade var(--cycle) infinite;
+    animation-delay: var(--d);
+  }
+
+  .seq-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 1rem 1rem 2.2rem;
+  }
+
+  .seq-label {
+    position: absolute;
+    right: 0.8rem;
+    bottom: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    color: #4b5563;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(75, 85, 99, 0.25);
+    border-radius: 999px;
+    padding: 0.14rem 0.6rem;
+  }
+
+  @keyframes seq-fade {
+    0% { opacity: 0; }
+    5% { opacity: 1; }
+    30% { opacity: 1; }
+    38% { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .seq-frame {
+      animation: none;
+    }
+    div.seq-frame:last-of-type {
+      opacity: 1;
+    }
+  }
+
+  :global(:root[data-noanim]) div.seq-frame:last-of-type {
+    opacity: 1;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+</style>

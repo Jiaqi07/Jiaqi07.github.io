@@ -1,0 +1,151 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getPosts } from '../../lib/posts';
+
+const posts = await getPosts();
+const tags = [...new Set(posts.flatMap((p) => p.tags))].sort();
+---
+
+<Base
+  title="Writing"
+  description="Research notes, build logs, and writeups by Alan Chen: robot learning, reinforcement learning, and whatever else survives the drafts folder."
+>
+  <section class="page-head">
+    <div class="container">
+      <p class="eyebrow reveal in-view">writing</p>
+      <h1 class="page-title reveal in-view">Notes &amp; writeups</h1>
+      <p class="page-sub reveal in-view">
+        Research notes, build logs, and longer-form thinking. Written in Obsidian, published by a
+        git push.
+      </p>
+
+      {tags.length > 0 && (
+        <div class="filter-row reveal in-view" id="tag-filter" role="group" aria-label="Filter posts by tag">
+          <button class="filter-chip active" data-tag="">all</button>
+          {tags.map((t) => (
+            <button class="filter-chip" data-tag={t}>{t}</button>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="posts">
+    <div class="container">
+      {posts.length === 0 ? (
+        <p class="empty">Nothing here yet. The first note is on its way.</p>
+      ) : (
+        <div class="posts-grid" id="posts-grid">
+          {posts.map((post, i) => (
+            <div class="post-slot" data-tags={post.tags.join('|')}>
+              <PostCard post={post} delay={Math.min(i, 5) * 0.06} />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-head {
+    padding-top: clamp(7rem, 16vh, 10rem);
+    padding-bottom: clamp(1.5rem, 4vh, 2.5rem);
+  }
+
+  .page-title {
+    font-size: clamp(2.2rem, 5.5vw, 3.4rem);
+    letter-spacing: -0.025em;
+    margin-bottom: 0.9rem;
+  }
+
+  .page-sub {
+    color: var(--muted);
+    max-width: 40rem;
+  }
+
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.6rem;
+  }
+
+  .filter-chip {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.3rem 0.85rem;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .filter-chip:hover {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+
+  .filter-chip.active {
+    color: var(--bg);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .posts {
+    padding-block: 2rem 3rem;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.1rem;
+  }
+
+  .post-slot.hidden {
+    display: none;
+  }
+
+  .empty {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 1000px) {
+    .posts-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .posts-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
+
+<script>
+  function initFilter() {
+    const bar = document.getElementById('tag-filter');
+    const grid = document.getElementById('posts-grid');
+    if (!bar || !grid) return;
+
+    bar.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('.filter-chip');
+      if (!btn) return;
+      bar.querySelectorAll('.filter-chip').forEach((c) => c.classList.remove('active'));
+      btn.classList.add('active');
+      const tag = btn.dataset.tag ?? '';
+      grid.querySelectorAll<HTMLElement>('.post-slot').forEach((slot) => {
+        const tags = (slot.dataset.tags ?? '').split('|');
+        slot.classList.toggle('hidden', tag !== '' && !tags.includes(tag));
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', initFilter);
+</script>

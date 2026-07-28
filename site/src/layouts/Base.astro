@@ -1,0 +1,121 @@
+---
+import '@fontsource-variable/inter';
+import '@fontsource-variable/space-grotesk';
+import '@fontsource-variable/jetbrains-mono';
+import '@fontsource-variable/newsreader';
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { profile } from '../data/profile';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogType?: string;
+}
+
+const {
+  title,
+  description = 'Alan Chen: undergrad researcher at UT Austin (Turing Scholars) working on robot learning, reinforcement learning, and vision-language-action models.',
+  ogType = 'website',
+} = Astro.props;
+
+const fullTitle = title ? `${title} · Alan Chen` : 'Introspection by Alan Chen';
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/og.png', Astro.site);
+
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Alan Chen',
+  url: 'https://alanchen.me',
+  email: `mailto:${profile.email}`,
+  jobTitle: 'Undergraduate Researcher',
+  affiliation: { '@type': 'CollegeOrUniversity', name: 'The University of Texas at Austin' },
+  knowsAbout: ['Robot Learning', 'Reinforcement Learning', 'Vision-Language-Action Models', 'Robotics'],
+  sameAs: [profile.links.scholar, profile.links.github, profile.links.x, profile.links.linkedin],
+};
+---
+
+<!doctype html>
+<html lang="en" data-theme="study">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#f7f3ea" />
+    <link rel="alternate" type="application/rss+xml" title="Alan Chen · writing" href="/rss.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="Alan Chen" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@AlanJiaqiChen" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(personLd)} is:inline />
+
+    <ClientRouter />
+  </head>
+  <body>
+    <Nav />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <!-- site-wide micro-interactions -->
+    <script>
+      function initPage() {
+        // scroll-reveal
+        const revealed = document.querySelectorAll('.reveal:not(.in-view)');
+        if (new URL(location.href).searchParams.has('noanim')) {
+          document.documentElement.setAttribute('data-noanim', '');
+          revealed.forEach((el) => el.classList.add('in-view'));
+          return;
+        }
+        // safety net: anything already in the viewport gets revealed even if IO misbehaves
+        setTimeout(() => {
+          document.querySelectorAll('.reveal:not(.in-view)').forEach((el) => {
+            if (el.getBoundingClientRect().top < innerHeight) el.classList.add('in-view');
+          });
+        }, 2500);
+        if ('IntersectionObserver' in window && revealed.length) {
+          const io = new IntersectionObserver(
+            (entries) => {
+              for (const e of entries) {
+                if (e.isIntersecting) {
+                  e.target.classList.add('in-view');
+                  io.unobserve(e.target);
+                }
+              }
+            },
+            { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+          );
+          revealed.forEach((el) => io.observe(el));
+        } else {
+          revealed.forEach((el) => el.classList.add('in-view'));
+        }
+
+        // respect reduced motion for looping demo videos
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.querySelectorAll<HTMLVideoElement>('video[autoplay]').forEach((v) => v.pause());
+        }
+      }
+
+      document.addEventListener('astro:page-load', initPage);
+    </script>
+  </body>
+</html>

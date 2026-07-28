@@ -1,0 +1,446 @@
+---
+import Base from '../layouts/Base.astro';
+import Goban from '../components/Goban.astro';
+import PubFigure from '../components/PubFigure.astro';
+import PostCard from '../components/PostCard.astro';
+import { profile } from '../data/profile';
+import { publications } from '../data/publications';
+import { getPosts } from '../lib/posts';
+
+const selected = publications.filter((p) => p.selected);
+const posts = (await getPosts()).slice(0, 3);
+const firstSentence = (s: string) => s.split(/(?<=\.)\s+/)[0];
+
+const beyond = [
+  { k: 'sports', title: 'Physical Health', line: 'Playing basketball with grad students, learning how to fence, and lifting' },
+  { k: 'games', title: 'Gaming lol', line: 'Former Top 200 Hypixel Bridge Duels, Teamfight Tactics Diamond (just started), League Of Legends Hard Stuck Plat, Brawl Stars Masters Rank' },
+  { k: 'investing', title: 'Stocks + Venture Capital', line: "Part of UT's Texas Venture Group and just personally enjoy staying informed on news" },
+  { k: 'learning', title: 'Just enjoy learning more :)', line: 'Robot learning, efficient AI (MLSys), diffusion, etc.' },
+];
+---
+
+<Base>
+  <!-- ============ hero ============ -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <p class="eyebrow reveal in-view">(robot = continual+generative+reinforcement) * learning</p>
+        <h1 class="hero-name">Alan Chen</h1>
+        <p class="hero-lead">{profile.tagline}</p>
+        <p class="hero-body">
+          Undergrad researcher at UT Austin (<strong>Turing Scholars</strong>), working on RL for
+          vision-language-action models at the <strong>Learning Agents Research Group</strong>.
+          Previously at CMU's Robotics Institute, where I published on robotic assembly before
+          finishing high school.
+        </p>
+
+        <div class="hero-ctas">
+          <a class="btn btn-solid" href="/research">Research</a>
+          <a class="btn" href="/about">About me</a>
+        </div>
+
+        <p class="hero-social">
+          <a href={profile.links.scholar} target="_blank" rel="noopener">scholar ↗</a>
+          <a href={profile.links.github} target="_blank" rel="noopener">github ↗</a>
+          <a href={profile.links.x} target="_blank" rel="noopener">x ↗</a>
+          <a href={profile.links.linkedin} target="_blank" rel="noopener">linkedin ↗</a>
+          <a href={`mailto:${profile.email}`}>email ↗</a>
+        </p>
+      </div>
+
+      <div class="hero-board">
+        <Goban />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ now ============ -->
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow reveal">currently</p>
+      <div class="now-grid">
+        {profile.now.map((n, i) => (
+          <div class="card now-card reveal" style={`--reveal-delay:${i * 0.08}s`}>
+            <p class="now-where">{n.where}</p>
+            <h3 class="now-title">{n.title}</h3>
+            <p class="now-detail">{n.detail}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ selected research ============ -->
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow reveal">selected research</p>
+      <h2 class="section-title reveal">Robots that build things</h2>
+      <p class="section-sub reveal">
+        Deep RL for robots that plan and build in the physical world: assembly planning,
+        learning from demonstration, and policies that respect physics.
+      </p>
+
+      <div class="sel-grid">
+        {selected.map((pub, i) => (
+          <article class="card sel-card reveal" style={`--reveal-delay:${i * 0.09}s`}>
+            <PubFigure pub={pub} />
+            <p class="sel-venue">
+              <span class="venue-badge">{pub.venueShort}</span>
+            </p>
+            <h3 class="sel-title">
+              <a href={`/research#${pub.id}`}>{pub.title}</a>
+            </h3>
+            <p class="sel-teaser">{firstSentence(pub.summary)}</p>
+          </article>
+        ))}
+      </div>
+
+      <p class="section-more reveal">
+        <a class="btn" href="/research">All research →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ writing ============ -->
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow reveal">writing</p>
+      <h2 class="section-title reveal">Notes &amp; writeups</h2>
+      <div class="posts-grid">
+        {posts.map((post, i) => (
+          <PostCard post={post} delay={i * 0.08} />
+        ))}
+      </div>
+      <p class="section-more reveal">
+        <a class="btn" href="/blog">All writing →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ beyond ============ -->
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow reveal">beyond the lab</p>
+      <div class="beyond-grid">
+        {beyond.map((b, i) => (
+          <a class="beyond-item reveal" href="/about" style={`--reveal-delay:${i * 0.06}s`}>
+            <span class="beyond-title">{b.title}</span>
+            <span class="beyond-line">{b.line}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ contact ============ -->
+  <section class="section contact">
+    <div class="container">
+      <div class="contact-inner reveal">
+        <div class="contact-copy">
+          <h2 class="contact-title">Say hi</h2>
+          <p class="contact-sub">Always happy to talk robots, RL, Go, or whatever.</p>
+        </div>
+        <div class="contact-row">
+          <a class="btn btn-solid" href={`mailto:${profile.email}`}>{profile.email}</a>
+          <a class="btn" href={profile.links.x} target="_blank" rel="noopener">@AlanJiaqiChen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ---- hero ---- */
+  .hero {
+    padding-top: clamp(6.5rem, 14vh, 9rem);
+    padding-bottom: clamp(2.5rem, 6vh, 5rem);
+    min-height: min(88svh, 54rem);
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 11fr) minmax(0, 8fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+  }
+
+  .hero-name {
+    font-size: clamp(2.9rem, 8vw, 5.2rem);
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+    animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-lead {
+    font-size: clamp(1.25rem, 2.6vw, 1.6rem);
+    font-family: var(--font-display);
+    color: var(--accent);
+    margin-bottom: 1.1rem;
+    animation: rise 0.9s 0.08s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  :global(:root[data-theme='study']) .hero-lead {
+    font-style: italic;
+  }
+
+  .hero-body {
+    color: var(--muted);
+    max-width: 34rem;
+    animation: rise 0.9s 0.16s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-body strong {
+    color: var(--text);
+    font-weight: 560;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 0.7rem;
+    margin-top: 1.7rem;
+    animation: rise 0.9s 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-social {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.1rem;
+    margin-top: 1.6rem;
+    animation: rise 0.9s 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-social a {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .hero-social a:hover {
+    color: var(--accent);
+  }
+
+  .hero-board {
+    max-width: 520px;
+    width: 100%;
+    margin-inline: auto;
+    animation: fade 1.4s 0.3s ease both;
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(26px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      min-height: 0;
+      padding-top: 6.5rem;
+    }
+
+    .hero-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .hero-board {
+      max-width: 340px;
+      opacity: 0.9;
+    }
+  }
+
+  /* ---- now ---- */
+  .now-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    gap: 1.1rem;
+  }
+
+  .now-where {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: 0.55rem;
+  }
+
+  .now-title {
+    font-size: 1.08rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .now-detail {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+
+  @media (max-width: 900px) {
+    .now-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* ---- selected research ---- */
+  .sel-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.1rem;
+    margin-top: 2.2rem;
+  }
+
+  .sel-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 1rem;
+  }
+
+  .sel-venue {
+    margin-top: 0.2rem;
+  }
+
+  .sel-title {
+    font-size: 1.02rem;
+    line-height: 1.35;
+  }
+
+  .sel-title a {
+    color: var(--text);
+  }
+
+  .sel-title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .sel-card:hover .sel-title a {
+    color: var(--accent);
+  }
+
+  .sel-teaser {
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 1000px) {
+    .sel-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .section-more {
+    margin-top: 2.2rem;
+  }
+
+  /* ---- writing ---- */
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.1rem;
+    margin-top: 2.2rem;
+  }
+
+  @media (max-width: 900px) {
+    .posts-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* ---- beyond ---- */
+  .beyond-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-top: 1rem;
+  }
+
+  .beyond-item {
+    background: var(--bg);
+    padding: 1.3rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    transition: background 0.25s ease;
+  }
+
+  .beyond-item:hover {
+    background: var(--surface-hover);
+  }
+
+  .beyond-title {
+    font-family: var(--font-display);
+    font-weight: 560;
+    color: var(--text);
+    font-size: 0.98rem;
+  }
+
+  .beyond-line {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--faint);
+    letter-spacing: 0.02em;
+  }
+
+  @media (max-width: 900px) {
+    .beyond-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 540px) {
+    .beyond-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* ---- contact ---- */
+  .contact {
+    padding-block: clamp(2rem, 5vw, 3rem) clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .contact-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 1.6rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.15rem 1.4rem;
+    background: var(--surface);
+  }
+
+  .contact-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .contact-sub {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+</style>

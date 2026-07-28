@@ -1,0 +1,317 @@
+---
+/**
+ * A quiet game in progress: replays the opening of Lee Sedol vs. AlphaGo,
+ * Game 4 (2016), ending on Move 78, the wedge. Real coordinates from the SGF.
+ */
+---
+
+<div class="goban-wrap" id="goban" role="img" aria-label="Animated Go board replaying Lee Sedol's famous Move 78 against AlphaGo, 2016">
+  <canvas id="goban-canvas"></canvas>
+  <p class="move-label" id="goban-label" aria-hidden="true">
+    <span class="move-no">move 78</span>
+    <span class="move-meta">lee sedol vs. alphago · game 4 · 2016</span>
+  </p>
+</div>
+
+<style>
+  .goban-wrap {
+    --gb-grid: rgba(32, 36, 43, 0.2);
+    --gb-hoshi: rgba(180, 90, 31, 0.55);
+    --gb-black: #23272e;
+    --gb-black-rim: rgba(32, 36, 43, 0.15);
+    --gb-white: #fffdf6;
+    --gb-white-rim: rgba(32, 36, 43, 0.35);
+
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .move-label {
+    position: absolute;
+    left: 0.2rem;
+    bottom: -1.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+    pointer-events: none;
+  }
+
+  .move-label.show {
+    opacity: 1;
+    transform: none;
+  }
+
+  .move-no {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+  }
+
+  .move-meta {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--faint);
+  }
+</style>
+
+<script>
+  // First 78 moves of Lee Sedol (W) vs AlphaGo (B), Game 4, parsed from the SGF.
+  // Even index = Black (AlphaGo). Move 78 (last) is Lee's wedge.
+  const MOVES: [number, number][] = [
+    [15, 3], [3, 15], [2, 3], [16, 15], [14, 15], [14, 16], [13, 16], [15, 16],
+    [2, 13], [5, 16], [12, 15], [15, 14], [8, 16], [4, 2], [7, 3], [2, 6],
+    [4, 3], [2, 9], [3, 2], [1, 15], [13, 2], [16, 8], [4, 15], [4, 14],
+    [3, 10], [5, 15], [2, 10], [3, 9], [4, 9], [4, 8], [5, 8], [4, 7],
+    [5, 7], [1, 9], [5, 10], [5, 6], [6, 6], [5, 5], [6, 5], [12, 2],
+    [12, 3], [11, 2], [13, 1], [8, 3], [7, 2], [9, 6], [15, 9], [15, 8],
+    [14, 9], [14, 8], [13, 8], [13, 7], [12, 7], [13, 6], [12, 6], [12, 8],
+    [13, 9], [12, 5], [11, 8], [13, 4], [13, 3], [12, 9], [11, 5], [12, 10],
+    [12, 4], [13, 5], [11, 7], [16, 9], [10, 10], [8, 10], [9, 8], [6, 7],
+    [7, 9], [6, 4], [7, 4], [5, 3], [5, 2], [10, 8],
+  ];
+
+  const N = 19;
+  const HOSHI = [3, 9, 15];
+
+  function initGoban() {
+    const wrap = document.getElementById('goban');
+    const canvas = document.getElementById('goban-canvas') as HTMLCanvasElement | null;
+    const label = document.getElementById('goban-label');
+    if (!wrap || !canvas || !label) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let placed = 0;
+    let glow = 0;
+    let alpha = 1;
+    let size = 0;
+    let visible = true;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let raf = 0;
+    let colors: Record<string, string> = {};
+
+    const readColors = () => {
+      const cs = getComputedStyle(wrap);
+      colors = {
+        grid: cs.getPropertyValue('--gb-grid').trim(),
+        hoshi: cs.getPropertyValue('--gb-hoshi').trim(),
+        black: cs.getPropertyValue('--gb-black').trim(),
+        blackRim: cs.getPropertyValue('--gb-black-rim').trim(),
+        white: cs.getPropertyValue('--gb-white').trim(),
+        whiteRim: cs.getPropertyValue('--gb-white-rim').trim(),
+        accent: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),
+        glowc: getComputedStyle(document.documentElement).getPropertyValue('--accent-glow').trim(),
+      };
+    };
+
+    const setup = () => {
+      const rect = wrap.getBoundingClientRect();
+      size = Math.min(rect.width, rect.height);
+      if (size < 40) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(size * dpr);
+      canvas.height = Math.round(size * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      readColors();
+      draw();
+    };
+
+    const pos = (i: number) => {
+      const pad = size * 0.052;
+      return pad + (i * (size - 2 * pad)) / (N - 1);
+    };
+
+    function drawStone(col: number, row: number, isBlack: boolean, r: number) {
+      if (!ctx) return;
+      const x = pos(col);
+      const y = pos(row);
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fillStyle = isBlack ? colors.black : colors.white;
+      ctx.fill();
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = isBlack ? colors.blackRim : colors.whiteRim;
+      ctx.stroke();
+      const g = ctx.createRadialGradient(x - r * 0.35, y - r * 0.4, r * 0.1, x, y, r);
+      g.addColorStop(0, isBlack ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.65)');
+      g.addColorStop(0.55, 'rgba(255,255,255,0)');
+      ctx.fillStyle = g;
+      ctx.fill();
+    }
+
+    function draw() {
+      if (!ctx || size < 40) return;
+      ctx.clearRect(0, 0, size, size);
+      ctx.globalAlpha = alpha;
+
+      ctx.strokeStyle = colors.grid;
+      ctx.lineWidth = 1;
+      for (let i = 0; i < N; i++) {
+        const p = Math.round(pos(i)) + 0.5;
+        ctx.beginPath();
+        ctx.moveTo(pos(0), p);
+        ctx.lineTo(pos(N - 1), p);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(p, pos(0));
+        ctx.lineTo(p, pos(N - 1));
+        ctx.stroke();
+      }
+
+      ctx.fillStyle = colors.hoshi;
+      for (const a of HOSHI)
+        for (const b of HOSHI) {
+          ctx.beginPath();
+          ctx.arc(pos(a), pos(b), size * 0.006, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+      const r = ((size - size * 0.104) / (N - 1)) * 0.47;
+      for (let i = 0; i < placed; i++) {
+        const [c, w] = MOVES[i];
+        drawStone(c, w, i % 2 === 0, r);
+      }
+
+      if (placed >= MOVES.length && glow > 0) {
+        const [c, w] = MOVES[MOVES.length - 1];
+        const x = pos(c);
+        const y = pos(w);
+        ctx.save();
+        ctx.strokeStyle = colors.accent;
+        ctx.globalAlpha = alpha * (0.85 - 0.55 * glow);
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.arc(x, y, r * (1.25 + glow * 1.9), 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.globalAlpha = alpha * 0.9;
+        ctx.shadowColor = colors.glowc;
+        ctx.shadowBlur = 14;
+        ctx.beginPath();
+        ctx.arc(x, y, r * 1.12, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function pulse(start: number) {
+      cancelAnimationFrame(raf);
+      const tick = (now: number) => {
+        glow = ((now - start) % 2400) / 2400;
+        draw();
+        if (visible) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    }
+
+    function fadeOutAndRestart() {
+      cancelAnimationFrame(raf);
+      const t0 = performance.now();
+      const tick = (now: number) => {
+        const t = Math.min(1, (now - t0) / 900);
+        alpha = 1 - t * t;
+        draw();
+        if (t < 1) {
+          raf = requestAnimationFrame(tick);
+        } else {
+          placed = 0;
+          glow = 0;
+          alpha = 1;
+          label!.classList.remove('show');
+          timer = setTimeout(step, 1200);
+        }
+      };
+      raf = requestAnimationFrame(tick);
+    }
+
+    function step() {
+      if (!visible) return;
+      const n = MOVES.length;
+      if (placed < n) {
+        placed++;
+        draw();
+        if (placed === n) {
+          label!.classList.add('show');
+          pulse(performance.now());
+          timer = setTimeout(fadeOutAndRestart, 7000);
+        } else {
+          const idx = placed;
+          const delay = idx < n - 26 ? 120 : idx < n - 7 ? 260 : 620;
+          timer = setTimeout(step, delay);
+        }
+      }
+    }
+
+    setup();
+
+    if (reduced) {
+      placed = MOVES.length;
+      glow = 0.25;
+      draw();
+      label.classList.add('show');
+    } else {
+      timer = setTimeout(step, 700);
+
+      const io = new IntersectionObserver(
+        ([entry]) => {
+          visible = entry.isIntersecting;
+          if (!visible) {
+            clearTimeout(timer);
+            cancelAnimationFrame(raf);
+          } else if (placed < MOVES.length) {
+            timer = setTimeout(step, 300);
+          } else {
+            pulse(performance.now());
+          }
+        },
+        { threshold: 0.05 }
+      );
+      io.observe(wrap);
+
+      const hero = wrap.closest('section');
+      hero?.addEventListener('pointermove', (ev) => {
+        const e = ev as PointerEvent;
+        const r = hero.getBoundingClientRect();
+        const dx = (e.clientX - r.left) / r.width - 0.5;
+        const dy = (e.clientY - r.top) / r.height - 0.5;
+        wrap.style.transform = `translate3d(${dx * -10}px, ${dy * -8}px, 0)`;
+      });
+      hero?.addEventListener('pointerleave', () => {
+        wrap.style.transform = '';
+      });
+    }
+
+    const ro = new ResizeObserver(() => setup());
+    ro.observe(wrap);
+
+    document.addEventListener(
+      'astro:before-swap',
+      () => {
+        clearTimeout(timer);
+        cancelAnimationFrame(raf);
+        ro.disconnect();
+      },
+      { once: true }
+    );
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    if (document.getElementById('goban')) initGoban();
+  });
+</script>
