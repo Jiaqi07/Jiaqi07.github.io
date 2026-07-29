@@ -5,10 +5,12 @@ import PubFigure from '../components/PubFigure.astro';
 import PostCard from '../components/PostCard.astro';
 import { profile } from '../data/profile';
 import { publications } from '../data/publications';
-import { getPosts } from '../lib/posts';
+import { getPosts, essays, notes } from '../lib/posts';
 
 const selected = publications.filter((p) => p.selected);
-const posts = (await getPosts()).slice(0, 3);
+// finished writing leads; notes backfill the row so it never looks half-empty
+const all = await getPosts();
+const posts = [...essays(all), ...notes(all)].slice(0, 3);
 const firstSentence = (s: string) => s.split(/(?<=\.)\s+/)[0];
 
 const beyond = [

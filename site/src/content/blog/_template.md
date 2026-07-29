@@ -6,8 +6,14 @@
 title: My new post
 date: 2026-01-01
 description: One-liner shown on cards and in search/social previews.
-tags: [research, notes]
+tags: [math] # vocabulary: math · llm · diffusion · rl · systems · papers · go · site
 draft: true # remove this line (or set false) to publish
+
+# Leave these off for an essay. Set them to file this under Notes instead:
+#   kind: note
+#   area: foundations | models | research
+#   order: 3      # position within that area (lower first)
+#   wip: true     # marks it "in progress" on the card and page; still published
 ---
 
 Write normal Obsidian markdown here. Supported extras:

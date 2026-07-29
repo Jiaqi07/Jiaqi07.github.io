@@ -1,7 +1,7 @@
 ---
 title: Rebuilding this site (and how writing works here now)
 date: 2026-07-27
-tags: [meta, site]
+tags: [site]
 ---
 
 This site is a pile of Markdown files now. The old version was a React app, and adding anything meant editing components. By the time I finished fiddling with JSX, I didn't feel like writing anymore. The new one is [Astro](https://astro.build) rendering static pages. Every post, including this one, is a note dropped into a folder and pushed.

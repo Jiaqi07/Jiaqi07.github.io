@@ -1,18 +1,29 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getPosts, formatDate, type Post } from '../../lib/posts';
+import { getPosts, essays, notes, formatDate, formatMonth, AREAS, type Post } from '../../lib/posts';
 import 'katex/dist/katex.min.css';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
-  return posts.map((post, i) => ({
-    params: { slug: post.slug },
-    props: {
-      post,
-      newer: posts[i - 1] ? { slug: posts[i - 1].slug, title: posts[i - 1].title } : null,
-      older: posts[i + 1] ? { slug: posts[i + 1].slug, title: posts[i + 1].title } : null,
-    },
-  }));
+  const link = (p?: Post) => (p ? { slug: p.slug, title: p.title } : null);
+
+  return posts.map((post) => {
+    // essays walk by date; notes walk their own area in reading order
+    const siblings =
+      post.kind === 'note'
+        ? notes(posts).filter((p) => p.area === post.area)
+        : essays(posts);
+    const at = siblings.indexOf(post);
+
+    // essays are date-desc, so the older one sits later in the array; notes read forwards
+    const left = post.kind === 'note' ? siblings[at - 1] : siblings[at + 1];
+    const right = post.kind === 'note' ? siblings[at + 1] : siblings[at - 1];
+
+    return {
+      params: { slug: post.slug },
+      props: { post, older: link(left), newer: link(right) },
+    };
+  });
 }
 
 interface Props {
@@ -24,6 +35,9 @@ interface Props {
 const { post, newer, older } = Astro.props;
 const { Content } = post;
 const toc = post.headings.filter((h) => h.depth === 2 || h.depth === 3);
+const isNote = post.kind === 'note';
+const area = AREAS.find((a) => a.key === post.area);
+const stamp = post.updated ?? post.date;
 ---
 
 <Base title={post.title} description={post.description} ogType="article">
@@ -32,10 +46,16 @@ const toc = post.headings.filter((h) => h.depth === 2 || h.depth === 3);
       <div class="narrow">
         <p class="back reveal in-view"><a href="/blog">← all writing</a></p>
         <p class="post-meta reveal in-view">
-          <time datetime={post.date.toISOString()}>{formatDate(post.date)}</time>
+          {isNote && area && <span class="area">{area.label}</span>}
+          {isNote && area && <span>·</span>}
+          {post.wip && <span class="wip">in progress</span>}
+          {post.wip && <span>·</span>}
+          <time datetime={stamp.toISOString()}>
+            {isNote ? `updated ${formatMonth(stamp)}` : formatDate(post.date)}
+          </time>
           <span>·</span>
           <span>{post.minutes} min read</span>
-          {post.updated && <span>· updated {formatDate(post.updated)}</span>}
+          {!isNote && post.updated && <span>· updated {formatDate(post.updated)}</span>}
         </p>
         <h1 class="post-title reveal in-view">{post.title}</h1>
         {post.tags.length > 0 && (
@@ -72,7 +92,7 @@ const toc = post.headings.filter((h) => h.depth === 2 || h.depth === 3);
             <nav class="post-nav" aria-label="More posts">
               {older ? (
                 <a class="post-nav-link" href={`/blog/${older.slug}`}>
-                  <span class="post-nav-dir">← older</span>
+                  <span class="post-nav-dir">{isNote ? '← previous' : '← older'}</span>
                   <span class="post-nav-title">{older.title}</span>
                 </a>
               ) : (
@@ -80,7 +100,7 @@ const toc = post.headings.filter((h) => h.depth === 2 || h.depth === 3);
               )}
               {newer && (
                 <a class="post-nav-link next" href={`/blog/${newer.slug}`}>
-                  <span class="post-nav-dir">newer →</span>
+                  <span class="post-nav-dir">{isNote ? 'next →' : 'newer →'}</span>
                   <span class="post-nav-title">{newer.title}</span>
                 </a>
               )}
@@ -120,6 +140,14 @@ const toc = post.headings.filter((h) => h.depth === 2 || h.depth === 3);
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-bottom: 0.9rem;
+  }
+
+  .post-meta .area {
+    color: var(--accent);
+  }
+
+  .post-meta .wip {
+    color: var(--accent-2);
   }
 
   .post-title {

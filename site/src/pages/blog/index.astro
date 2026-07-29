@@ -1,27 +1,32 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PostCard from '../../components/PostCard.astro';
-import { getPosts } from '../../lib/posts';
+import { getPosts, essays, groupByArea } from '../../lib/posts';
 
 const posts = await getPosts();
+const written = essays(posts);
+const noteGroups = groupByArea(posts);
 const tags = [...new Set(posts.flatMap((p) => p.tags))].sort();
+const noteCount = noteGroups.reduce((n, g) => n + g.posts.length, 0);
 ---
 
 <Base
   title="Writing"
-  description="Research notes, build logs, and writeups by Alan Chen: robot learning, reinforcement learning, and whatever else survives the drafts folder."
+  description="Essays and working notes by Alan Chen: robot learning, reinforcement learning, transformers, diffusion, and the math underneath all of it."
 >
   <section class="page-head">
     <div class="container">
       <p class="eyebrow reveal in-view">writing</p>
       <h1 class="page-title reveal in-view">Notes &amp; writeups</h1>
       <p class="page-sub reveal in-view">
-        Research notes, build logs, and longer-form thinking. Written in Obsidian, published by a
-        git push.
+        Two kinds of thing live here. Essays are finished. Notes are the reference pile — derivations
+        I redo too often, paper writeups from reading group, and fields I only half understand — and
+        they get edited in place rather than finished, so expect loose ends. Written in Obsidian,
+        published by a git push.
       </p>
 
       {tags.length > 0 && (
-        <div class="filter-row reveal in-view" id="tag-filter" role="group" aria-label="Filter posts by tag">
+        <div class="filter-row reveal in-view" id="tag-filter" role="group" aria-label="Filter by tag">
           <button class="filter-chip active" data-tag="">all</button>
           {tags.map((t) => (
             <button class="filter-chip" data-tag={t}>{t}</button>
@@ -31,21 +36,54 @@ const tags = [...new Set(posts.flatMap((p) => p.tags))].sort();
     </div>
   </section>
 
-  <section class="posts">
-    <div class="container">
-      {posts.length === 0 ? (
-        <p class="empty">Nothing here yet. The first note is on its way.</p>
-      ) : (
-        <div class="posts-grid" id="posts-grid">
-          {posts.map((post, i) => (
-            <div class="post-slot" data-tags={post.tags.join('|')}>
-              <PostCard post={post} delay={Math.min(i, 5) * 0.06} />
-            </div>
+  <div class="feed" id="feed">
+    {written.length > 0 && (
+      <section class="block" data-group>
+        <div class="container">
+          <header class="block-head reveal">
+            <h2 class="block-title">Essays</h2>
+            <p class="block-blurb">Longer-form thinking, and the pieces I actually finished.</p>
+          </header>
+          <div class="posts-grid">
+            {written.map((post, i) => (
+              <div class="post-slot" data-tags={post.tags.join('|')}>
+                <PostCard post={post} delay={Math.min(i, 5) * 0.06} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    {noteCount > 0 && (
+      <section class="block notes-block">
+        <div class="container">
+          <header class="block-head reveal">
+            <h2 class="block-title">Notes</h2>
+            <p class="block-blurb">
+              {noteCount} of them, filed by how far down the stack they sit.
+            </p>
+          </header>
+
+          {noteGroups.map((group) => (
+            <section class="area" data-group>
+              <h3 class="area-title reveal">{group.label}</h3>
+              <p class="area-blurb reveal">{group.blurb}</p>
+              <div class="posts-grid">
+                {group.posts.map((post, i) => (
+                  <div class="post-slot" data-tags={post.tags.join('|')}>
+                    <PostCard post={post} delay={Math.min(i, 5) * 0.06} />
+                  </div>
+                ))}
+              </div>
+            </section>
           ))}
         </div>
-      )}
-    </div>
-  </section>
+      </section>
+    )}
+
+    <p class="empty container" id="empty" hidden>Nothing tagged that way yet.</p>
+  </div>
 </Base>
 
 <style>
@@ -62,7 +100,7 @@ const tags = [...new Set(posts.flatMap((p) => p.tags))].sort();
 
   .page-sub {
     color: var(--muted);
-    max-width: 40rem;
+    max-width: 42rem;
   }
 
   .filter-row {
@@ -95,8 +133,45 @@ const tags = [...new Set(posts.flatMap((p) => p.tags))].sort();
     border-color: var(--accent);
   }
 
-  .posts {
-    padding-block: 2rem 3rem;
+  .feed {
+    padding-block: 2rem 3.5rem;
+  }
+
+  .block + .block {
+    margin-top: clamp(3rem, 7vw, 4.5rem);
+  }
+
+  .block-head {
+    margin-bottom: 1.5rem;
+  }
+
+  .block-title {
+    font-size: clamp(1.5rem, 3vw, 1.9rem);
+    margin-bottom: 0.35rem;
+  }
+
+  .block-blurb {
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 42rem;
+  }
+
+  .area {
+    border-top: 1px solid var(--hairline);
+    padding-top: 1.2rem;
+    margin-top: 2rem;
+  }
+
+  .area-title {
+    font-size: 1.22rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .area-blurb {
+    color: var(--muted);
+    font-size: 0.92rem;
+    max-width: 42rem;
+    margin-bottom: 1.2rem;
   }
 
   .posts-grid {
@@ -105,7 +180,9 @@ const tags = [...new Set(posts.flatMap((p) => p.tags))].sort();
     gap: 1.1rem;
   }
 
-  .post-slot.hidden {
+  .post-slot.hidden,
+  [data-group].hidden,
+  .notes-block.hidden {
     display: none;
   }
 
@@ -131,8 +208,9 @@ const tags = [...new Set(posts.flatMap((p) => p.tags))].sort();
 <script>
   function initFilter() {
     const bar = document.getElementById('tag-filter');
-    const grid = document.getElementById('posts-grid');
-    if (!bar || !grid) return;
+    const feed = document.getElementById('feed');
+    const empty = document.getElementById('empty');
+    if (!bar || !feed) return;
 
     bar.addEventListener('click', (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('.filter-chip');
@@ -140,10 +218,28 @@ const tags = [...new Set(posts.flatMap((p) => p.tags))].sort();
       bar.querySelectorAll('.filter-chip').forEach((c) => c.classList.remove('active'));
       btn.classList.add('active');
       const tag = btn.dataset.tag ?? '';
-      grid.querySelectorAll<HTMLElement>('.post-slot').forEach((slot) => {
+
+      feed.querySelectorAll<HTMLElement>('.post-slot').forEach((slot) => {
         const tags = (slot.dataset.tags ?? '').split('|');
         slot.classList.toggle('hidden', tag !== '' && !tags.includes(tag));
       });
+
+      // collapse any section (essays, or a notes area) with nothing left in it
+      let shown = 0;
+      feed.querySelectorAll<HTMLElement>('[data-group]').forEach((group) => {
+        const visible = group.querySelectorAll('.post-slot:not(.hidden)').length;
+        group.classList.toggle('hidden', visible === 0);
+        shown += visible;
+      });
+
+      // and the "Notes" wrapper once every area inside it is gone
+      const notesBlock = feed.querySelector<HTMLElement>('.notes-block');
+      if (notesBlock) {
+        const areasLeft = notesBlock.querySelectorAll('[data-group]:not(.hidden)').length;
+        notesBlock.classList.toggle('hidden', areasLeft === 0);
+      }
+
+      if (empty) empty.hidden = shown > 0;
     });
   }
 

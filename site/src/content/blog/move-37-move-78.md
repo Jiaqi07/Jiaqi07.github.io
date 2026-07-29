@@ -1,7 +1,7 @@
 ---
 title: Move 37, Move 78
 date: 2026-07-20
-tags: [go, reinforcement-learning, essay]
+tags: [go, rl]
 ---
 
 The animation on my homepage replays the opening of Game 4 of Lee Sedol vs. AlphaGo, stopping at Move 78: the wedge that broke the machine. You can't really talk about Move 78 without Move 37, so here are both. I was a kid memorizing joseki when those games were played, and I don't think any two moves have stuck with me longer.

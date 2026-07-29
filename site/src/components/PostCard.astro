@@ -1,5 +1,5 @@
 ---
-import { formatDate, type Post } from '../lib/posts';
+import { formatDate, formatMonth, type Post } from '../lib/posts';
 
 interface Props {
   post: Post;
@@ -7,11 +7,17 @@ interface Props {
 }
 
 const { post, delay = 0 } = Astro.props;
+const isNote = post.kind === 'note';
+const stamp = post.updated ?? post.date;
 ---
 
 <article class="card post-card reveal" style={`--reveal-delay:${delay}s`}>
   <p class="post-date">
-    <time datetime={post.date.toISOString()}>{formatDate(post.date)}</time>
+    {isNote && <span class:list={['kind', post.wip && 'wip']}>{post.wip ? 'in progress' : 'note'}</span>}
+    {isNote && <span class="dot">·</span>}
+    <time datetime={stamp.toISOString()}>
+      {isNote ? `updated ${formatMonth(stamp)}` : formatDate(post.date)}
+    </time>
     <span class="dot">·</span>
     <span>{post.minutes} min</span>
   </p>
@@ -44,6 +50,14 @@ const { post, delay = 0 } = Astro.props;
 
   .dot {
     margin-inline: 0.35rem;
+  }
+
+  .kind {
+    color: var(--accent);
+  }
+
+  .kind.wip {
+    color: var(--accent-2);
   }
 
   .post-title {
