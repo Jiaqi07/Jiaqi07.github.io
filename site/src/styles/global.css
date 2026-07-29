@@ -11,16 +11,18 @@
   --font-mono: 'JetBrains Mono Variable', ui-monospace, 'Cascadia Code', Consolas, monospace;
   --font-serif: 'Newsreader Variable', Georgia, 'Times New Roman', serif;
 
-  --bg: #f7f3ea;
-  --bg-2: #fffdf6;
-  --surface: rgba(32, 36, 43, 0.035);
-  --surface-hover: rgba(32, 36, 43, 0.06);
-  --border: rgba(32, 36, 43, 0.16);
-  --hairline: rgba(32, 36, 43, 0.1);
+  --bg: #f6f1e5;
+  --bg-2: #fffcf3;
+  /* neutrals are tinted warm (toasted brown) rather than cool grey — the
+     whole palette should read as paper under a lamp, not paper under a screen */
+  --surface: rgba(122, 92, 52, 0.042);
+  --surface-hover: rgba(122, 92, 52, 0.075);
+  --border: rgba(122, 92, 52, 0.2);
+  --hairline: rgba(122, 92, 52, 0.13);
 
-  --text: #21252c;
-  --muted: #5d6672;
-  --faint: #8a93a0;
+  --text: #221f1b;
+  --muted: #5f5a50;
+  --faint: #8d8579;
 
   --accent: #0d7a68;
   --accent-strong: #095e50;
@@ -31,13 +33,14 @@
   --stone-black: #23272e;
   --stone-white: #fffdf6;
 
-  --code-bg: #f0ebdf;
+  --code-bg: #efe8d9;
   --mark-bg: rgba(180, 90, 31, 0.18);
 
   --font-display: 'Newsreader Variable', var(--font-serif);
   --font-prose: 'Newsreader Variable', var(--font-serif);
   --display-tracking: -0.01em;
-  --shadow-card: 0 1px 2px rgba(32, 36, 43, 0.06), 0 12px 36px -20px rgba(32, 36, 43, 0.25);
+  --shadow-card: 0 1px 2px rgba(92, 70, 40, 0.07), 0 14px 38px -22px rgba(92, 70, 40, 0.3);
+  --shadow-lift: 0 2px 4px rgba(92, 70, 40, 0.08), 0 20px 44px -24px rgba(92, 70, 40, 0.4);
   --shadow-pop: 0 24px 70px -30px rgba(13, 122, 104, 0.28);
 }
 
@@ -52,6 +55,56 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+}
+
+/* ---------- cursor ----------
+   An ink dot on paper, with a warm halo — a Go stone at cursor scale.
+   Interactive things get the teal version, slightly larger. Text keeps a
+   real I-beam so selecting still feels normal. */
+
+body {
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Ccircle cx='11' cy='11' r='7.5' fill='%23b45a1f' fill-opacity='.1'/%3E%3Ccircle cx='11' cy='11' r='7.5' fill='none' stroke='%23221f1b' stroke-opacity='.28' stroke-width='1'/%3E%3Ccircle cx='11' cy='11' r='3' fill='%23221f1b' fill-opacity='.82'/%3E%3C/svg%3E")
+      11 11,
+    auto;
+}
+
+a,
+button,
+summary,
+label,
+[role='button'],
+.btn,
+.filter-chip {
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Ccircle cx='13' cy='13' r='10' fill='%230d7a68' fill-opacity='.12'/%3E%3Ccircle cx='13' cy='13' r='10' fill='none' stroke='%230d7a68' stroke-opacity='.55' stroke-width='1.1'/%3E%3Ccircle cx='13' cy='13' r='3.6' fill='%230d7a68'/%3E%3C/svg%3E")
+      13 13,
+    pointer;
+}
+
+.prose,
+p,
+li,
+input,
+textarea,
+code,
+pre {
+  cursor: text;
+}
+
+/* links and buttons nested in text must win over the rule above — and the
+   whole surface of a post card is one big link, so it gets the pointer too */
+.prose a,
+p a,
+li a,
+p button,
+li button,
+.post-card,
+.post-card * {
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26'%3E%3Ccircle cx='13' cy='13' r='10' fill='%230d7a68' fill-opacity='.12'/%3E%3Ccircle cx='13' cy='13' r='10' fill='none' stroke='%230d7a68' stroke-opacity='.55' stroke-width='1.1'/%3E%3Ccircle cx='13' cy='13' r='3.6' fill='%230d7a68'/%3E%3C/svg%3E")
+      13 13,
+    pointer;
 }
 
 body {
@@ -194,17 +247,25 @@ a:hover {
 .card {
   position: relative;
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 18px;
   background:
     linear-gradient(var(--surface), var(--surface)) padding-box,
     var(--bg-2);
-  padding: 1.4rem 1.5rem;
+  padding: 1.35rem 1.45rem;
   box-shadow: var(--shadow-card);
-  transition: border-color 0.25s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 }
 
 .card:hover {
   border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover {
+    transform: none;
+  }
 }
 
 .tag {
