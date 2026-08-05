@@ -11,7 +11,9 @@ We talk about the **probability** of an outcome. We talk about the **likelihood*
 
 ## Probability vs. likelihood
 
-Flip a fair coin: the probability it lands heads is $1/2$. Now flip a coin, observe heads, and ask whether the coin is fair aka whether the $p$ that it is heads equals $1/2$. For a given value of $p$, its likelihood is the probability that a coin with that $p$ would produce the data we saw. In clearer terms, the liklhood helps us determine of a set of valid probability distributions, which one given the data we have observed so far is most likely to occur. While the probability is a distribution (sums up to 1) over a set of fixed outcomes that follows the axioms of probability. That is why in problems like the [Monty Hall problem](https://en.wikipedia.org/wiki/Monty_Hall_problem), we use bayes theorem where the numerator is 
+Flip a fair coin: the probability it lands heads is $1/2$. Now flip a coin, observe heads, and ask whether the coin is fair aka whether the $p$ that it is heads equals $1/2$. For a given value of $p$, its likelihood is the probability that a coin with that $p$ would produce the data we saw. In clearer terms, the liklhood helps us determine of a set of valid probability distributions, which one given the data we have observed so far is most likely to occur so it does not have to sum up to 1. While the probability is a distribution (sums up to 1) over a set of fixed outcomes that follows the axioms of probability. 
+
+That is why in problems like the [Monty Hall problem](https://en.wikipedia.org/wiki/Monty_Hall_problem), we use bayes theorem where the numerator is calculated by multiplying a likelihood term ($P(B \mid A)$) and the prior probability of that event occuring ($P(A)$). Our result is the posterior term after division.
 
 - The likelihood of $p = 0$ is zero: a coin that never lands heads did not land heads.
 - The likelihood of $p = 1$ is one: such a coin lands heads with certainty.
@@ -29,12 +31,12 @@ The same expression $P(x \mid \theta)$ means two different things depending on w
 
 It uses the same formula, but it does not integrate to 1 over the parameter space. A valid PDF/PMF describes the distribution of *outcomes* for a fixed parameter. A likelihood measures how well a parameter *explains* the data — support, not probability.
 
-Likelihood becomes a genuine probability density over parameters only after Bayes: multiply by a prior, divide by the evidence, and you have a posterior. Plausibility of a parameter value is a posterior statement, never a likelihood statement.
+Like mentioned above, Likelihood only becomes a probability density over parameters after Bayes where we multiply by a prior, divide by the evidence, and you have a posterior. Plausibility of a parameter value is a posterior statement, never a likelihood statement.
 
 Once you move to continuous distributions, likelihood stops being a probability at all. And since we only ever want to maximize it, we usually write it in a form that is merely *proportional* to the true likelihood. The purpose of a likelihood function is to be maximized; a single likelihood value on its own means very little, only whether it is bigger or smaller than another one.
 
-> [!note] The intuition I keep
-> Finding a face-down red card and asking "what is the likelihood this is a heart, given it's red?" The answer depends on the composition of the deck. Likelihood is always conditional on prior structure — it tells you how well evidence supports a claim, not whether the claim is true. Dinosaur footprints on Mars raise the likelihood that dinosaurs lived there; they do not establish it.
+> [!note] Another example
+> Finding a face-down red card and asking "what is the likelihood this is a heart, given it's red?" The answer depends on the composition of the deck. Likelihood is always conditional on prior structure and it tells you how well evidence supports a claim (given data -> distribution), not whether the claim is true. Dinosaur footprints on Mars raise the likelihood that dinosaurs lived there but do not establish it.
 
 ## Priors and the regularizers they become
 
@@ -55,6 +57,10 @@ $$D_{KL}(p \,\|\, q) = H(p, q) - H(p)$$
 and $H(p)$ — the entropy of the data distribution — does not depend on the model. Same gradients, same optimum, so the constant is simply dropped.
 
 In exclusive $k$-way classification this degenerates further into negative log-likelihood. People usually derive NLL not from KL or cross-entropy at all, but directly from maximizing the probability of labels conditioned on inputs. The log shows up because data is assumed i.i.d., so summing log-probabilities is the same as multiplying independent probabilities.
+
+
+The following information is a random dive into measure theory that I did that I have not understand entirely.
+
 
 ## The measure-theory vocabulary
 
@@ -121,11 +127,11 @@ And you cannot when the distribution is empirical/atomic, or mixed with an atomi
 
 ### Reinforcement learning
 
-Policy gradients are the same story from the other side. The state visitation distribution $d^\pi(s)$ is induced by environment dynamics: often unknown, often empirical (a replay buffer), rarely smooth. We never compute $\nabla_s \log d^\pi(s)$ — it is inaccessible, non-smooth, and frequently undefined.
+Policy gradients are the same story from the other side. The state visitation distribution $d^\pi(s)$ is induced by environment dynamics: often unknown, often empirical (a replay buffer), rarely smooth. We never compute $\nabla_s \log d^\pi(s)$ as it is inaccessible, non-smooth, and frequently undefined.
 
-In diffusion we can learn a gradient field over a smooth data distribution. In RL, the visitation distribution is implicit, non-differentiable, and policy-dependent, so instead of differentiating the environment distribution we push gradients through the policy via the policy gradient theorem. Gradients move through the policy, value functions, and learned critics — never through the environment.
+In diffusion we can learn a gradient field over a smooth data distribution. In RL, the visitation distribution is implicit, non-differentiable, and policy-dependent, so instead of differentiating the environment distribution we push gradients through the policy via the policy gradient theorem. Gradients move through the policy, value functions, and learned critics but NEVER through the environment.
 
-## Still owe myself
+## Questions to reask myself
 
 - What exactly is the difference between a PDF and a likelihood?
 - Derive the MLE for the mean of a normal distribution.
@@ -134,4 +140,4 @@ In diffusion we can learn a gradient field over a smooth data distribution. In R
 
 ## Sources
 
-- [Likelihood and Probability](https://jaketae.github.io/study/likelihood/) — Jake Tae. His blog in general is very good.
+- [Likelihood and Probability](https://jaketae.github.io/study/likelihood/) — Jake Tae. Cool blogs.
