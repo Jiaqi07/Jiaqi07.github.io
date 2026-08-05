@@ -21,7 +21,7 @@ const {
   ogType = 'website',
 } = Astro.props;
 
-const fullTitle = title ? `${title} · Alan Chen` : 'Introspecting with Alan';
+const fullTitle = title ? `${title} · Alan Chen` : 'Alan J. Chen';
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL('/og.png', Astro.site);
 
@@ -110,10 +110,21 @@ const personLd = {
           revealed.forEach((el) => el.classList.add('in-view'));
         }
 
-        // respect reduced motion for looping demo videos
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          document.querySelectorAll<HTMLVideoElement>('video[autoplay]').forEach((v) => v.pause());
-        }
+        // Looping demo videos. After a client-side navigation the element is
+        // brand new but the autoplay attribute doesn't reliably fire on DOM
+        // insertion, so the frame stays blank until a hard refresh — kick it
+        // manually. Reduced motion still wins.
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        document.querySelectorAll<HTMLVideoElement>('video[autoplay]').forEach((v) => {
+          if (reduceMotion) {
+            v.pause();
+            return;
+          }
+          if (v.readyState === 0) v.load();
+          v.play().catch(() => {
+            /* autoplay blocked (low power mode, user setting) — poster stands in */
+          });
+        });
       }
 
       document.addEventListener('astro:page-load', initPage);

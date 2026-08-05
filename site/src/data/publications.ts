@@ -33,10 +33,12 @@ export const publications: Publication[] = [
     year: 2025,
     summary:
       'In what order should a robot place Lego-like primitives so the build never collapses halfway? We train a deep-RL construction policy guided by an online, data-free action mask that filters physically invalid moves before they happen. The planner sequences 250+ 3D structures with a 100% success rate; the best comparable baseline fails on more than 40 of them.',
-    figure: '/research/pa-fig1.png',
+    video: '/research/pa-demos.mp4',
+    figure: '/research/pa-demos-poster.jpg',
+    figureBg: '#0d0f12',
     figureAlt:
-      'Illustration of physics-aware combinatorial assembly: a valid brick placement vs. placements that collapse or exhaust inventory',
-    figureCaption: 'Valid vs. physically invalid placements under inventory constraints (Fig. 1 of the paper)',
+      'Robot arms assembling four structures planned by the method: a vessel, a guitar, a faucet, and branched stairs',
+    figureCaption: 'Planned sequences executed on the lab arms — vessel, guitar, faucet, branched stairs (16× speed)',
     links: [
       { label: 'arXiv', url: 'https://arxiv.org/abs/2408.10162' },
       { label: 'IEEE Xplore', url: 'https://ieeexplore.ieee.org/document/10938966' },
@@ -71,7 +73,7 @@ export const publications: Publication[] = [
     ],
     tags: ['deep RL', 'point clouds', 'assembly completion'],
     selected: true,
-    note: 'First-authored in high school; funded in part by an IFAC student grant.',
+    note: 'First-authored in high school.',
   },
   {
     id: 'eco-driving',
