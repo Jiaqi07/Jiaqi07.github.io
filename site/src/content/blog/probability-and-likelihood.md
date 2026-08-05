@@ -11,7 +11,7 @@ We talk about the **probability** of an outcome. We talk about the **likelihood*
 
 ## Probability vs. likelihood
 
-Flip a fair coin: the probability it lands heads is $1/2$. Now flip a coin, observe heads, and ask whether the coin is fair — whether the $p$ that generates heads equals $1/2$. For a given value of $p$, its likelihood is the probability that a coin with that $p$ would produce the data we saw.
+Flip a fair coin: the probability it lands heads is $1/2$. Now flip a coin, observe heads, and ask whether the coin is fair aka whether the $p$ that it is heads equals $1/2$. For a given value of $p$, its likelihood is the probability that a coin with that $p$ would produce the data we saw. In clearer terms, the liklhood helps us determine of a set of valid probability distributions, which one given the data we have observed so far is most likely to occur. While the probability is a distribution (sums up to 1) over a set of fixed outcomes that follows the axioms of probability. That is why in problems like the [Monty Hall problem](https://en.wikipedia.org/wiki/Monty_Hall_problem), we use bayes theorem where the numerator is 
 
 - The likelihood of $p = 0$ is zero: a coin that never lands heads did not land heads.
 - The likelihood of $p = 1$ is one: such a coin lands heads with certainty.
