@@ -29,7 +29,7 @@ def masked_policy_step(obs, mask, policy):
     return torch.distributions.Categorical(logits=logits).sample()
 ```
 
-And ==highlights==, footnotes[^1], and callouts for the load-bearing caveats:
+And ==highlights==, footnotes[^1], and callouts:
 
 > [!warning] Reproducibility disclaimer
 > If a plot in a post disagrees with the paper, trust the paper. Posts are lab notes, not camera-ready.

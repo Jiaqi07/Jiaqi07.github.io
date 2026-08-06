@@ -12,7 +12,7 @@ export const AREAS: { key: Area; label: string; blurb: string }[] = [
   {
     key: 'foundations',
     label: 'Foundations',
-    blurb: 'The math I keep re-deriving from scratch, written down so I stop re-deriving it.',
+    blurb: 'The math I forget.',
   },
   {
     key: 'models',
@@ -22,7 +22,7 @@ export const AREAS: { key: Area; label: string; blurb: string }[] = [
   {
     key: 'research',
     label: 'Papers & research notes',
-    blurb: 'Reading-group writeups and the parts of my own field I am still arguing with.',
+    blurb: 'Reading-group writeups.',
   },
 ];
 
