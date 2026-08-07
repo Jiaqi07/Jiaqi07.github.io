@@ -69,7 +69,6 @@ export const publications: Publication[] = [
     links: [
       { label: 'arXiv', url: 'https://arxiv.org/abs/2410.15469' },
       { label: 'DOI', url: 'https://doi.org/10.1016/j.ifacol.2025.12.346' },
-      { label: 'code', url: 'https://github.com/Jiaqi07/AssemblyCompletion' },
     ],
     tags: ['deep RL', 'point clouds', 'assembly completion'],
     selected: true,
