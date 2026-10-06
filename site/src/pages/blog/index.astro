@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PostCard from '../../components/PostCard.astro';
+import ArmBlog from '../../components/ArmBlog.astro';
 import { getPosts, essays, groupByArea } from '../../lib/posts';
 
 const posts = await getPosts();
@@ -33,6 +34,10 @@ const noteCount = noteGroups.reduce((n, g) => n + g.posts.length, 0);
         </div>
       )}
     </div>
+  </section>
+
+  <section class="container" aria-label="Writing elsewhere">
+    <ArmBlog />
   </section>
 
   <div class="feed" id="feed">

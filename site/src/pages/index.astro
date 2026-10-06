@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Goban from '../components/Goban.astro';
 import PubFigure from '../components/PubFigure.astro';
 import PostCard from '../components/PostCard.astro';
+import ArmBlog from '../components/ArmBlog.astro';
 import { profile } from '../data/profile';
 import { publications } from '../data/publications';
 import { getPosts, essays, notes } from '../lib/posts';
@@ -34,6 +35,7 @@ const beyond = [
           vision-language-action models at the <strong>Learning Agents Research Group</strong>.
           Previously at CMU's Robotics Institute, where I published on robotic assembly before
           finishing high school.
+          Increasingly interested in continual learning and recursive self-improvement.
         </p>
 
         <div class="hero-ctas">
@@ -108,6 +110,7 @@ const beyond = [
     <div class="container">
       <p class="eyebrow reveal">writing</p>
       <h2 class="section-title reveal">Notes &amp; writeups</h2>
+      <ArmBlog />
       <div class="posts-grid">
         {posts.map((post, i) => (
           <PostCard post={post} delay={i * 0.08} />
