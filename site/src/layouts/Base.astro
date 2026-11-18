@@ -20,7 +20,7 @@ const {
   robots,
 } = Astro.props;
 
-const fullTitle = title ? `${title} | Alan Chen` : 'Alan J. Chen';
+const fullTitle = Astro.url.pathname === '/' ? 'Alan Chen' : title ? `${title} | Alan Chen` : 'Alan Chen';
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL('/og.png', Astro.site);
 
@@ -46,9 +46,7 @@ const personLd = {
     <meta name="description" content={description} />
     {robots && <meta name="robots" content={robots} />}
     <link rel="canonical" href={canonical} />
-    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
+    <link rel="icon" type="image/x-icon" href="/mudkip.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#181918" />
