@@ -107,12 +107,12 @@ export async function mountRobotBoard(root: HTMLElement) {
     stone.position.set(center.x+(slot?Math.cos((slot-1)*Math.PI/3)*.033:0),.029+layer*.015,center.z+(slot?Math.sin((slot-1)*Math.PI/3)*.033:0));
     capturedStones.push(stone);
   }
-  type Motion={from:InstanceType<typeof THREE.Vector3>;to:InstanceType<typeof THREE.Vector3>;point:number;color:Color;arm:Color;remove:boolean;time:number;lifted:boolean;released:boolean;approach?:InstanceType<typeof THREE.Vector3>};
+  type Motion={from:InstanceType<typeof THREE.Vector3>;to:InstanceType<typeof THREE.Vector3>;point:number;color:Color;arm:Color;remove:boolean;time:number;duration:number;lifted:boolean;released:boolean;approach?:InstanceType<typeof THREE.Vector3>;redirect?:InstanceType<typeof THREE.Vector3>;before?:{board:number[];previous:string|undefined}};
+  let replyPending:number|undefined;
   let demoColor:Color=1,playerColor:Color=1,scored=false,scoreRequested=false;
   const colorName=(color:Color)=>color===1?'black':'white';
-  const takeoverColor=():Color=>interactive?playerColor:(active?.arm??queue[0]?.arm??demoColor);
+  const takeoverColor=():Color=>interactive?playerColor:(active&&!active.remove&&!active.released?active.arm:demoColor);
   const turnHint=()=>interactive?`Your move (${colorName(playerColor)})`:`Take over ${colorName(takeoverColor())}`;
-  let demoSnapshot:{board:number[];previous:string|undefined;captured:number;counts:number[]}|undefined;
   let board=Array<number>(81).fill(0),previous:string|undefined,interactive=false,busy=false,demoMoves=0;
   let queue:Motion[]=[],active:Motion|undefined,raf=0,last=0,visible=true,destroyed=false,hover=-1,selected=40;
   const media=matchMedia('(prefers-reduced-motion: reduce)'); let paused=media.matches;
@@ -126,19 +126,20 @@ export async function mountRobotBoard(root: HTMLElement) {
   const mark=(p:number)=>{lastMove.position.copy(pointPosition(p));lastMove.position.y=.060;lastMove.visible=true;};
   function seed() {
     board.fill(0);previous=undefined;queue=[];active=undefined;interactive=false;busy=false;demoMoves=0;
-    demoColor=1;playerColor=1;demoSnapshot=undefined;scored=false;scoreRequested=false;scorePanel.hidden=true;score.disabled=false;score.textContent='Score';territoryMarkers.forEach(m=>m.visible=false);
+    demoColor=1;playerColor=1;replyPending=undefined;scored=false;scoreRequested=false;scorePanel.hidden=true;score.disabled=false;score.textContent='Score';territoryMarkers.forEach(m=>m.visible=false);
     stones.forEach(s=>s.visible=false);carried.visible=false;ghost.visible=false;lastMove.visible=false;
     capturedStones.forEach(s=>scene.remove(s));capturedStones.length=0;captureCounts.fill(0);
     [[2,2],[6,6],[2,6],[6,2],[4,4],[5,4]].forEach(([x,z],i)=>{const p=z*9+x;board[p]=i%2+1;stones[p].material=stoneMaterials[i%2];stones[p].visible=true;});
     setHint('Take over black');
   }
   function enqueue(point:number,color:Color,remove=false,arm:Color=color) {
-    queue.push({from:remove?pointPosition(point):(arm===1?blackPickup:pickup).clone(),to:remove?(arm===1?blackDiscard:discard).clone():pointPosition(point),point,color,arm,remove,time:0,lifted:false,released:false});
+    const motion:Motion={from:remove?pointPosition(point):(arm===1?blackPickup:pickup).clone(),to:remove?(arm===1?blackDiscard:discard).clone():pointPosition(point),point,color,arm,remove,time:0,duration:interactive?2.8:5,lifted:false,released:false};
+    queue.push(motion);return motion;
   }
   function applyMove(point:number,color:Color) {
     const result=play(board,point,color,previous);if(!result)return false;
-    previous=board.join('');board=result.board;
-    enqueue(point,color);
+    const before={board:[...board],previous};previous=board.join('');board=result.board;
+    enqueue(point,color).before=before;
     result.captured.forEach(p=>enqueue(p,color===1?2:1,true,color));
     return true;
   }
@@ -149,68 +150,85 @@ export async function mountRobotBoard(root: HTMLElement) {
   }
   function pose() {
     if(!active){carried.visible=false;return;}
-    const motion=active,p=Math.min(1,motion.time/(interactive?2.8:5));
+    const motion=active,p=Math.min(1,motion.time/motion.duration);
     const solver=motion.arm===1?blackKinematics:kinematics,rest=motion.arm===1?blackHome:home;
     const start=motion.from,end=motion.to;
     const highStart=start.clone().add(new THREE.Vector3(0,.16,0));
     const highEnd=end.clone().add(new THREE.Vector3(0,.16,0));
     let target:InstanceType<typeof THREE.Vector3>;
-    if(p<.12)target=motion.approach!.clone().lerp(highStart,smooth(p/.12));
+    if(motion.redirect){
+      const raised=motion.redirect.clone();raised.y=Math.max(raised.y,highEnd.y);
+      if(p<.2)target=motion.redirect.clone().lerp(raised,smooth(p/.2));
+      else if(p<.55)target=raised.clone().lerp(highEnd,smooth((p-.2)/.35));
+      else if(p<.77)target=highEnd.clone().lerp(end,smooth((p-.55)/.22));
+      else if(p<.87)target=end.clone().lerp(highEnd,smooth((p-.77)/.1));
+      else target=highEnd.clone().lerp(rest,smooth((p-.87)/.13));
+    }
+    else if(p<.12)target=motion.approach!.clone().lerp(highStart,smooth(p/.12));
     else if(p<.25)target=highStart.clone().lerp(start,smooth((p-.12)/.13));
     else if(p<.4)target=start.clone().lerp(highStart,smooth((p-.25)/.15));
     else if(p<.62)target=highStart.clone().lerp(highEnd,smooth((p-.4)/.22));
     else if(p<.77)target=highEnd.clone().lerp(end,smooth((p-.62)/.15));
     else if(p<.87)target=end.clone().lerp(highEnd,smooth((p-.77)/.1));
     else target=highEnd.clone().lerp(rest,smooth((p-.87)/.13));
-    solver.grip(p>=.23&&p<.77);
+    solver.grip((!!motion.redirect||p>=.23)&&p<.77);
     const tip=solver.solve(target);
     if(p>=.25&&!motion.lifted){motion.lifted=true;if(motion.remove)stones[motion.point].visible=false;}
     if(p>=.77&&!motion.released){motion.released=true;if(!motion.remove){stones[motion.point].material=stoneMaterials[motion.color-1];stones[motion.point].visible=true;mark(motion.point);}else collectStone(motion.color,motion.arm);}
-    carried.visible=p>=.25&&p<.77;carried.material=stoneMaterials[motion.color-1];carried.position.copy(tip);
+    carried.visible=(!!motion.redirect||p>=.25)&&p<.77;carried.material=stoneMaterials[motion.color-1];carried.position.copy(tip);
   }
   const draw=()=>{if(!destroyed){
     const color=takeoverColor();ghostMaterial.color.copy(stoneMaterials[color-1].color);
-    if(hover>=0){const position=!interactive&&active&&demoSnapshot?demoSnapshot:{board,previous};ghost.visible=!busy&&!scored&&!scoreRequested&&!!play(position.board,hover,color,position.previous);}
+    if(hover>=0){const retarget=active&&!active.remove&&!active.released&&active.arm===color;const position=retarget&&active!.before?active!.before:{board,previous};ghost.visible=(!busy||!!retarget)&&!scored&&!scoreRequested&&!!play(position.board,hover,color,position.previous);}
     pose();renderer.render(scene,camera);
   }};
   function advance(dt:number) {
+    if(!active&&!queue.length&&replyPending!==undefined){
+      const opponent:Color=playerColor===1?2:1,reply=chooseMove(board,opponent,previous,replyPending);replyPending=undefined;
+      if(reply>=0)applyMove(reply,opponent);
+    }
     if(!active&&!queue.length&&scoreRequested){showScore();return;}
     if(!active&&!queue.length&&!interactive&&!scored){
       if(demoMoves>=24)seed();
-      demoSnapshot={board:[...board],previous,captured:capturedStones.length,counts:[...captureCounts]};
       const move=chooseMove(board,demoColor,previous,40,false);if(move<0){seed();return;}
       applyMove(move,demoColor);demoColor=demoColor===1?2:1;demoMoves++;
     }
     beginMotion();
-    if(active){active.time+=dt;pose();if(active.time>=(interactive?2.8:5)){active=undefined;carried.visible=false;beginMotion();}}
-    if(interactive&&!active&&!queue.length&&busy){busy=false;setHint(turnHint());}
+    if(active){active.time+=dt;pose();if(active.time>=active.duration){active=undefined;carried.visible=false;beginMotion();}}
+    if(interactive&&!active&&!queue.length&&replyPending===undefined&&busy){busy=false;setHint(turnHint());}
     if(!interactive&&!scoreRequested&&!scored)setHint(turnHint());
   }
   const tick=(now:number)=>{
     raf=0;if(destroyed||paused||scored||!visible||document.hidden){last=0;return;}
     const dt=last?Math.min((now-last)/1000,.06):0;last=now;advance(dt);draw();
-    if(!scored&&(active||queue.length||!interactive||scoreRequested))raf=requestAnimationFrame(tick);
+    if(!scored&&(active||queue.length||replyPending!==undefined||!interactive||scoreRequested))raf=requestAnimationFrame(tick);
   };
   const start=()=>{if(!raf&&!paused&&visible&&!document.hidden){last=0;raf=requestAnimationFrame(tick);}};
   const resume=()=>{draw();start();};
   function humanMove(point:number) {
-    if(scored||scoreRequested||(interactive&&busy))return;
+    if(scored||scoreRequested)return;
     const color=takeoverColor();
-    if(!interactive&&demoSnapshot&&(active||queue.length)){
-      if(!play(demoSnapshot.board,point,color,demoSnapshot.previous)){setHint('Choose an empty point');return;}
-      board=[...demoSnapshot.board];previous=demoSnapshot.previous;queue=[];active=undefined;carried.visible=false;
-      capturedStones.splice(demoSnapshot.captured).forEach(s=>scene.remove(s));captureCounts[0]=demoSnapshot.counts[0];captureCounts[1]=demoSnapshot.counts[1];
-      stones.forEach((s,p)=>{s.visible=!!board[p];if(board[p])s.material=stoneMaterials[board[p]-1];});
-      const solver=color===1?blackKinematics:kinematics;solver.grip(false);solver.solve(color===1?blackHome:home,100);lastMove.visible=false;
+    const moving=active&&!active.remove&&!active.released&&active.arm===color?active:undefined;
+    if(interactive&&busy&&!moving)return;
+    if(moving?.before){
+      const result=play(moving.before.board,point,color,moving.before.previous);
+      if(!result){setHint('Choose an empty point');return;}
+      // Replace only the unplayed move. Never rewind visible stones, captures, joints or grip.
+      previous=moving.before.board.join('');board=result.board;queue=[];
+      moving.point=point;moving.to.copy(pointPosition(point));
+      if(moving.lifted){moving.redirect=(color===1?blackKinematics:kinematics).tipPosition();moving.time=0;moving.duration=1.8;}
+      else{const phase=moving.time/moving.duration;moving.duration=2.8;moving.time=phase*moving.duration;}
+      result.captured.forEach(p=>enqueue(p,color===1?2:1,true,color));
+    }else{
+      if(stones[point]?.visible&&!board[point]){setHint('Let the robot lift that stone');return;}
+      const wasInteractive=interactive;interactive=true;
+      if(!applyMove(point,color)){interactive=wasInteractive;setHint(board[point]?'Choose an empty point':'Try another point');return;}
     }
-    if(stones[point]?.visible&&!board[point]){setHint('Let the robot lift that stone');return;}
-    if(!applyMove(point,color)){setHint(board[point]?'Choose an empty point':'Try another point');return;}
     playerColor=color;interactive=true;busy=true;ghost.visible=false;
-    const opponent:Color=color===1?2:1,reply=chooseMove(board,opponent,previous,point);
-    if(reply>=0)applyMove(reply,opponent);
+    replyPending=point;
     setHint('Placing your stone');
     if(media.matches){
-      while(active||queue.length){beginMotion();active!.time=5;pose();active=undefined;}
+      while(active||queue.length||replyPending!==undefined){advance(10);}
       carried.visible=false;kinematics.grip(false);kinematics.solve(home,100);blackKinematics.grip(false);blackKinematics.solve(blackHome,100);busy=false;setHint(turnHint());draw();
     }else{paused=false;resume();}
   }
@@ -252,7 +270,7 @@ export async function mountRobotBoard(root: HTMLElement) {
   }
   score.addEventListener('click',()=>{
     ghost.visible=false;
-    if(active||queue.length){scoreRequested=true;score.disabled=true;score.textContent='Counting…';setHint('Finishing this move');if(paused){while(active||queue.length){beginMotion();active!.time=5;pose();active=undefined;}showScore();}else start();}
+    if(active||queue.length||replyPending!==undefined){scoreRequested=true;score.disabled=true;score.textContent='Counting…';setHint('Finishing this move');if(paused){while(active||queue.length||replyPending!==undefined){advance(10);}showScore();}else start();}
     else showScore();
   },{signal:abort.signal});
   root.querySelector('.robot-continue')!.addEventListener('click',()=>{scored=false;scorePanel.hidden=true;score.disabled=false;territoryMarkers.forEach(m=>m.visible=false);setHint(turnHint());canvas.focus({preventScroll:true});resume();},{signal:abort.signal});
