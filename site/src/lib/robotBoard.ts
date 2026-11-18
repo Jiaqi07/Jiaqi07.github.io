@@ -121,10 +121,35 @@ export async function mountRobotBoard(root: HTMLElement) {
   const home=pickup.clone().add(new THREE.Vector3(0,.20,0));
   const blackHome=blackPickup.clone().add(new THREE.Vector3(0,.20,0));
   kinematics.solve(home,100);blackKinematics.solve(blackHome,100);
+  const faceTextures=['happy','sad','neutral'].map(mood=>{
+    const face=document.createElement('canvas');face.width=256;face.height=192;const c=face.getContext('2d')!;
+    c.fillStyle='#15221e';c.strokeStyle=mood==='happy'?'#bddc92':mood==='sad'?'#b3c4d3':'#c7cdc3';c.lineWidth=7;
+    c.beginPath();c.roundRect(8,8,240,176,36);c.fill();c.stroke();c.lineCap='round';c.lineWidth=10;
+    for(const x of [82,174]){c.beginPath();if(mood==='happy'){c.moveTo(x-16,76);c.quadraticCurveTo(x,52,x+16,76);}else{c.moveTo(x-12,69);c.lineTo(x+12,mood==='sad'?80:69);}c.stroke();}
+    c.beginPath();c.moveTo(88,mood==='sad'?137:120);c.quadraticCurveTo(128,mood==='happy'?160:mood==='sad'?96:120,168,mood==='sad'?137:120);c.stroke();
+    const texture=new THREE.CanvasTexture(face);texture.colorSpace=THREE.SRGBColorSpace;return texture;
+  });
+  const faces=[blackKinematics,kinematics].map(()=>{const face=new THREE.Sprite(new THREE.SpriteMaterial({map:faceTextures[2],depthTest:false,depthWrite:false}));face.renderOrder=10;face.scale.set(.13,.0975,1);face.visible=false;scene.add(face);return face;});
+  let reactionRaf=0,reactionVersion=0;
+  function clearReaction(){cancelAnimationFrame(reactionRaf);reactionVersion++;faces.forEach(f=>f.visible=false);}
+  function reactToScore(winner:number){
+    clearReaction();const version=reactionVersion,solvers=[blackKinematics,kinematics],homes=[blackHome,home];
+    const starts=solvers.map(s=>s.tipPosition()),targets=homes.map((h,i)=>h.clone().add(new THREE.Vector3(0,winner===0?0:winner===i+1?.13:-.12,0)));
+    faces.forEach((f,i)=>{f.material.map=faceTextures[winner===0?2:winner===i+1?0:1];f.material.needsUpdate=true;f.visible=true;});
+    const began=performance.now();
+    const animate=(now:number)=>{
+      if(destroyed||version!==reactionVersion)return;
+      const t=media.matches?1:Math.min(1,(now-began)/750);
+      solvers.forEach((s,i)=>{s.grip(false);s.solve(starts[i].clone().lerp(targets[i],smooth(t)),t===1&&media.matches?100:12);});
+      draw();if(t<1)reactionRaf=requestAnimationFrame(animate);
+    };
+    animate(began);
+  }
   const territoryMarkers=Array.from({length:81},(_,p)=>{const m=mesh(new THREE.BoxGeometry(.012,.001,.012),stoneMaterials[0]);m.position.copy(pointPosition(p));m.position.y=.044;m.visible=false;return m;});
   const setHint=(label:string)=>{hint.textContent=label;if(state.textContent!==label)state.textContent=label;};
   const mark=(p:number)=>{lastMove.position.copy(pointPosition(p));lastMove.position.y=.060;lastMove.visible=true;};
   function seed() {
+    clearReaction();
     board.fill(0);previous=undefined;queue=[];active=undefined;interactive=false;busy=false;demoMoves=0;
     demoColor=1;playerColor=1;replyPending=undefined;scored=false;scoreRequested=false;scorePanel.hidden=true;score.disabled=false;score.textContent='Score';territoryMarkers.forEach(m=>m.visible=false);
     stones.forEach(s=>s.visible=false);carried.visible=false;ghost.visible=false;lastMove.visible=false;
@@ -180,7 +205,7 @@ export async function mountRobotBoard(root: HTMLElement) {
   const draw=()=>{if(!destroyed){
     const color=takeoverColor();ghostMaterial.color.copy(stoneMaterials[color-1].color);
     if(hover>=0){const retarget=active&&!active.remove&&!active.released&&active.arm===color;const position=retarget&&active!.before?active!.before:{board,previous};ghost.visible=(!busy||!!retarget)&&!scored&&!scoreRequested&&!!play(position.board,hover,color,position.previous);}
-    pose();renderer.render(scene,camera);
+    pose();faces.forEach((face,i)=>{if(face.visible){face.position.copy((i===0?blackKinematics:kinematics).tipPosition());face.position.y+=.09;face.position.add(camera.position.clone().sub(face.position).normalize().multiplyScalar(.045));}});renderer.render(scene,camera);
   }};
   function advance(dt:number) {
     if(!active&&!queue.length&&replyPending!==undefined){
@@ -254,26 +279,26 @@ export async function mountRobotBoard(root: HTMLElement) {
   function showScore(){
     scoreRequested=false;scored=true;ghost.visible=false;lastMove.visible=false;
     const result=scoreBoard(board),margin=Math.abs(result.black-result.white);
-    const title=result.winner===0?'Evenly matched':interactive?(result.winner===playerColor?'You win':'Robot wins'):result.winner===1?'Black wins':'White wins';
+    const title=result.winner===0?'Evenly matched':interactive?(result.winner===playerColor?'You lead':'Robot leads'):result.winner===1?'Black leads':'White leads';
     scorePanel.querySelector('.score-result')!.textContent=title;
-    scorePanel.querySelector('.score-margin')!.textContent=margin?`+${margin} ${margin===1?'point':'points'}`:'Draw';
+    scorePanel.querySelector('.score-margin')!.textContent=margin?`≈ +${margin} ${margin===1?'point':'points'}`:'Level';
     for(const color of [1,2] as const){
       const side=scorePanel.querySelector<HTMLElement>(`[data-side="${color}"]`)!;
       side.dataset.leading=String(result.winner===color);
       side.querySelector('.score-owner')!.textContent=interactive?(color===playerColor?'You':'Robot'):color===1?'Black':'White';
       side.querySelector('.score-total')!.textContent=String(color===1?result.black:result.white);
-      side.querySelector('.score-detail')!.textContent=`${result.stones[color-1]} stones / ${result.territory[color-1]} territory`;
+      side.querySelector('.score-detail')!.textContent=`${result.stones[color-1]} stones / ~${result.territory[color-1]} territory`;
     }
     scorePanel.dataset.winner=String(result.winner);scorePanel.hidden=false;score.disabled=true;score.textContent='Score';
-    territoryMarkers.forEach((m,p)=>{m.visible=!board[p]&&!!result.ownership[p];if(m.visible)m.material=stoneMaterials[result.ownership[p]-1];});
-    setHint(title);draw();scorePanel.scrollIntoView({block:'nearest',behavior:'instant'});root.querySelector<HTMLButtonElement>('.robot-continue')!.focus({preventScroll:true});
+    territoryMarkers.forEach((m,p)=>{m.visible=!board[p]&&!!result.ownership[p];if(m.visible){m.material=stoneMaterials[result.ownership[p]-1];m.scale.setScalar(.65+.35*result.confidence[p]);}});
+    setHint(title);reactToScore(result.winner);draw();scorePanel.scrollIntoView({block:'nearest',behavior:'instant'});root.querySelector<HTMLButtonElement>('.robot-continue')!.focus({preventScroll:true});
   }
   score.addEventListener('click',()=>{
     ghost.visible=false;
     if(active||queue.length||replyPending!==undefined){scoreRequested=true;score.disabled=true;score.textContent='Counting…';setHint('Finishing this move');if(paused){while(active||queue.length||replyPending!==undefined){advance(10);}showScore();}else start();}
     else showScore();
   },{signal:abort.signal});
-  root.querySelector('.robot-continue')!.addEventListener('click',()=>{scored=false;scorePanel.hidden=true;score.disabled=false;territoryMarkers.forEach(m=>m.visible=false);setHint(turnHint());canvas.focus({preventScroll:true});resume();},{signal:abort.signal});
+  root.querySelector('.robot-continue')!.addEventListener('click',()=>{clearReaction();scored=false;scorePanel.hidden=true;score.disabled=false;territoryMarkers.forEach(m=>m.visible=false);setHint(turnHint());canvas.focus({preventScroll:true});resume();},{signal:abort.signal});
   reset.addEventListener('click',()=>{seed();controls.reset();controls.target.copy(cameraTarget);controls.update();kinematics.solve(home,100);blackKinematics.solve(blackHome,100);paused=media.matches;resume();},{signal:abort.signal});
   media.addEventListener('change',()=>{paused=media.matches;resume();},{signal:abort.signal});
   document.addEventListener('visibilitychange',start,{signal:abort.signal});
@@ -290,9 +315,9 @@ export async function mountRobotBoard(root: HTMLElement) {
   canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();paused=true;root.classList.remove('ready');reset.disabled=true;state.textContent='Static preview';},{signal:abort.signal});
   seed();root.classList.add('ready');reset.disabled=false;resume();
   return ()=>{
-    destroyed=true;cancelAnimationFrame(raf);abort.abort();resize.disconnect();observer.disconnect();controls.dispose();
+    destroyed=true;clearReaction();cancelAnimationFrame(raf);abort.abort();resize.disconnect();observer.disconnect();controls.dispose();
     const geometries=new Set<InstanceType<typeof THREE.BufferGeometry>>(),materials=new Set<InstanceType<typeof THREE.Material>>();
     scene.traverse(object=>{if(object instanceof THREE.Mesh){geometries.add(object.geometry);(Array.isArray(object.material)?object.material:[object.material]).forEach(m=>materials.add(m));}});
-    geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());woodTexture.dispose();renderer.dispose();renderer.forceContextLoss();
+    geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());faces.forEach(f=>f.material.dispose());faceTextures.forEach(t=>t.dispose());woodTexture.dispose();renderer.dispose();renderer.forceContextLoss();
   };
 }

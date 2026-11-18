@@ -65,8 +65,11 @@ visitor takes over whichever color is currently moving. The visitor keeps that c
 and the other arm remains the opponent. Each click queues a physical placement by the
 visitor's arm before the opponent replies. Captured stones remain stacked in the trays.
 Black uses Panda geometry with a FANUC-inspired yellow finish. Score finishes the current move, highlights territory, and
-shows the winner using stones plus enclosed empty points, with zero komi and all
-remaining stones treated as alive. Keep playing resumes; Reset returns to the demo.
+estimates the lead using stones plus likely territory. Influence spreads through open
+points, with reduced weight for groups low on liberties; contested space stays neutral.
+This is a heuristic estimate with zero komi, not dead-stone adjudication or a final Go
+score. The leading arm smiles and lifts its wrist; the trailing arm frowns and lowers it.
+Keep playing resumes; Reset returns to the demo.
 Reduced motion, offscreen pausing, and a static Panda preview are supported.
 
 The Panda geometry comes from [MuJoCo Menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/main/franka_emika_panda),

@@ -5,9 +5,9 @@
   </div>
   <div class="study-bottom"><span class="study-title" id="board-hint">Take over black</span><span class="study-state" aria-live="polite">Loading 3D model</span><div class="study-controls"><button class="robot-score" type="button" disabled>Score</button><button class="robot-reset" type="button" disabled aria-label="Restart robot animation">Reset</button></div></div>
   <div class="score-panel" hidden role="status" aria-live="polite">
-    <div class="score-heading"><div><span class="score-eyebrow">Board score</span><strong class="score-result"></strong></div><span class="score-margin"></span></div>
+    <div class="score-heading"><div><span class="score-eyebrow">Estimated score</span><strong class="score-result"></strong></div><span class="score-margin"></span></div>
     <div class="score-counts">{[1,2].map(color=><div class="score-side" data-side={color}><div class="score-player"><span class:list={['score-stone',color===2&&'white-stone']} aria-label={color===1?'Black':'White'}></span><span class="score-owner"></span></div><strong class="score-total"></strong><span class="score-detail"></span></div>)}</div>
-    <div class="score-footer"><details><summary>How it’s counted</summary><p>Stones + enclosed points. No komi. Stones on the board count as alive; shared territory is neutral.</p></details><button class="robot-continue" type="button">Keep playing ↗</button></div>
+    <div class="score-footer"><details><summary>How it’s estimated</summary><p>Stones + likely territory, based on nearby groups and their liberties. Markers show predicted ownership; contested space stays neutral. No komi or automatic dead-stone removal. This is an estimate, not a final Go score.</p></details><button class="robot-continue" type="button">Keep playing ↗</button></div>
   </div>
 </div>
 <style>

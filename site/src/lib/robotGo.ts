@@ -1,22 +1,36 @@
 /** Small local Go opponent for the portfolio toy; no research policy or network calls. */
 export type Color = 1 | 2;
 export const SIZE = 9;
-/** Casual area score: stones plus exclusively surrounded empty points; zero komi.
- * Stones still on the board are treated as alive. Shared empty regions are neutral. */
+/** Heuristic area estimate, not a final Go adjudication. Influence diffuses through
+ * open intersections; weak groups exert less pressure and contested points stay neutral. */
 export function scoreBoard(board:number[]) {
-  const ownership=Array<number>(81).fill(0),seen=new Set<number>();
+  const ownership=Array<number>(81).fill(0),confidence=Array<number>(81).fill(0),seen=new Set<number>();
   const stones=[0,0],territory=[0,0];
   board.forEach((color,p)=>{if(color){stones[color-1]++;ownership[p]=color;}});
+  const strength=Array<number>(81).fill(0);
   for(let p=0;p<81;p++){
-    if(board[p]||seen.has(p))continue;
-    const region:number[]=[],border=new Set<number>(),pending=[p];seen.add(p);
-    while(pending.length){const point=pending.pop()!;region.push(point);for(const n of neighbors(point)){
-      if(board[n])border.add(board[n]);else if(!seen.has(n)){seen.add(n);pending.push(n);}
-    }}
-    if(border.size===1){const color=[...border][0];territory[color-1]+=region.length;region.forEach(q=>ownership[q]=color);}
+    if(!board[p]||seen.has(p))continue;
+    const g=group(board,p),weight=g.liberties.size<=1?.4:g.liberties.size===2?.7:1;
+    g.stones.forEach(s=>{seen.add(s);strength[s]=weight;});
+  }
+  const pressure=(color:number)=>{
+    let field=board.map((c,p)=>c===color?strength[p]:0);
+    for(let step=0;step<80;step++){
+      const next=field.slice();
+      for(let p=0;p<81;p++)if(!board[p]){const adjacent=neighbors(p);next[p]=.94*adjacent.reduce((sum,n)=>sum+field[n],0)/adjacent.length;}
+      field=next;
+    }
+    return field;
+  };
+  const blackPressure=pressure(1),whitePressure=pressure(2);
+  for(let p=0;p<81;p++){
+    if(board[p]){confidence[p]=1;continue;}
+    const b=blackPressure[p],w=whitePressure[p],advantage=Math.abs(b-w)/(b+w+1e-9);
+    confidence[p]=advantage*Math.min(1,Math.max(b,w)*2);
+    if(Math.max(b,w)>=.16&&advantage>=.24){const color=b>w?1:2;ownership[p]=color;territory[color-1]++;}
   }
   const black=stones[0]+territory[0],white=stones[1]+territory[1];
-  return {black,white,stones,territory,ownership,winner:black===white?0:black>white?1:2};
+  return {black,white,stones,territory,ownership,confidence,neutral:81-black-white,winner:black===white?0:black>white?1:2};
 }
 export const neighbors = (point: number) => [point % SIZE > 0 ? point - 1 : -1, point % SIZE < SIZE - 1 ? point + 1 : -1, point >= SIZE ? point - SIZE : -1, point < SIZE * (SIZE - 1) ? point + SIZE : -1].filter(p => p >= 0);
 export function group(board: number[], point: number) {
