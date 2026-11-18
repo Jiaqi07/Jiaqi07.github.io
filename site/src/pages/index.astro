@@ -1,451 +1,83 @@
 ---
 import Base from '../layouts/Base.astro';
-import Goban from '../components/Goban.astro';
+import RobotBoard from '../components/RobotBoard.astro';
+import ResearchTeasers from '../components/ResearchTeasers.astro';
 import PubFigure from '../components/PubFigure.astro';
-import PostCard from '../components/PostCard.astro';
-import ArmBlog from '../components/ArmBlog.astro';
 import { profile } from '../data/profile';
 import { publications } from '../data/publications';
 import { getPosts, essays, notes } from '../lib/posts';
-
-const selected = publications.filter((p) => p.selected);
-// finished writing leads; notes backfill the row so it never looks half-empty
-const all = await getPosts();
-const posts = [...essays(all), ...notes(all)].slice(0, 3);
-const firstSentence = (s: string) => s.split(/(?<=\.)\s+/)[0];
-
-const beyond = [
-  { k: 'sports', title: 'Physical Health', line: 'Playing basketball with grad students, learning how to fence, and lifting' },
-  { k: 'games', title: 'Gaming lol', line: 'Former Top 200 Hypixel Bridge Duels, Teamfight Tactics Diamond (just started), League Of Legends Hard Stuck Plat, Brawl Stars Masters Rank' },
-  { k: 'investing', title: 'Stocks + Venture Capital', line: "Part of UT's Texas Venture Group and just personally enjoy staying informed on news" },
-  { k: 'learning', title: 'Just enjoy learning more :)', line: 'Robot learning, efficient AI (MLSys), diffusion, etc.' },
+const posts = await getPosts();
+const writing = [...essays(posts), ...notes(posts)].slice(0, 2);
+const selected = publications.filter(p => p.selected);
+const titles = ['Physics-aware assembly', 'AssemblyComplete', 'Learning from demonstration'];
+const descriptions = [
+  'Planning robotic assembly, one stable step at a time.',
+  'Learning to finish an incomplete structure.',
+  'From a human demonstration to a real robot building LEGO.'
 ];
 ---
+<Base title="Robot learning" description="Alan Chen, a Turing Scholar at UT Austin researching robot learning, mobile manipulation, and multi-agent systems.">
+  <section class="hero shell" aria-labelledby="intro-title">
+    <div class="hero-copy">
+      <p class="hero-name">Alan Chen</p>
+      <h1 id="intro-title">Making<br />robots & myself<br /><span>continually learn.</span></h1>
+      <p class="intro">I’m Alan, a Turing Scholar at UT Austin. I'm most interested in LLM/auto-research + RL, robot learning, and representation learning.</p>
+      <a class="action" href="#work">Explore the research <span aria-hidden="true">↗</span></a>
+    </div>
+    <RobotBoard />
+  </section>
 
-<Base>
-  <!-- ============ hero ============ -->
-  <section class="hero">
-    <div class="container hero-grid">
-      <div class="hero-text">
-        <p class="eyebrow reveal in-view">(robot = continual+generative+reinforcement) * learning</p>
-        <h1 class="hero-name">Alan Chen</h1>
-        <p class="hero-lead">{profile.tagline}</p>
-        <p class="hero-body">
-          Undergrad researcher at UT Austin (<strong>Turing Scholars</strong>), working on RL for
-          vision-language-action models at the <strong>Learning Agents Research Group</strong>.
-          Previously at CMU's Robotics Institute, where I published on robotic assembly before
-          finishing high school.
-          Increasingly interested in continual learning and recursive self-improvement.
-        </p>
+  <section class="shell section-block" id="work" aria-labelledby="work-title">
+    <div class="section-heading"><h2 id="work-title">Current research</h2><a class="quiet-link" href="/research">All research ↗</a></div>
+    <ResearchTeasers />
+  </section>
 
-        <div class="hero-ctas">
-          <a class="btn btn-solid" href="/research">Research</a>
-          <a class="btn" href="/about">About me</a>
-        </div>
+  <section class="shell section-block" aria-labelledby="published-title">
+    <div class="section-heading"><h2 id="published-title">Selected work</h2><a class="quiet-link" href="/research#publications-title">Publications ↗</a></div>
+    <div class="project-list">{selected.map((pub,i) => <article class:list={['project',i===0 && 'project-feature','reveal']}>
+      <div class="project-media"><PubFigure pub={pub} /></div>
+      <div class="project-copy"><p class="project-venue">{pub.venueShort}</p><h3><a href={`/research#${pub.id}`}>{titles[i]}</a></h3><p>{descriptions[i]}</p><a class="quiet-link" href={`/research#${pub.id}`}>Paper &amp; details ↗</a></div>
+    </article>)}</div>
+  </section>
 
-        <p class="hero-social">
-          <a href={profile.links.scholar} target="_blank" rel="noopener">scholar ↗</a>
-          <a href={profile.links.github} target="_blank" rel="noopener">github ↗</a>
-          <a href={profile.links.x} target="_blank" rel="noopener">x ↗</a>
-          <a href={profile.links.linkedin} target="_blank" rel="noopener">linkedin ↗</a>
-          <a href={`mailto:${profile.email}`}>email ↗</a>
-        </p>
-      </div>
-
-      <div class="hero-board">
-        <Goban />
-      </div>
+  <section class="shell section-block" aria-labelledby="writing-title">
+    <div class="section-heading"><h2 id="writing-title">Writing &amp; notes</h2><a class="quiet-link" href="/blog">Open the notebook ↗</a></div>
+    <div class="writing-list">
+      <a class="writing-row" href="https://developer.arm.com/community/arm-community-blogs/b/ai-blog/posts/evidence-first-harness-engineering-for-million-token-workload-analysis" target="_blank" rel="noopener noreferrer"><div><p>Arm Developer</p><h3>Making sense of a million tokens.</h3></div><span aria-hidden="true">↗</span></a>
+      {writing.map(post => <a class="writing-row" href={`/blog/${post.slug}`}><div><p>{post.kind === 'essay' ? 'Essay' : 'Research note'} / {post.minutes} min read</p><h3>{post.title}</h3></div><span aria-hidden="true">↗</span></a>)}
     </div>
   </section>
 
-  <!-- ============ now ============ -->
-  <section class="section">
-    <div class="container">
-      <p class="eyebrow reveal">currently</p>
-      <div class="now-grid">
-        {profile.now.map((n, i) => (
-          <div class="card now-card reveal" style={`--reveal-delay:${i * 0.08}s`}>
-            <p class="now-where">{n.where}</p>
-            <h3 class="now-title">{n.title}</h3>
-            <p class="now-detail">{n.detail}</p>
-          </div>
-        ))}
-      </div>
-    </div>
+  <section class="personal shell section-block" aria-labelledby="personal-title">
+    <img src="/images/alan-fanuc.jpg" alt="Alan working with a FANUC robot at CMU’s Intelligent Control Lab" loading="lazy" />
+    <div><h2 id="personal-title">Outside the lab.</h2><p>Competitive Go, basketball, lifting, and teaching. I started programming at nine, making games on Scratch, and lowkey stopped at 19 when Claude became too good. I still like building things and exploring new hobbies such as fencing.</p><a class="quiet-link" href="/about">More about me ↗</a></div>
   </section>
 
-  <!-- ============ selected research ============ -->
-  <section class="section">
-    <div class="container">
-      <p class="eyebrow reveal">selected research</p>
-      <h2 class="section-title reveal">Robots that build things</h2>
-      <p class="section-sub reveal">
-        Deep RL for robots that plan and build in the physical world: assembly planning,
-        learning from demonstration, and policies that respect physics.
-      </p>
-
-      <div class="sel-grid">
-        {selected.map((pub, i) => (
-          <article class="card sel-card reveal" style={`--reveal-delay:${i * 0.09}s`}>
-            <PubFigure pub={pub} />
-            <p class="sel-venue">
-              <span class="venue-badge">{pub.venueShort}</span>
-            </p>
-            <h3 class="sel-title">
-              <a href={`/research#${pub.id}`}>{pub.title}</a>
-            </h3>
-            <p class="sel-teaser">{firstSentence(pub.summary)}</p>
-          </article>
-        ))}
-      </div>
-
-      <p class="section-more reveal">
-        <a class="btn" href="/research">All research →</a>
-      </p>
-    </div>
-  </section>
-
-  <!-- ============ writing ============ -->
-  <section class="section">
-    <div class="container">
-      <p class="eyebrow reveal">writing</p>
-      <h2 class="section-title reveal">Notes &amp; writeups</h2>
-      <ArmBlog />
-      <div class="posts-grid">
-        {posts.map((post, i) => (
-          <PostCard post={post} delay={i * 0.08} />
-        ))}
-      </div>
-      <p class="section-more reveal">
-        <a class="btn" href="/blog">All writing →</a>
-      </p>
-    </div>
-  </section>
-
-  <!-- ============ beyond ============ -->
-  <section class="section">
-    <div class="container">
-      <p class="eyebrow reveal">beyond the lab</p>
-      <div class="beyond-grid">
-        {beyond.map((b, i) => (
-          <a class="beyond-item reveal" href="/about" style={`--reveal-delay:${i * 0.06}s`}>
-            <span class="beyond-title">{b.title}</span>
-            <span class="beyond-line">{b.line}</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ contact ============ -->
-  <section class="section contact">
-    <div class="container">
-      <div class="contact-inner reveal">
-        <div class="contact-copy">
-          <h2 class="contact-title">Say hi</h2>
-          <p class="contact-sub">Always happy to talk robots, RL, Go, or whatever.</p>
-        </div>
-        <div class="contact-row">
-          <a class="btn btn-solid" href={`mailto:${profile.email}`}>{profile.email}</a>
-          <a class="btn" href={profile.links.x} target="_blank" rel="noopener">@AlanJiaqiChen</a>
-        </div>
-      </div>
-    </div>
-  </section>
+  <section class="contact shell section-block" id="contact"><div><h2>Let’s talk.</h2><p>Robots, research, or a game of Go.</p></div><a class="action" href={`mailto:${profile.email}`}>{profile.email}<span aria-hidden="true">↗</span></a></section>
 </Base>
-
 <style>
-  /* ---- hero ---- */
-  .hero {
-    padding-top: clamp(6.5rem, 14vh, 9rem);
-    padding-bottom: clamp(2.5rem, 6vh, 5rem);
-    min-height: min(88svh, 54rem);
-    display: flex;
-    align-items: center;
-  }
-
-  .hero-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 11fr) minmax(0, 8fr);
-    gap: clamp(2rem, 6vw, 5rem);
-    align-items: center;
-  }
-
-  .hero-name {
-    font-size: clamp(2.9rem, 8vw, 5.2rem);
-    letter-spacing: -0.03em;
-    margin-bottom: 1rem;
-    animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  .hero-lead {
-    font-size: clamp(1.25rem, 2.6vw, 1.6rem);
-    font-family: var(--font-display);
-    color: var(--accent);
-    margin-bottom: 1.1rem;
-    animation: rise 0.9s 0.08s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  :global(:root[data-theme='study']) .hero-lead {
-    font-style: italic;
-  }
-
-  .hero-body {
-    color: var(--muted);
-    max-width: 34rem;
-    animation: rise 0.9s 0.16s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  .hero-body strong {
-    color: var(--text);
-    font-weight: 560;
-  }
-
-  .hero-ctas {
-    display: flex;
-    gap: 0.7rem;
-    margin-top: 1.7rem;
-    animation: rise 0.9s 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  .hero-social {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.1rem;
-    margin-top: 1.6rem;
-    animation: rise 0.9s 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  .hero-social a {
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    color: var(--muted);
-  }
-
-  .hero-social a:hover {
-    color: var(--accent);
-  }
-
-  .hero-board {
-    max-width: 520px;
-    width: 100%;
-    margin-inline: auto;
-    animation: fade 1.4s 0.3s ease both;
-  }
-
-  @keyframes rise {
-    from {
-      opacity: 0;
-      transform: translateY(26px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  @keyframes fade {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  @media (max-width: 900px) {
-    .hero {
-      min-height: 0;
-      padding-top: 6.5rem;
-    }
-
-    .hero-grid {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
-    .hero-board {
-      max-width: 340px;
-      opacity: 0.9;
-    }
-  }
-
-  /* ---- now ---- */
-  .now-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-    gap: 1.1rem;
-  }
-
-  .now-where {
-    font-family: var(--font-mono);
-    font-size: 0.74rem;
-    letter-spacing: 0.06em;
-    color: var(--accent);
-    margin-bottom: 0.55rem;
-  }
-
-  .now-title {
-    font-size: 1.08rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .now-detail {
-    color: var(--muted);
-    font-size: 0.9rem;
-    line-height: 1.65;
-  }
-
-  @media (max-width: 900px) {
-    .now-grid {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-
-  /* ---- selected research ---- */
-  .sel-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.1rem;
-    margin-top: 2.2rem;
-  }
-
-  .sel-card {
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-    padding: 1rem;
-  }
-
-  .sel-venue {
-    margin-top: 0.2rem;
-  }
-
-  .sel-title {
-    font-size: 1.02rem;
-    line-height: 1.35;
-  }
-
-  .sel-title a {
-    color: var(--text);
-  }
-
-  .sel-title a::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-  }
-
-  .sel-card:hover .sel-title a {
-    color: var(--accent);
-  }
-
-  .sel-teaser {
-    color: var(--muted);
-    font-size: 0.88rem;
-    line-height: 1.6;
-  }
-
-  @media (max-width: 1000px) {
-    .sel-grid {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-
-  .section-more {
-    margin-top: 2.2rem;
-  }
-
-  /* ---- writing ---- */
-  .posts-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.1rem;
-    margin-top: 2.2rem;
-  }
-
-  @media (max-width: 900px) {
-    .posts-grid {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-
-  /* ---- beyond ---- */
-  .beyond-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1px;
-    background: var(--hairline);
-    border: 1px solid var(--hairline);
-    border-radius: 14px;
-    overflow: hidden;
-    margin-top: 1rem;
-  }
-
-  .beyond-item {
-    background: var(--bg);
-    padding: 1.3rem 1.4rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    transition: background 0.25s ease;
-  }
-
-  .beyond-item:hover {
-    background: var(--surface-hover);
-  }
-
-  .beyond-title {
-    font-family: var(--font-display);
-    font-weight: 560;
-    color: var(--text);
-    font-size: 0.98rem;
-  }
-
-  .beyond-line {
-    font-family: var(--font-mono);
-    font-size: 0.74rem;
-    color: var(--faint);
-    letter-spacing: 0.02em;
-  }
-
-  @media (max-width: 900px) {
-    .beyond-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 540px) {
-    .beyond-grid {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-
-  /* ---- contact ---- */
-  .contact {
-    padding-block: clamp(2rem, 5vw, 3rem) clamp(2.5rem, 6vw, 4rem);
-  }
-
-  .contact-inner {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem 1.6rem;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.15rem 1.4rem;
-    background: var(--surface);
-  }
-
-  .contact-title {
-    font-size: 1.2rem;
-    margin-bottom: 0.15rem;
-  }
-
-  .contact-sub {
-    color: var(--muted);
-    font-size: 0.9rem;
-  }
-
-  .contact-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.55rem;
-  }
+  .shell { width:min(calc(100% - 6rem),80rem); margin-inline:auto; }
+  .hero { display:grid; grid-template-columns:.9fr 1.1fr; align-items:center; gap:3rem; padding-top:10rem; padding-bottom:5rem; }
+  .hero-name { font-size:1rem; font-weight:600; color:var(--accent); margin-bottom:1.5rem; }
+  h1 { font-size:clamp(3.5rem,6.1vw,5.7rem); font-weight:500; line-height:1.04; letter-spacing:-.065em; }
+  h1 span { color:var(--accent); }
+  .intro { font-size:1.05rem; line-height:1.75; color:var(--muted); max-width:26rem; margin:1.6rem 0 2rem; }
+  .action { display:inline-flex; align-items:center; gap:2rem; background:var(--accent); color:var(--bg); padding:.85rem 1.4rem; border-radius:999px; font-size:.9rem; font-weight:600; transition:background .2s,transform .2s; }
+  .action:hover { background:var(--accent-strong); transform:translateY(-2px); }.action span { font-size:1.2rem; }
+  .section-block { padding-block:3.5rem; }
+  .section-heading { display:flex; align-items:center; justify-content:space-between; gap:1.5rem; margin-bottom:2rem; }
+  h2 { font-size:clamp(1.9rem,3vw,2.75rem); font-weight:500; letter-spacing:-.05em; line-height:1.15; }
+  .quiet-link { display:inline-flex; font-size:.85rem; color:var(--muted); padding:.5rem 0; }.quiet-link:hover { color:var(--accent); }
+  .project-list { display:grid; grid-template-columns:1fr 1fr; gap:2.5rem 2rem; }
+  .project { min-width:0; }.project-feature { grid-column:1/-1; display:grid; grid-template-columns:3fr 2fr; align-items:center; gap:3rem; }
+  .project-media { border-radius:1rem; overflow:hidden; border:1px solid var(--border); background:var(--surface); }
+  .project-media :global(figcaption) { display:none; }.project-media :global(figure) { border:0; border-radius:0; margin:0; }.project-media :global(video) { width:100%; }
+  .project-copy { padding-block:1.25rem; }.project-copy h3 { font-size:1.65rem; font-weight:500; margin:.75rem 0; letter-spacing:-.04em; }.project-copy h3 a { color:var(--text); }.project-copy h3 a:hover { color:var(--accent); }
+  .project-venue { color:var(--accent); font-size:.8rem; }.project-copy > p:not(.project-venue) { color:var(--muted); font-size:.95rem; }.project-copy .quiet-link { margin-top:1rem; }
+  .writing-row { display:flex; align-items:center; justify-content:space-between; gap:2rem; border-top:1px solid var(--border); padding:1.6rem 0; color:var(--text); }.writing-row:last-child { border-bottom:1px solid var(--border); }
+  .writing-row p { font-size:.75rem; color:var(--muted); margin-bottom:.6rem; }.writing-row h3 { font-size:1.35rem; font-weight:500; letter-spacing:-.03em; }.writing-row > span { font-size:1.5rem; color:var(--accent); }.writing-row:hover h3 { color:var(--accent); }
+  .personal { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }.personal img { width:100%; aspect-ratio:1.12; object-fit:cover; border-radius:1rem; }.personal p { color:var(--muted); font-size:1rem; line-height:1.8; margin:1.5rem 0; }
+  .contact { display:flex; align-items:center; justify-content:space-between; gap:2rem; padding-block:5rem; }.contact h2 { font-size:clamp(3rem,5vw,4.5rem); }.contact p { margin-top:1rem; color:var(--muted); }
+  @media(max-width:1000px) { .shell { width:calc(100% - 4rem); }.hero { gap:1.5rem; }.intro { font-size:.95rem; }.personal { gap:2.5rem; }.project-feature { gap:2rem; } }
+  @media(max-width:760px) { .shell { width:calc(100% - 3rem); }.hero { grid-template-columns:1fr; padding-top:8rem; padding-bottom:2rem; gap:2.5rem; }h1 { font-size:clamp(3.5rem,11vw,5rem); }.intro { max-width:30rem; }.hero-name { margin-bottom:1rem; }.section-block { padding-block:2.5rem; }.section-heading { align-items:flex-start; gap:1rem; }h2 { font-size:1.8rem; }.section-heading .quiet-link { text-align:right; font-size:.75rem; flex-shrink:0; }.project-list,.project-feature,.personal { grid-template-columns:1fr; }.project-feature { gap:0; }.project-copy h3 { font-size:1.5rem; }.personal { gap:2rem; }.writing-row h3 { font-size:1.1rem; }.contact { align-items:flex-start; flex-direction:column; }.contact .action { font-size:.8rem; gap:1.5rem; } }
 </style>

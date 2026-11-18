@@ -1,145 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
 import PubItem from '../components/PubItem.astro';
+import ResearchTeasers from '../components/ResearchTeasers.astro';
 import { publications, scholarUrl } from '../data/publications';
 ---
-
-<Base
-  title="Research"
-  description="Publications by Alan Chen: robotic assembly planning, reinforcement learning, learning from demonstration, and autonomous vehicles. IEEE RA-L/IROS, IFAC MECC, Science Progress."
->
-  <section class="page-head">
-    <div class="container">
-      <p class="eyebrow reveal in-view">research</p>
-      <h1 class="page-title reveal in-view">Teaching robots to build</h1>
-      <p class="page-sub reveal in-view">
-        I work on embodied intelligence: getting robots to plan and build in the physical world.
-        I started in autonomous-vehicle simulation, spent two years on robotic assembly at CMU's
-        Intelligent Control Lab, and now work on reinforcement learning for vision-language-action
-        models at UT Austin.
-      </p>
-      <p class="stats reveal in-view">
-        <span class="stat"><strong>5</strong> publications</span>
-        <span class="stat"><strong>33</strong> citations</span>
-        <span class="stat"><a href={scholarUrl} target="_blank" rel="noopener">Google Scholar ↗</a></span>
-      </p>
-    </div>
-  </section>
-
-  <section class="pubs">
-    <div class="container pub-list">
-      {publications.map((pub, i) => (
-        <PubItem pub={pub} flip={i % 2 === 1} />
-      ))}
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <div class="ongoing reveal">
-        <div class="ongoing-body">
-          <p class="eyebrow">in progress</p>
-          <p class="ongoing-text">
-            Current work at LARG: fine-tuning robot foundation models (Octo, OpenVLA) with PPO/GRPO
-            to learn mobile manipulation from scratch, and independent exploration of kernel optimization and harness engineering.
-            If you want to chat, <a href="mailto:alanjiach@gmail.com">email me</a>.
-          </p>
-        </div>
-        <figure class="ongoing-clip">
-          <video src="/research/vla-rollout.mp4" poster="/research/vla-rollout-poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="A fine-tuned policy completing a bin task in ManiSkill"></video>
-          <figcaption>example of a policy rollout · ManiSkill</figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
+<Base title="Research" description="Alan Chen’s current research in robot learning and selected publications.">
+  <section class="page-head container"><h1>Research</h1><p class="page-sub">Robot learning, mobile manipulation, and multi-agent systems.</p><a class="btn overview-link" href="/research/overview" data-astro-reload>Private research overview ↗</a></section>
+  <section class="container current" aria-labelledby="current-title"><div class="research-heading"><h2 id="current-title">Current projects</h2></div><ResearchTeasers /></section>
+  <section class="container published" aria-labelledby="publications-title"><div class="research-heading"><h2 id="publications-title">Publications</h2><a href={scholarUrl} target="_blank" rel="noopener noreferrer">Google Scholar ↗</a></div><div class="pub-list">{publications.map((pub,i) => <PubItem pub={pub} flip={i%2===1} />)}</div></section>
 </Base>
-
 <style>
-  .page-head {
-    padding-top: clamp(7rem, 16vh, 10rem);
-    padding-bottom: clamp(2rem, 5vh, 3.5rem);
-  }
-
-  .page-title {
-    font-size: clamp(2.2rem, 5.5vw, 3.4rem);
-    letter-spacing: -0.025em;
-    margin-bottom: 1rem;
-  }
-
-  .page-sub {
-    color: var(--muted);
-    max-width: 44rem;
-    font-size: 1.02rem;
-  }
-
-  .stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.6rem;
-    margin-top: 1.6rem;
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    color: var(--faint);
-  }
-
-  .stat strong {
-    color: var(--accent);
-    font-weight: 600;
-    margin-right: 0.3rem;
-  }
-
-  .pub-list {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(3.5rem, 8vw, 6rem);
-    padding-block: clamp(2rem, 5vh, 4rem);
-  }
-
-  .ongoing {
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
-    border-radius: 14px;
-    padding: 1.6rem 1.8rem;
-    background: var(--surface);
-    display: flex;
-    align-items: center;
-    gap: 1.8rem;
-  }
-
-  .ongoing-text {
-    color: var(--muted);
-    max-width: 52rem;
-  }
-
-  .ongoing-clip {
-    margin: 0;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    align-items: center;
-  }
-
-  .ongoing-clip video {
-    width: 132px;
-    height: 132px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    object-fit: cover;
-    display: block;
-  }
-
-  .ongoing-clip figcaption {
-    font-family: var(--font-mono);
-    font-size: 0.66rem;
-    color: var(--faint);
-    letter-spacing: 0.04em;
-  }
-
-  @media (max-width: 640px) {
-    .ongoing {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  }
+  .page-head { padding-top:9rem; padding-bottom:4rem; }h1 { font-size:clamp(3rem,6vw,5rem); font-weight:400; }h1 em { color:var(--accent); }.page-sub { margin-top:1.2rem; color:var(--muted); max-width:35rem; font-size:.95rem; }
+  .overview-link { margin-top:1.5rem; }
+  .research-heading { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; margin-bottom:2rem; border-top:1px solid var(--border); padding-top:1.5rem; }.research-heading h2 { font-size:2rem; font-weight:400; }.research-heading span,.research-heading a { font-size:.75rem; color:var(--muted); }.published { padding-block:5rem; }.pub-list { display:flex; flex-direction:column; gap:5rem; padding-top:2rem; }
+  @media(max-width:640px) { .research-heading { flex-wrap:wrap; }.page-head { padding-top:7rem; } }
 </style>

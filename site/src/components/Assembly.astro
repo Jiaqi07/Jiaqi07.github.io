@@ -1,0 +1,120 @@
+<div class="assembly" id="assembly">
+  <div class="assembly-top"><span>Interactive study / 001</span><span class="assembly-status" aria-live="polite">Voxel assembly</span></div>
+  <div class="assembly-stage">
+    <img class="assembly-fallback" src="/research/ac-chair-3.jpg" alt="A chair assembled from voxel blocks" />
+    <canvas aria-label="Interactive three dimensional voxel chair. Drag or use the left and right arrow keys to rotate." tabindex="0" role="img"></canvas>
+    <span class="axis axis-a" aria-hidden="true">Y +</span><span class="axis axis-b" aria-hidden="true">X +</span>
+  </div>
+  <div class="assembly-controls"><span class="drag-hint">Drag to explore</span><button class="scatter" disabled type="button">Scatter ↗</button><button class="pause" disabled type="button" aria-label="Pause automatic rotation">Pause</button></div>
+  <p class="study-caption">An assembly study, inspired by my research.<br />A little order from a lot of possibilities.</p>
+</div>
+<style>
+  .assembly { position: relative; min-width: 0; width: 100%; }
+  .assembly-top { display: flex; justify-content: space-between; gap: .5rem; font-size: .75rem; line-height: 1rem; color: var(--muted); letter-spacing: .04em; padding-inline: 1rem; }
+  .assembly-status { color: var(--accent); }
+  .assembly-stage { position: relative; aspect-ratio: 1; width: 100%; }
+  canvas { display: block; width: 100%; height: 100%; cursor: grab; touch-action: pan-y; }
+  canvas:active { cursor: grabbing; }
+  .assembly-fallback { position: absolute; inset: 15%; width: 70%; height: 70%; object-fit: contain; }
+  .assembly.ready .assembly-fallback { display: none; }
+  .axis { position: absolute; color: var(--faint); font-size: .75rem; pointer-events: none; }
+  .axis-a { top: 8%; left: 50%; } .axis-b { bottom: 20%; right: 8%; }
+  .assembly-controls { display: flex; align-items: center; justify-content: center; gap: .75rem; }
+  .drag-hint { font-size: .75rem; line-height: 1rem; color: var(--muted); margin-right: .5rem; }
+  button { font: inherit; font-size: .75rem; line-height: 1rem; color: var(--text); border: 1px solid var(--border); border-radius: 999px; padding: .75rem 1rem; background: #181818; cursor: pointer; transition: color .7s var(--ease),border-color .7s var(--ease),transform .7s var(--ease); }
+  button:hover { color: var(--accent); border-color: var(--accent); } button:active { transform: scale(.98); } button:disabled { opacity: .4; cursor: default; }
+  .study-caption { font-size: .75rem; line-height: 1.25rem; text-align: center; color: var(--muted); margin-top: 1rem; }
+  @media(max-width: 760px) { .assembly { max-width: 32rem; margin: 3rem auto 2rem; } }
+</style>
+<script>
+  let destroyAssembly: (() => void) | undefined;
+  document.addEventListener('astro:before-swap', () => destroyAssembly?.());
+  document.addEventListener('astro:page-load', () => {
+    destroyAssembly?.();
+    const root = document.querySelector<HTMLElement>('#assembly');
+    const canvas = root?.querySelector('canvas');
+    if (!root || !canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    root.classList.add('ready');
+    const scatterButton = root.querySelector<HTMLButtonElement>('.scatter')!;
+    const pauseButton = root.querySelector<HTMLButtonElement>('.pause')!;
+    const status = root.querySelector('.assembly-status')!;
+    scatterButton.disabled = pauseButton.disabled = false;
+    const media = matchMedia('(prefers-reduced-motion: reduce)');
+    let paused = media.matches, visible = true, angle = -.65, spread = 0, target = 0;
+    let dragging = false, lastX = 0, frame = 0, width = 500, height = 500, lastTime = 0;
+    const abort = new AbortController();
+    const signal = abort.signal;
+    type Point = [number, number, number];
+    const blocks: {p: Point; offset: Point; green: boolean}[] = [];
+    for(let x = -2; x <= 2; x++) for(let z = -2; z <= 2; z++) for(let y = -3; y <= 3; y++) {
+      const seat = y === 0;
+      const legs = y < 0 && Math.abs(x) === 2 && Math.abs(z) === 2;
+      const back = z === 2 && y > 0 && (Math.abs(x) === 2 || y === 3 || y === 2);
+      if(seat || legs || back) {
+        const i = blocks.length;
+        blocks.push({p:[x,y,z], offset:[Math.sin(i*2.4)*4, Math.cos(i*1.7)*4,Math.sin(i*3.1)*4], green: y >= 2 || (x === 2 && y === 0)});
+      }
+    }
+    const vertices: Point[] = [[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]];
+    const sides = [[0,1,2,3],[4,7,6,5],[0,4,5,1],[3,2,6,7],[1,5,6,2],[0,3,7,4]];
+    const project = ([x,y,z]: Point) => {
+      const rx = x*Math.cos(angle)+z*Math.sin(angle), rz = z*Math.cos(angle)-x*Math.sin(angle);
+      const ry = y*Math.cos(.42)-rz*Math.sin(.42), depth = y*Math.sin(.42)+rz*Math.cos(.42);
+      const scale = width * .066 * (17/(17-depth));
+      return { x:width/2+rx*scale, y:height*.47-ry*scale, z:depth };
+    };
+    function draw(now: number) {
+      if (!ctx) return;
+      const dt = Math.min((now-lastTime)/1000, .05); lastTime = now;
+      if(!paused && !dragging && visible && !document.hidden) angle += dt*.16;
+      spread += (target-spread) * (media.matches?1 : 1-Math.exp(-dt*5));
+      ctx.clearRect(0,0,width,height);
+      // Orbital construction grid, projected onto the floor.
+      ctx.strokeStyle = '#34372d'; ctx.lineWidth = .7;
+      for(let ring = 2; ring <= 6; ring += 2) {
+        ctx.beginPath();
+        for(let i=0;i<=96;i++) { const t=i/96*Math.PI*2; const p=project([Math.cos(t)*ring,-3.8,Math.sin(t)*ring]); i?ctx.lineTo(p.x,p.y) : ctx.moveTo(p.x,p.y); }
+        ctx.stroke();
+      }
+      for(let i=-6;i<=6;i+=2) {
+        for(const line of [[[i,-3.8,-6],[i,-3.8,6]],[[-6,-3.8,i],[6,-3.8,i]]] as Point[][]) {
+          const a=project(line[0]), b=project(line[1]); ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+        }
+      }
+      const faces: {points: ReturnType<typeof project>[]; depth: number; fill: string; green: boolean}[] = [];
+      blocks.forEach(block => {
+        const pts = vertices.map(v => project(block.p.map((n,k)=>n+v[k]*.46+block.offset[k]*spread) as Point));
+        sides.forEach((side,index) => {
+          const points=side.map(i=>pts[i]);
+          const cross=(points[1].x-points[0].x)*(points[2].y-points[0].y)-(points[1].y-points[0].y)*(points[2].x-points[0].x);
+          if(cross < 0) return;
+          const palette = block.green?['#91ad50','#b7db67','#667c3b','#d0ef8c','#a1c05b','#718845'] : ['#6e726b','#a2a69c','#4a4f48','#c3c8ba','#898e83','#5c6258'];
+          faces.push({points,depth:points.reduce((n,p)=>n+p.z,0)/4,fill:palette[index],green:block.green});
+        });
+      });
+      faces.sort((a,b)=>a.depth-b.depth).forEach(face=>{
+        ctx.beginPath();face.points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();
+        ctx.fillStyle=face.fill;ctx.fill();ctx.strokeStyle=face.green?'#e0ffad55':'#e8eddd38';ctx.lineWidth=.65;ctx.stroke();
+      });
+      if(visible && !document.hidden && (!paused || Math.abs(spread-target)>.001)) frame=requestAnimationFrame(draw);
+      else frame=0;
+    }
+    const wake=()=>{ if(!frame){lastTime=performance.now();frame=requestAnimationFrame(draw);} };
+    const resize=new ResizeObserver(()=>{const rect=canvas.getBoundingClientRect();width=rect.width;height=rect.height;const dpr=Math.min(devicePixelRatio,2);canvas.width=width*dpr;canvas.height=height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);wake();});
+    resize.observe(canvas);
+    const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)wake();}); observer.observe(canvas);
+    const updatePause=()=>{pauseButton.textContent=paused?'Rotate':'Pause';pauseButton.setAttribute('aria-label',paused?'Start automatic rotation':'Pause automatic rotation');};updatePause();
+    pauseButton.addEventListener('click',()=>{paused=!paused;updatePause();wake();},{signal});
+    scatterButton.addEventListener('click',()=>{target=target?0:1;scatterButton.textContent=target?'Assemble ↗':'Scatter ↗';status.textContent=target?'Exploring possibilities':'Voxel assembly';wake();},{signal});
+    canvas.addEventListener('pointerdown',e=>{dragging=true;lastX=e.clientX;canvas.setPointerCapture(e.pointerId);},{signal});
+    canvas.addEventListener('pointermove',e=>{if(dragging){angle+=(e.clientX-lastX)*.008;lastX=e.clientX;wake();}},{signal});
+    canvas.addEventListener('pointerup',()=>{dragging=false;},{signal});canvas.addEventListener('pointercancel',()=>{dragging=false;},{signal});
+    canvas.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();angle+=e.key==='ArrowLeft'?-.15:.15;wake();}},{signal});
+    media.addEventListener('change',()=>{paused=media.matches;updatePause();wake();},{signal});
+    document.addEventListener('visibilitychange',()=>{if(!document.hidden)wake();},{signal});
+    wake();
+    destroyAssembly=()=>{abort.abort();cancelAnimationFrame(frame);resize.disconnect();observer.disconnect();};
+  });
+</script>

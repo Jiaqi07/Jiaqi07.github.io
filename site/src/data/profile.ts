@@ -1,6 +1,6 @@
 export const profile = {
   name: 'Alan Chen',
-  tagline: 'I teach robots to build things.',
+  tagline: 'understanding how to make robots & myself continually learn.',
   email: 'alanjiach@gmail.com',
   location: 'Austin, TX',
   links: {
@@ -13,13 +13,13 @@ export const profile = {
   now: [
     {
       title: 'RL for vision-language-action models',
-      where: 'Learning Agents Research Group · UT Austin',
+      where: 'Learning Agents Research Group / UT Austin',
       detail:
-        'Fine-tuning robot foundation models (Octo, OpenVLA) with PPO, GRPO, and Diffusion-PPO for mobile manipulation in ManiSkill.',
+        'Robot learning for mobile manipulation. Details / Paper Coming Soon.',
     },
     {
       title: 'LLM Research Engineering Intern',
-      where: 'Arm · Central Engineering AI · Summer 2026',
+      where: 'Arm / Central Engineering AI / Summer 2026',
       detail:
         'Just wrapped up: independently developed a recursive language model approach and analyzed complex workloads to optimize uArch.',
     },

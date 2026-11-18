@@ -1,152 +1,57 @@
 ---
 const path = Astro.url.pathname;
-const links = [
-  { href: '/research', label: 'research' },
-  { href: '/blog', label: 'writing' },
-  { href: '/about', label: 'about' },
-];
-const isActive = (href: string) => path === href || path.startsWith(href + '/');
+const links = [{href:'/research',label:'Research'},{href:'/blog',label:'Writing'},{href:'/about',label:'About'}];
+const active = (href: string) => path === href || path.startsWith(href+'/');
 ---
-
-<header class="site-nav" id="site-nav">
-  <div class="container nav-inner">
-    <a href="/" class="brand" aria-label="Alan Chen, home">
-      <span class="mark">
-        <span class="mark-ac" aria-hidden="true">AC</span>
-        <img class="mark-scratch" src="/images/scratch-avatar.png" alt="" width="26" height="26" loading="eager" />
-      </span>
-      <span class="brand-name">Alan Chen</span>
-    </a>
-
-    <nav class="nav-links" aria-label="Primary">
-      {links.map((l) => (
-        <a href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>{l.label}</a>
-      ))}
-    </nav>
-  </div>
+<header class="site-nav">
+  <a href="/" class="brand" aria-label="Alan Chen, home">ac</a>
+  <nav class="desktop-links" aria-label="Primary">{links.map(link=><a href={link.href} aria-current={active(link.href) ? 'page':undefined}>{link.label}</a>)}</nav>
+  <a class="nav-contact" href="mailto:alanjiach@gmail.com">Say hello <span aria-hidden="true">↗</span></a>
+  <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" type="button"><span></span><span></span></button>
 </header>
-
+<dialog id="mobile-menu" aria-label="Navigation menu">
+  <button class="menu-close" aria-label="Close menu" type="button"><span></span><span></span></button>
+  <nav aria-label="Mobile">{[{href:'/',label:'Home'},...links].map((link,i)=><a href={link.href} style={`--i:${i}`} aria-current={(link.href==='/'?path==='/':active(link.href))?'page':undefined}><span>0{i+1}</span>{link.label} ↗</a>)}</nav>
+  <a class="menu-email" href="mailto:alanjiach@gmail.com">alanjiach@gmail.com</a>
+</dialog>
 <style>
-  .site-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 50;
-    transition: background-color 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
-    border-bottom: 1px solid transparent;
-  }
-
-  .site-nav.scrolled {
-    background: color-mix(in srgb, var(--bg) 78%, transparent);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    border-bottom-color: var(--hairline);
-  }
-
-  .nav-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 4rem;
-  }
-
-  .brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.65rem;
-    color: var(--text);
-  }
-
-  .brand:hover { color: var(--text); }
-
-  .mark {
-    position: relative;
-    width: 26px;
-    height: 26px;
-    display: inline-grid;
-    place-items: center;
-  }
-
-  .mark-ac {
-    position: absolute;
-    inset: 0;
-    display: inline-grid;
-    place-items: center;
-    border-radius: 7px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    font-family: var(--font-display);
-    font-weight: 640;
-    font-size: 0.68rem;
-    letter-spacing: 0.02em;
-    color: var(--accent);
-    opacity: 0;
-    transform: rotateY(90deg);
-    transition: opacity 0.25s ease, transform 0.35s ease;
-  }
-
-  .mark-scratch {
-    border-radius: 6px;
-    transition: opacity 0.25s ease, transform 0.35s ease;
-  }
-
-  .brand:hover .mark-scratch {
-    opacity: 0;
-    transform: rotateY(-90deg);
-  }
-
-  .brand:hover .mark-ac {
-    opacity: 1;
-    transform: rotateY(0deg);
-  }
-
-  .brand-name {
-    font-family: var(--font-display);
-    font-weight: 560;
-    font-size: 1.02rem;
-    letter-spacing: -0.01em;
-  }
-
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: clamp(0.9rem, 2.5vw, 1.7rem);
-  }
-
-  .nav-links a {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--muted);
-    letter-spacing: 0.02em;
-    padding: 0.3rem 0;
-    border-bottom: 1px solid transparent;
-    transition: color 0.2s ease, border-color 0.2s ease;
-  }
-
-  .nav-links a:hover {
-    color: var(--text);
-  }
-
-  .nav-links a[aria-current='page'] {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
-
-  @media (max-width: 560px) {
-    .brand-name { display: none; }
-  }
+.site-nav { position:fixed; top:1.5rem; left:50%; transform:translateX(-50%); z-index:50; display:flex; align-items:center; gap:2rem; padding:.5rem .5rem .5rem 1.5rem; border:1px solid var(--border); border-radius:999px; background:#202320ed; backdrop-filter:blur(24px); box-shadow:0 8px 32px #00000025; width:max-content; max-width:calc(100% - 3rem); }
+.brand { font-size:1.5rem; line-height:2rem; color:var(--text); font-weight:700; letter-spacing:-.08em; display:flex; align-items:center; }
+.brand span { color:var(--accent); font-family:var(--font-sans); font-size:.9rem; margin-left:.2rem; }
+.desktop-links { display:flex; gap:1.5rem; align-items:center; }
+.desktop-links a { font-size:.875rem; line-height:1.25rem; color:var(--muted); padding:.75rem 0; }
+.desktop-links a:hover,.desktop-links a[aria-current] { color:var(--accent); }
+.nav-contact { background:var(--accent); color:var(--bg); font-size:.875rem; line-height:1.25rem; font-weight:600; padding:.75rem 1rem; border-radius:999px; display:flex; gap:1rem; }
+.nav-contact:hover { background:var(--accent-strong); color:var(--bg); }
+.menu-toggle,.menu-close { position:relative; width:3rem; height:3rem; border:1px solid var(--border); border-radius:50%; background:var(--surface); color:var(--text); cursor:pointer; }
+.menu-toggle { display:none; }
+.menu-toggle span,.menu-close span { width:1rem; height:2px; background:currentColor; position:absolute; left:calc(50% - .5rem); top:50%; transition:transform .7s var(--ease); }
+.menu-toggle span:first-child { transform:translateY(-4px); }.menu-toggle span:last-child { transform:translateY(4px); }
+.menu-toggle[aria-expanded='true'] span:first-child,.menu-close span:first-child { transform:rotate(45deg); }.menu-toggle[aria-expanded='true'] span:last-child,.menu-close span:last-child { transform:rotate(-45deg); }
+dialog { position:fixed; inset:0; width:100%; height:100dvh; max-width:none; max-height:none; margin:0; padding:6rem 2rem 3rem; border:0; background:#181918f5; backdrop-filter:blur(48px); color:var(--text); }
+dialog::backdrop { background:#00000080; }
+.menu-close { position:absolute; right:1.5rem; top:1.5rem; }
+dialog nav { display:flex; flex-direction:column; gap:1.5rem; } dialog nav a { color:var(--text); font-size:3rem; line-height:1; letter-spacing:-.05em; }
+dialog nav a span { color:var(--accent); font-size:.75rem; letter-spacing:0; margin-right:1rem; }
+dialog[open] nav a { animation:menu-in .8s var(--ease) both; animation-delay:calc(var(--i) * 80ms); }
+dialog nav a[aria-current],dialog nav a:hover { color:var(--accent); }
+.menu-email { display:inline-block; margin-top:3rem; font-size:.875rem; }
+@keyframes menu-in { from { opacity:0; transform:translateY(48px); } to { opacity:1; transform:none; } }
+@media(max-width:600px) { .site-nav { width:calc(100% - 2rem); max-width:none; top:1rem; padding:.4rem .4rem .4rem 1.25rem; justify-content:space-between; gap:1rem; } .desktop-links { display:none; }.menu-toggle { display:block; }.nav-contact { margin-left:auto; } }
+@media(max-width:380px) { dialog nav a { font-size:2.25rem; line-height:2.5rem; } }
 </style>
-
 <script>
-  function initNav() {
-    const nav = document.getElementById('site-nav');
-    if (!nav) return;
-
-    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-  }
-
-  document.addEventListener('astro:page-load', initNav);
+  let navAbort: AbortController | undefined;
+  document.addEventListener('astro:before-swap',()=>{navAbort?.abort(); document.body.style.overflow='';});
+  document.addEventListener('astro:page-load',()=>{
+    navAbort?.abort(); navAbort=new AbortController();const signal=navAbort.signal;
+    const toggle=document.querySelector<HTMLButtonElement>('.menu-toggle');
+    const modal=document.querySelector<HTMLDialogElement>('#mobile-menu');
+    if(!toggle || !modal) return;
+    const close=()=>{modal.close();toggle.setAttribute('aria-expanded','false');document.body.style.overflow='';};
+    toggle.addEventListener('click',()=>{modal.showModal();toggle.setAttribute('aria-expanded','true');document.body.style.overflow='hidden';},{signal});
+    modal.querySelector('.menu-close')?.addEventListener('click',close,{signal});
+    modal.addEventListener('close',()=>{toggle.setAttribute('aria-expanded','false');document.body.style.overflow='';},{signal});
+    modal.querySelectorAll('a').forEach(a=>a.addEventListener('click',close,{signal}));
+  });
 </script>

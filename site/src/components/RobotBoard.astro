@@ -1,0 +1,45 @@
+<div class="robot-study" id="robot-study">
+  <div class="robot-stage">
+    <img class="robot-fallback" src="/models/panda/preview.png" alt="A Franka Panda arm placing a stone on a Go board" width="1014" height="900" />
+    <canvas aria-label="Play Go with the robots. Click the board to take over the current arm's color. Drag to rotate. Use arrow keys to choose a point and Enter to play." tabindex="0" aria-describedby="board-hint"></canvas>
+  </div>
+  <div class="study-bottom"><span class="study-title" id="board-hint">Take over black</span><span class="study-state" aria-live="polite">Loading 3D model</span><div class="study-controls"><button class="robot-score" type="button" disabled>Score</button><button class="robot-reset" type="button" disabled aria-label="Restart robot animation">Reset</button></div></div>
+  <div class="score-panel" hidden role="status" aria-live="polite">
+    <div class="score-heading"><div><span class="score-eyebrow">Board score</span><strong class="score-result"></strong></div><span class="score-margin"></span></div>
+    <div class="score-counts">{[1,2].map(color=><div class="score-side" data-side={color}><div class="score-player"><span class:list={['score-stone',color===2&&'white-stone']} aria-label={color===1?'Black':'White'}></span><span class="score-owner"></span></div><strong class="score-total"></strong><span class="score-detail"></span></div>)}</div>
+    <div class="score-footer"><details><summary>How it’s counted</summary><p>Stones + enclosed points. No komi. Stones on the board count as alive; shared territory is neutral.</p></details><button class="robot-continue" type="button">Keep playing ↗</button></div>
+  </div>
+</div>
+<style>
+  .robot-study { min-width:0; width:100%; position:relative; overflow:hidden; background:radial-gradient(ellipse at 50% 40%,#2c332e 0%,#202521 62%,#1d211e 100%); border:1px solid var(--border); border-radius:1.5rem; }
+  .robot-stage { position:relative; width:100%; aspect-ratio:1.13; }
+  canvas,.robot-fallback { position:absolute; inset:0; width:100%; height:100%; display:block; }
+  canvas { opacity:0; cursor:grab; touch-action:pan-y; } canvas:active { cursor:grabbing; }canvas:focus-visible { outline:2px solid var(--accent);outline-offset:-4px;border-radius:1.5rem; }
+  .ready canvas { opacity:1; }.ready .robot-fallback { display:none; }
+  .study-bottom { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:.8rem 1.25rem; border-top:1px solid var(--border); background:#1d211e; }
+  .study-title { font-size:.8rem; color:var(--muted); font-weight:500; }
+  .study-state { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+  .study-controls { display:flex; gap:.4rem; }
+  .score-panel { margin:0 1rem 1rem; padding:1.25rem; border:1px solid var(--border);border-radius:1rem;background:linear-gradient(135deg,#272e26,#1b201c); }
+  .score-panel[hidden] { display:none; }.score-heading { display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.2rem; }.score-eyebrow { display:block;font-size:.65rem;color:var(--muted);margin-bottom:.3rem; }.score-result { display:block;font-size:1.5rem;font-weight:500;letter-spacing:-.04em; }.score-margin { color:var(--accent);font-size:.75rem;padding:.35rem .65rem;border-radius:99px;background:#bddc9210;white-space:nowrap; }
+  .score-counts { display:grid;grid-template-columns:1fr 1fr;gap:.75rem; }.score-side { padding:1rem;background:#10151055;border:1px solid #ffffff08;border-radius:.7rem; }.score-side[data-leading="true"] { border-color:#bddc9266;background:#bddc9208; }.score-player { display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:var(--muted); }.score-stone { width:15px;height:15px;border-radius:50%;background:radial-gradient(circle at 32% 25%,#60645f,#101310 70%);box-shadow:0 1px 3px #0008;border:1px solid #ffffff25; }.white-stone { background:radial-gradient(circle at 32% 25%,#fffef5,#c6c6b8); }.score-total { display:block;font-size:2.7rem;line-height:1.2;font-weight:500;letter-spacing:-.06em;font-variant-numeric:tabular-nums;margin:.5rem 0; }.score-detail { display:block;font-size:.65rem;color:var(--muted);line-height:1.5; }.score-footer { display:flex;align-items:start;justify-content:space-between;gap:1rem;margin-top:1rem; }.score-footer details { flex:1;font-size:.65rem;color:var(--muted);padding-top:.6rem; }.score-footer summary { cursor:pointer; }.score-footer p { margin-top:.5rem;line-height:1.6;max-width:20rem; }.score-footer button { flex-shrink:0; }
+  button { min-height:36px; padding:.4rem .8rem; border:1px solid var(--border); border-radius:999px; background:transparent; color:var(--text); cursor:pointer; font-size:.7rem; }
+  button:hover { background:var(--surface); border-color:var(--accent); }button:disabled { opacity:.3; cursor:default; }
+  @media(max-width:760px) { .robot-study { border-radius:1rem; }.study-bottom { padding:.75rem 1rem; } }
+</style>
+<script>
+  import { mountRobotBoard } from '../lib/robotBoard';
+  let disposeRobot: (() => void) | undefined;
+  let generation = 0;
+  document.addEventListener('astro:before-swap', () => { generation++; disposeRobot?.(); disposeRobot = undefined; });
+  document.addEventListener('astro:page-load', async () => {
+    const version = ++generation;
+    disposeRobot?.();
+    const root = document.querySelector<HTMLElement>('#robot-study');
+    if (!root) return;
+    try {
+      const dispose = await mountRobotBoard(root);
+      if (version !== generation) dispose?.(); else disposeRobot = dispose;
+    } catch { root.querySelector('.study-state')!.textContent = 'A robot at the Go board'; }
+  });
+</script>

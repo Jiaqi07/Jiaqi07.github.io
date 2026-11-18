@@ -1,0 +1,42 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base title="Private research overview" description="A password-protected overview of Alan Chen’s current research." robots="noindex, nofollow, noarchive">
+  <section class="overview-shell" id="private-overview">
+    <div class="overview-heading"><a href="/research" class="back-link" data-astro-reload>← Research</a><h1>Research overview</h1><p>A closer look at my current projects.</p></div>
+    <form class="password-gate" method="post" id="overview-form">
+      <label for="overview-password">Password</label>
+      <div class="password-row"><input id="overview-password" name="password" type="password" autocomplete="current-password" required aria-describedby="unlock-status" /><button type="submit" class="btn btn-solid" disabled>Open overview ↗</button></div>
+      <p id="unlock-status" role="status" aria-live="polite"></p>
+      <noscript>Enable JavaScript to open this overview.</noscript>
+    </form>
+    <div class="unlocked-overview" hidden>
+      <div class="overview-toolbar"><span>Private research overview</span><button type="button" class="btn lock-overview">Lock overview</button></div>
+      <iframe title="Detailed research overview" sandbox="allow-same-origin allow-popups" allow="autoplay" referrerpolicy="no-referrer"></iframe>
+    </div>
+  </section>
+</Base>
+<style>
+  .overview-shell { width:min(calc(100% - 3rem),76rem); margin:0 auto; padding:9rem 0 5rem; min-height:75vh; }
+  .overview-heading { margin-bottom:2.5rem; }.back-link { display:inline-block; font-size:.85rem; margin-bottom:1.8rem; }
+  h1 { font-size:clamp(2.25rem,5vw,3.5rem); font-weight:500; letter-spacing:-.05em; }.overview-heading p { margin-top:1rem; color:var(--muted); }
+  .password-gate { max-width:37rem; padding:1.75rem; border:1px solid var(--border); border-radius:1rem; background:var(--surface); }
+  label { display:block; margin-bottom:.75rem; font-size:.9rem; }.password-row { display:flex; gap:.75rem; }
+  input { min-width:0; flex:1; border:1px solid var(--border); border-radius:.6rem; background:var(--bg); color:var(--text); padding:.8rem 1rem; font-size:1rem; }
+  input[aria-invalid='true'] { border-color:#dd8e83; }.btn { white-space:nowrap; }.btn:disabled { opacity:.6; cursor:wait; }
+  #unlock-status { min-height:1.5rem; margin-top:.9rem; font-size:.8rem; color:var(--muted); }
+  .password-gate[hidden],.unlocked-overview[hidden] { display:none; }
+  .unlocked-overview { border:1px solid var(--border); border-radius:1rem; overflow:hidden; }
+  .overview-toolbar { padding:1rem 1.5rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; border-bottom:1px solid var(--border); background:var(--surface); font-size:.85rem; }
+  iframe { display:block; width:100%; height:65vh; border:0; background:var(--bg); }
+  @media(max-width:600px) { .overview-shell { padding-top:8rem; }.password-gate { padding:1.25rem; }.password-row { flex-direction:column; }.password-row .btn { justify-content:center; }.overview-toolbar { padding:1rem; }.overview-toolbar > span { font-size:.75rem; }.overview-toolbar .btn { font-size:.75rem; } }
+</style>
+<script>
+  import { initializePrivateOverview } from '../../lib/privateOverview';
+  let cleanup:(()=>void)|undefined;
+  const init=()=>{cleanup?.();cleanup=initializePrivateOverview();};
+  document.addEventListener('astro:page-load',init);
+  document.addEventListener('astro:before-swap',()=>cleanup?.());
+  window.addEventListener('pagehide',()=>cleanup?.());
+  window.addEventListener('pageshow',event=>{if(event.persisted)init();});
+</script>

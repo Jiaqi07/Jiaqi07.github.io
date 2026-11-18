@@ -14,11 +14,11 @@ const stamp = post.updated ?? post.date;
 <article class="card post-card reveal" style={`--reveal-delay:${delay}s`}>
   <p class="post-date">
     {isNote && <span class:list={['kind', post.wip && 'wip']}>{post.wip ? 'in progress' : 'note'}</span>}
-    {isNote && <span class="dot">·</span>}
+    {isNote && <span class="dot">/</span>}
     <time datetime={stamp.toISOString()}>
       {isNote ? `updated ${formatMonth(stamp)}` : formatDate(post.date)}
     </time>
-    <span class="dot">·</span>
+    <span class="dot">/</span>
     <span>{post.minutes} min</span>
   </p>
   <h3 class="post-title">

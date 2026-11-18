@@ -47,15 +47,15 @@ const stamp = post.updated ?? post.date;
         <p class="back reveal in-view"><a href="/blog">← all writing</a></p>
         <p class="post-meta reveal in-view">
           {isNote && area && <span class="area">{area.label}</span>}
-          {isNote && area && <span>·</span>}
+          {isNote && area && <span>/</span>}
           {post.wip && <span class="wip">in progress</span>}
-          {post.wip && <span>·</span>}
+          {post.wip && <span>/</span>}
           <time datetime={stamp.toISOString()}>
             {isNote ? `updated ${formatMonth(stamp)}` : formatDate(post.date)}
           </time>
-          <span>·</span>
+          <span>/</span>
           <span>{post.minutes} min read</span>
-          {!isNote && post.updated && <span>· updated {formatDate(post.updated)}</span>}
+          {!isNote && post.updated && <span>/ updated {formatDate(post.updated)}</span>}
         </p>
         <h1 class="post-title reveal in-view">{post.title}</h1>
         {post.tags.length > 0 && (

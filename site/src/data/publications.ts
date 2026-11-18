@@ -28,8 +28,8 @@ export const publications: Publication[] = [
     id: 'physics-aware-asp',
     title: 'Physics-Aware Combinatorial Assembly Sequence Planning using Data-free Action Masking',
     authors: ['Ruixuan Liu', 'Alan Chen', 'Weiye Zhao', 'Changliu Liu'],
-    venue: 'IEEE Robotics and Automation Letters, 10(5) · presented at IEEE IROS 2025',
-    venueShort: 'RA-L · IROS 2025',
+    venue: 'IEEE Robotics and Automation Letters, 10(5) / presented at IEEE IROS 2025',
+    venueShort: 'RA-L / IROS 2025',
     year: 2025,
     summary:
       'In what order should a robot place Lego-like primitives so the build never collapses halfway? We train a deep-RL construction policy guided by an online, data-free action mask that filters physically invalid moves before they happen. The planner sequences 250+ 3D structures with a 100% success rate; the best comparable baseline fails on more than 40 of them.',
@@ -52,7 +52,7 @@ export const publications: Publication[] = [
     id: 'assemblycomplete',
     title: 'AssemblyComplete: 3D Combinatorial Construction with Deep Reinforcement Learning',
     authors: ['Alan Chen', 'Changliu Liu'],
-    venue: 'Modeling, Estimation and Control Conference (MECC 2025) · IFAC-PapersOnLine 59(30)',
+    venue: 'Modeling, Estimation and Control Conference (MECC 2025) / IFAC-PapersOnLine 59(30)',
     venueShort: 'MECC 2025',
     year: 2025,
     summary:
@@ -120,7 +120,7 @@ export const publications: Publication[] = [
     id: 'carla-opencda',
     title: 'Interactive Data Collection Using CARLA and OpenCDA for Reinforcement Learning',
     authors: ['Alan Chen', 'Joseph Clemmons', 'Umar Jamil', 'Ashley Land', 'Sara Ahmed', 'Yu-Fang Jin'],
-    venue: 'International Conference on Intelligent Biology and Medicine (ICIBM 2022) · also presented at Tran-SET 2022',
+    venue: 'International Conference on Intelligent Biology and Medicine (ICIBM 2022) / also presented at Tran-SET 2022',
     venueShort: 'ICIBM 2022 & Tran-SET 2022',
     year: 2022,
     summary:

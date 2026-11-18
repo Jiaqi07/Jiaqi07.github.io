@@ -7,7 +7,8 @@ import { remarkMeta } from './plugins/remark-meta.mjs';
 
 export default defineConfig({
   site: 'https://alanchen.me',
-  integrations: [sitemap()],
+  devToolbar: { enabled: false },
+  integrations: [sitemap({ filter: (page) => !new URL(page).pathname.startsWith('/research/overview') })],
   markdown: {
     remarkPlugins: [remarkObsidian, remarkMeta, remarkMath],
     rehypePlugins: [rehypeKatex],

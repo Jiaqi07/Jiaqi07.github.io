@@ -56,10 +56,49 @@ npm run build      # output in site/dist
 
 ## The design
 
-One theme: warm paper, Newsreader serif headings, deep teal ink. The hero replays Lee Sedol's
-Move 78 (Game 4 vs. AlphaGo, real SGF coordinates); the about page replays one of Alan's own
-KGS games with full capture logic. All colors and fonts live as CSS variables at the top of
-`site/src/styles/global.css`.
+The original dark portfolio layout uses Manrope, a muted green accent, rounded navigation,
+and large research demos. The hero features an articulated Franka Panda picking up and
+placing Go stones. Click or tap a board intersection to take over as black; the local
+opponent replies as white, and the arm lifts captured stones into a tray. Drag to rotate,
+or use arrow keys and Enter to place a stone. Two arms play automatically until the
+visitor takes over whichever color is currently moving. The visitor keeps that color
+and the other arm remains the opponent. Each click queues a physical placement by the
+visitor's arm before the opponent replies. Captured stones remain stacked in the trays.
+Black uses Panda geometry with a FANUC-inspired yellow finish. Score finishes the current move, highlights territory, and
+shows the winner using stones plus enclosed empty points, with zero komi and all
+remaining stones treated as alive. Keep playing resumes; Reset returns to the demo.
+Reduced motion, offscreen pausing, and a static Panda preview are supported.
+
+The Panda geometry comes from [MuJoCo Menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/main/franka_emika_panda),
+converted to glTF, simplified, and compressed for the browser. The original license and
+pinned source attribution are included in `site/public/models/panda/`. The visual joint
+solver and stone sequence are illustrative, not a research policy or real robot controller.
+
+Current research uses short simulation previews and submission/WIP labels, with
+"Details / Paper Coming Soon" on every card. Only reviewed clips with neutral filenames
+and no research metadata live in `site/public/research/previews/`. Unpublished methods,
+evaluation results, comparisons, source archives, and original camera overlays must stay
+outside the public directory. Public assets ship even when no page links to them.
+
+The separate `/research/overview` page opens the comprehensive research overview and
+videos after entering a password. It does not offer an archive download. The original
+archive stays outside the repository; only an AES-256-GCM encrypted payload is published.
+Decrypted media and content exist in browser memory until the page is locked or closed.
+The page is excluded from the sitemap and marked noindex. This static-site approach
+cannot rate-limit offline password guesses: use a strong password for confidential work.
+An authorized viewer can still save or share what they can see.
+
+To replace the overview or change its password, run the following from `site/` and enter
+the password at the hidden prompt. Never put the original archive in `public/`.
+
+```powershell
+node scripts/protect-research.mjs --archive "D:\Downloads2.0\Alan Chen Robot Learning.zip"
+```
+
+Shared colors live in `site/src/styles/global.css`. The hero is in
+`site/src/components/RobotBoard.astro`, `site/src/lib/robotBoard.ts`, and
+`site/src/lib/pandaKinematics.ts`. Current project labels live in
+`site/src/data/currentResearch.ts`.
 
 ## Deploying (one-time setup)
 
@@ -85,4 +124,4 @@ No Vercel/Netlify needed; if you ever prefer manual deploys, `npm run build` and
 | experience / startups / honors | `site/src/data/experience.ts` |
 | bio story | `site/src/pages/about.astro` |
 | colors & fonts | `site/src/styles/global.css` |
-| hero Go animation | `site/src/components/Goban.astro` |
+| interactive robot and Go board | `site/src/components/RobotBoard.astro` |

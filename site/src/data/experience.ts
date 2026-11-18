@@ -25,7 +25,7 @@ export const experience: Experience[] = [
     role: 'Undergraduate Researcher',
     period: 'Sep 2025 – present',
     detail:
-      'Reinforcement learning for vision-language-action models on mobile robot manipulation tasks. Finetuning robot foundation models (Octo, OpenVLA) using PPO/GRPOPPO in Maniskill. Also working with some peers to research on further applications of recursive language models.',
+      'Robot learning, mobile manipulation, and multi-agent systems. Details / Paper Coming Soon.',
     status: 'now',
     logo: '/images/logos/larg.svg',
     link: 'https://larg.cs.utexas.edu/',
@@ -56,12 +56,12 @@ export const honorSpotlight = [
 ];
 
 export const honorList = [
-  { title: 'Emergent Ventures Fellow', meta: 'Mercatus Center · 2024' },
-  { title: 'Turing Endowed Scholarship', meta: 'UT Austin · 2025' },
-  { title: 'DCU for Kids Scholarship', meta: '$2,500 · 2025' },
-  { title: 'NSF Travel Grant', meta: 'National Science Foundation · 2022' },
-  { title: 'Brawl Stars Masters Rank', meta: 'top 200 US · 2022' },
-  { title: '1517 Medici Project Fellow', meta: '1517 Fund · 2024' },
-  { title: 'IFAC Student Grant', meta: 'International Federation of Automatic Control · 2025' },
-  { title: 'FIRST Robotics Worlds Finalist', meta: 'FRC World Championship · 2023' },
+  { title: 'Emergent Ventures Fellow', meta: 'Mercatus Center / 2024' },
+  { title: 'Turing Endowed Scholarship', meta: 'UT Austin / 2025' },
+  { title: 'DCU for Kids Scholarship', meta: '$2,500 / 2025' },
+  { title: 'NSF Travel Grant', meta: 'National Science Foundation / 2022' },
+  { title: 'Brawl Stars Masters Rank', meta: 'top 200 US / 2022' },
+  { title: '1517 Medici Project Fellow', meta: '1517 Fund / 2024' },
+  { title: 'IFAC Student Grant', meta: 'International Federation of Automatic Control / 2025' },
+  { title: 'FIRST Robotics Worlds Finalist', meta: 'FRC World Championship / 2023' },
 ];

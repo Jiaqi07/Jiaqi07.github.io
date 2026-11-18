@@ -4,7 +4,7 @@ import { getPosts } from '../lib/posts';
 export async function GET(context) {
   const posts = await getPosts();
   return rss({
-    title: 'Alan Chen · writing',
+    title: 'Alan Chen / writing',
     description:
       'Research notes, build logs, and writeups on robot learning, reinforcement learning, and building things.',
     site: context.site,
